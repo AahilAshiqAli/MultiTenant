@@ -9,5 +9,7 @@ namespace AuthECAPI.Models
         { }
 
         public DbSet<AppUser> AppUsers { get; set; }
+
+        public DbSet<Tenant> Tenants { get; set; }
     }
 }

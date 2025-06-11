@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -19,7 +20,9 @@ namespace AuthECAPI.Controllers
     public string Gender { get; set; }
     public int Age { get; set; }
     public int? LibraryID { get; set; }
-  }
+   
+    public Guid TenantID { get; set; }
+    }
 
   public class LoginModel
   {
@@ -27,21 +30,35 @@ namespace AuthECAPI.Controllers
     public string Password { get; set; }
   }
 
-  public static class IdentityUserEndpoints
+    public class TenantModel
+      {
+        public string Name { get; set; }
+    
+      }
+
+    public static class IdentityUserEndpoints
   {
     public static IEndpointRouteBuilder MapIdentityUserEndpoints(this IEndpointRouteBuilder app)
     {
       app.MapPost("/signup", CreateUser);
       app.MapPost("/signin", SignIn);
+      app.MapPost("/tenant-create", CreateTenant);
       return app;
     }
 
     [AllowAnonymous]
     private static async Task<IResult> CreateUser(
         UserManager<AppUser> userManager,
-        [FromBody] UserRegistrationModel userRegistrationModel)
+        [FromBody] UserRegistrationModel userRegistrationModel,
+        AppDbContext dbContext)
     {
-      AppUser user = new AppUser()
+
+        var tenant = await dbContext.Tenants.FindAsync(userRegistrationModel.TenantID);
+        if (tenant == null)
+        {
+            return Results.BadRequest(new { message = "Invalid TenantID." });
+        }
+            AppUser user = new AppUser()
       {
         UserName = userRegistrationModel.Email,
         Email = userRegistrationModel.Email,
@@ -49,6 +66,7 @@ namespace AuthECAPI.Controllers
         Gender = userRegistrationModel.Gender,
         DOB = DateOnly.FromDateTime(DateTime.Now.AddYears(-userRegistrationModel.Age)),
         LibraryID = userRegistrationModel.LibraryID,
+        TenantID = userRegistrationModel.TenantID,
       };
       var result = await userManager.CreateAsync(
           user,
@@ -77,6 +95,7 @@ namespace AuthECAPI.Controllers
         ClaimsIdentity claims = new ClaimsIdentity(new Claim[]
         {
           new Claim("userID",user.Id.ToString()),
+          new Claim("tenantID",user.TenantID.ToString()),
           new Claim("gender",user.Gender.ToString()),
           new Claim("age",(DateTime.Now.Year - user.DOB.Year).ToString()),
           new Claim(ClaimTypes.Role,roles.First()),
@@ -100,5 +119,22 @@ namespace AuthECAPI.Controllers
       else
         return Results.BadRequest(new { message = "Username or password is incorrect." });
     }
-  }
+
+        [AllowAnonymous]
+        private static async Task<IResult> CreateTenant(
+        [FromBody] TenantModel model,
+        AppDbContext dbContext)
+        {
+            var tenant = new Tenant
+            {
+                Name = model.Name
+            };
+
+            dbContext.Tenants.Add(tenant);
+            await dbContext.SaveChangesAsync();
+
+            return Results.Ok(new { tenant.TenantID, tenant.Name });
+        }
+
+    }
 }

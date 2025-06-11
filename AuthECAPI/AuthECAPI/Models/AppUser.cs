@@ -19,5 +19,12 @@ namespace AuthECAPI.Models
         [PersonalData]
         public int? LibraryID { get; set; }
 
-  }
+        [ForeignKey("Tenant")]
+        public Guid TenantID { get; set; }
+
+        public Tenant Tenant { get; set; }
+
+        
+
+    }
 }

@@ -44,9 +44,15 @@ export class RegistrationComponent implements OnInit {
     password: ['', [
       Validators.required,
       Validators.minLength(6),
-      Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/)]],
+      Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/)
+    ]],
     confirmPassword: [''],
-  }, { validators: this.passwordMatchValidator })
+    gender: ['', Validators.required],
+    dob: ['', Validators.required],
+    tenantId: ['', Validators.required],
+    role: ['', Validators.required]
+  }, { validators: this.passwordMatchValidator });
+  
 
 
 

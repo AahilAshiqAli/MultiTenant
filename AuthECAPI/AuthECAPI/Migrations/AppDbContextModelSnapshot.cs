@@ -22,6 +22,21 @@ namespace AuthECAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AuthECAPI.Models.Tenant", b =>
+                {
+                    b.Property<Guid>("TenantID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("TenantID");
+
+                    b.ToTable("Tenants");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -247,6 +262,11 @@ namespace AuthECAPI.Migrations
                     b.Property<int?>("LibraryID")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("TenantID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasIndex("TenantID");
+
                     b.HasDiscriminator().HasValue("AppUser");
                 });
 
@@ -299,6 +319,17 @@ namespace AuthECAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AuthECAPI.Models.AppUser", b =>
+                {
+                    b.HasOne("AuthECAPI.Models.Tenant", "Tenant")
+                        .WithMany()
+                        .HasForeignKey("TenantID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
                 });
 #pragma warning restore 612, 618
         }

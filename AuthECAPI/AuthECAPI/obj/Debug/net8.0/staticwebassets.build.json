@@ -1,11 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "VcAD76pVo5pg19/8vxsde5scG54vWqTIwktFiL2M8TM=",
-  "Source": "AuthECAPI",
-  "BasePath": "_content/AuthECAPI",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
-}
+{"Version":1,"Hash":"gYXeefDDXlYMu8ikHw+dPsUdugfqUWf6B45bRjj/S/Q=","Source":"AuthECAPI","BasePath":"_content/AuthECAPI","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}

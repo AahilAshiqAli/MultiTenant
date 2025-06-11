@@ -14,14 +14,30 @@ export class AuthService {
     //default value for Role, Gender, Age, LibraryID?
     //instead of registration form, there should some other
     //form to update these details of the user
-    formData.role = "Teacher"
-    formData.gender = "Female"
-    formData.age = 35
+    formData.gender = formData.gender.toLowerCase()
+    const dob = new Date(formData.dob);
+    const today = new Date();
+
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+    const dayDiff = today.getDate() - dob.getDate();
+
+    // Adjust age if birthday hasn't occurred yet this year
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+      age--;
+    }
+
+    formData.age = age.toString();
+    console.log(formData)
     return this.http.post(environment.apiBaseUrl + '/signup', formData);
   }
 
   signin(formData: any) {
     return this.http.post(environment.apiBaseUrl + '/signin', formData);
+  }
+
+  createTenant(formData: any) {
+    return this.http.post(environment.apiBaseUrl + '/tenant-create', formData);
   }
 
   isLoggedIn() {

@@ -5,6 +5,9 @@
   <div>Already have an account?
     <a routerLink="/signin" class="text-decoration-none fw-medium text-success d-inlin-block">Sign in</a>
   </div>
+  <div>Want to
+    <a routerLink="/tenant" class="text-decoration-none fw-medium text-success d-inlin-block">Create Tenant?</a>
+  </div>
 </div>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="mb-3">
@@ -41,16 +44,59 @@
       
     </div>
   </div>
-  <div class="mb-3">
-    <input class="form-control bg-body-secondary" placeholder="Confirm Password" formControlName="confirmPassword">
-    <div class="error-feedback" 
-    *ngIf="hasDisplayableError('confirmPassword') && form.controls.confirmPassword.hasError('passwordMismatch')">
-      Passwords doesn't match.
-    </div>
+  
+  <!-- Gender -->
+<div class="mb-3">
+  <select class="form-select bg-body-secondary" formControlName="gender">
+    <option value="" disabled selected>Select Gender</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+    <option value="Other">Other</option>
+  </select>
+  <div class="error-feedback" *ngIf="hasDisplayableError('gender')">
+    Please select your gender.
   </div>
-  <div class="mt-4">
-    <button type="submit" class="btn btn-success w-100 rounded-3">
-      Register
-    </button>
+</div>
+
+<!-- Date of Birth -->
+<div class="mb-3">
+  <input type="date" class="form-control bg-body-secondary" formControlName="dob">
+  <div class="error-feedback" *ngIf="hasDisplayableError('dob')">
+    Please enter your date of birth.
   </div>
+</div>
+
+<!-- Tenant ID -->
+<div class="mb-3">
+  <input class="form-control bg-body-secondary" placeholder="Tenant ID" formControlName="tenantId">
+  <div class="error-feedback" *ngIf="hasDisplayableError('tenantId')">
+    Please enter your Tenant ID.
+  </div>
+</div>
+
+<!-- Role -->
+<div class="mb-3">
+  <select class="form-select bg-body-secondary" formControlName="role">
+    <option value="" disabled selected>Select Role</option>
+    <option value="Admin">Admin</option>
+    <option value="User">User</option>
+  </select>
+  <div class="error-feedback" *ngIf="hasDisplayableError('role')">
+    Please select a role.
+  </div>
+</div>
+
+<div class="mb-3">
+  <input class="form-control bg-body-secondary" placeholder="Confirm Password" formControlName="confirmPassword">
+  <div class="error-feedback" 
+  *ngIf="hasDisplayableError('confirmPassword') && form.controls.confirmPassword.hasError('passwordMismatch')">
+    Passwords doesn't match.
+  </div>
+</div>
+<div class="mt-4">
+  <button type="submit" class="btn btn-success w-100 rounded-3">
+    Register
+  </button>
+</div>
+
 </form>
