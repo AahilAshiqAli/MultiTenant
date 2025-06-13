@@ -863,3 +863,10 @@ C:\Users\Aahil.ashiq\MultiTenant\Angular-and-Asp.Net.Core-API-Authorization-with
 C:\Users\Aahil.ashiq\MultiTenant\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\AuthECAPI\AuthECAPI\obj\Debug\net8.0\AuthECAPI.pdb
 C:\Users\Aahil.ashiq\MultiTenant\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\AuthECAPI\AuthECAPI\obj\Debug\net8.0\AuthECAPI.genruntimeconfig.cache
 C:\Users\Aahil.ashiq\MultiTenant\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\AuthECAPI\AuthECAPI\obj\Debug\net8.0\ref\AuthECAPI.dll
+C:\Users\Aahil.ashiq\MultiTenant\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\AuthECAPI\AuthECAPI\bin\Debug\net8.0\AuthECAPI.staticwebassets.runtime.json
+C:\Users\Aahil.ashiq\MultiTenant\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\AuthECAPI\AuthECAPI\bin\Debug\net8.0\AWSSDK.Core.dll
+C:\Users\Aahil.ashiq\MultiTenant\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\AuthECAPI\AuthECAPI\bin\Debug\net8.0\AWSSDK.S3.dll
+C:\Users\Aahil.ashiq\MultiTenant\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\AuthECAPI\AuthECAPI\bin\Debug\net8.0\Azure.Storage.Blobs.dll
+C:\Users\Aahil.ashiq\MultiTenant\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\AuthECAPI\AuthECAPI\bin\Debug\net8.0\Azure.Storage.Common.dll
+C:\Users\Aahil.ashiq\MultiTenant\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\AuthECAPI\AuthECAPI\bin\Debug\net8.0\System.ClientModel.dll
+C:\Users\Aahil.ashiq\MultiTenant\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\AuthECAPI\AuthECAPI\bin\Debug\net8.0\System.IO.Hashing.dll

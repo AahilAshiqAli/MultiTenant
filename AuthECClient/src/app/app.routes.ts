@@ -13,6 +13,7 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { claimReq } from './shared/utils/claimReq-utils';
 import { TenantComponent } from './user/tenant/tenant.component';
+import { FileuploadComponent } from './fileupload/fileupload.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -46,6 +47,9 @@ export const routes: Routes = [
       {
         path: 'library-members-only', component: LibraryMembersOnlyComponent,
         data: { claimReq: claimReq.hasLibraryId }
+      },
+      {
+        path: 'fileupload', component: FileuploadComponent
       },
       {
         path: 'under-10-and-female', component: Under10AndFemaleComponent,

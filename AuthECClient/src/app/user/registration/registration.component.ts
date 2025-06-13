@@ -67,6 +67,9 @@ export class RegistrationComponent implements OnInit {
               this.isSubmitted = false;
               this.toastr.success('New user created!', 'Registration Successful')
             }
+            setTimeout(() => {
+              this.router.navigate(['/signin'], { queryParams: { tenantId: res.tenantID } });
+            }, 2000);
           },
           error: err => {
             if (err.error.errors)

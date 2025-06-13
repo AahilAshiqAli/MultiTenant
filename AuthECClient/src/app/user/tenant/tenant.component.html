@@ -6,13 +6,60 @@
   <div *ngIf="successMessage" class="alert alert-success">
     {{ successMessage }}
   </div>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form [formGroup]="tenantForm" (ngSubmit)="onSubmit()">
+    <!-- Name -->
     <div class="mb-3">
       <input class="form-control bg-body-secondary" placeholder="Name" formControlName="name">
-      <div class="error-feedback" *ngIf="hasDisplayableError('name') && form.controls.name.hasError('required')">
-        Please enter your email address.
+      <div class="error-feedback" *ngIf="hasDisplayableError('name') && tenantForm.controls.name.hasError('required')">
+        Please enter the tenant name.
       </div>
     </div>
+  
+    <!-- Provider -->
+    <div class="mb-3">
+      <select class="form-control bg-body-secondary" formControlName="provider">
+        <option value="azure">Azure</option>
+        <option value="s3">S3</option>
+      </select>
+      <div class="error-feedback" *ngIf="hasDisplayableError('provider')">
+        Please select a provider.
+      </div>
+    </div>
+  
+    <!-- Container -->
+    <div class="mb-3">
+      <input class="form-control bg-body-secondary" placeholder="Container Name" formControlName="container">
+      <div class="error-feedback" *ngIf="hasDisplayableError('container') && tenantForm.controls.container.hasError('required')">
+        Please enter a container name.
+      </div>
+    </div>
+  
+    <!-- Enable Versioning -->
+    <div class="form-check mb-3">
+      <input type="checkbox" class="form-check-input" formControlName="enableVersioning" id="versioningCheck">
+      <label for="versioningCheck" class="form-check-label">Enable Versioning</label>
+    </div>
+  
+    <!-- Retention Days -->
+    <div class="mb-3">
+      <input type="number" class="form-control bg-body-secondary" placeholder="Retention Days" formControlName="retentionDays">
+      <div class="error-feedback" *ngIf="hasDisplayableError('retentionDays')">
+        Please enter a valid number of days.
+      </div>
+    </div>
+  
+    <!-- Blob Tier -->
+    <div class="mb-3">
+      <select class="form-control bg-body-secondary" formControlName="defaultBlobTier">
+        <option value="Hot">Hot</option>
+        <option value="Cool">Cool</option>
+        <option value="Archive">Archive</option>
+      </select>
+      <div class="error-feedback" *ngIf="hasDisplayableError('defaultBlobTier')">
+        Please select a blob tier.
+      </div>
+    </div>
+  
     <div class="mt-4">
       <button type="submit" class="btn btn-success w-100 rounded-3">
         Create

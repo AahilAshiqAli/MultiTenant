@@ -1,4 +1,5 @@
 ﻿using AuthECAPI.Models;
+using AuthECAPI.Services.Blob;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -33,8 +34,18 @@ namespace AuthECAPI.Controllers
     public class TenantModel
       {
         public string Name { get; set; }
-    
-      }
+
+        public string Provider { get; set; }
+
+        public string Container { get; set; }
+
+        public bool EnableVersioning { get; set; }
+
+        public int RetentionDays { get; set; }
+
+        public string DefaultBlobTier { get; set; }
+
+    }
 
     public static class IdentityUserEndpoints
   {
@@ -122,18 +133,51 @@ namespace AuthECAPI.Controllers
 
         [AllowAnonymous]
         private static async Task<IResult> CreateTenant(
-        [FromBody] TenantModel model,
-        AppDbContext dbContext)
+            [FromBody] TenantModel model,
+            AppDbContext dbContext,
+            IBlobServiceFactory blobFactory)
         {
-            var tenant = new Tenant
+            try
             {
-                Name = model.Name
-            };
+                var blobStorageService = blobFactory.GetClient(model.Provider);
 
-            dbContext.Tenants.Add(tenant);
-            await dbContext.SaveChangesAsync();
+                // Get all existing container names from DB
+                var existingContainers = await blobStorageService.ListAllContainersAsync();
 
-            return Results.Ok(new { tenant.TenantID, tenant.Name });
+                // Check if the requested container already exists (case-insensitive comparison)
+                if (existingContainers.Any(name => name.Equals(model.Container, StringComparison.OrdinalIgnoreCase)))
+                {
+                    return Results.BadRequest($"Container name '{model.Container}' is already in use.");
+                }
+
+                // Create tenant and save to DB
+                var tenant = new Tenant
+                {
+                    Name = model.Name,
+                    Provider = model.Provider,
+                    Container = model.Container,
+                    EnableVersioning = model.EnableVersioning,
+                    RetentionDays = model.RetentionDays,
+                    DefaultBlobTier = model.DefaultBlobTier
+                };
+
+                // Create container in blob storage
+                var containerName = await blobStorageService.CreateTenantContainerAsync(tenant.Name, tenant);
+
+                if (containerName == null)
+                {
+                    return Results.BadRequest("Failed to create blob container.");
+                }
+
+                dbContext.Tenants.Add(tenant);
+                await dbContext.SaveChangesAsync();
+
+                return Results.Ok(new { tenant.TenantID, tenant.Name });
+            }
+            catch (Exception ex)
+            {
+                return Results.BadRequest(new { error = ex.Message });
+            }
         }
 
     }

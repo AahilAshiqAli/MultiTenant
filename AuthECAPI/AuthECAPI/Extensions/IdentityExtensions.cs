@@ -1,4 +1,5 @@
-﻿using AuthECAPI.Models;
+﻿using AuthECAPI.Middlewares;
+using AuthECAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -72,6 +73,7 @@ namespace AuthECAPI.Extensions
     public static WebApplication AddIdentityAuthMiddlewares(this WebApplication app)
     {
       app.UseAuthentication();
+      app.UseMiddleware<TenantResolutionMiddleware>();
       app.UseAuthorization();
       return app;
     }

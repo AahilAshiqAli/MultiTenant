@@ -26,20 +26,25 @@ export class TenantComponent {
     }
     isSubmitted: boolean = false;
 
-    form = this.formBuilder.group({
-      name: ['', Validators.required]
-    })
+    tenantForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      provider: ['azure', Validators.required],
+      container: ['', Validators.required],
+      enableVersioning: [false],
+      retentionDays: ['', [Validators.required, Validators.min(1)]],
+      defaultBlobTier: ['Hot', Validators.required]
+    });
   
     hasDisplayableError(controlName: string): Boolean {
-      const control = this.form.get(controlName);
+      const control = this.tenantForm.get(controlName);
       return Boolean(control?.invalid) &&
         (this.isSubmitted || Boolean(control?.touched) || Boolean(control?.dirty))
     }
   
     onSubmit() {
       this.isSubmitted = true;
-      if (this.form.valid) {
-        this.service.createTenant(this.form.value).subscribe({
+      if (this.tenantForm.valid) {
+        this.service.createTenant(this.tenantForm.value).subscribe({
           next: (res: any) => {
             this.successMessage = `Tenant created: Name = ${res.name}, ID = ${res.tenantID}`;
 
