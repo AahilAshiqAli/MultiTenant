@@ -69,7 +69,7 @@ export class DashboardComponent implements OnInit {
       title: 'Search Data',
       desc: 'Cross-tenant search with role-based access control',
       cta: 'Go to Search',
-      link: '/access',
+      link: '/search',
       icon: 'bi bi-person-gear',
       bg: 'bg-success'
     }

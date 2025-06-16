@@ -292,6 +292,9 @@ namespace AuthECAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<bool>("IsPrivate")
+                        .HasColumnType("bit");
+
                     b.Property<long>("Size")
                         .HasColumnType("bigint");
 

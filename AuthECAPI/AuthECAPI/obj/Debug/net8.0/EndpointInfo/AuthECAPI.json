@@ -455,7 +455,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UserRegistrationModel"
+                "$ref": "#/components/schemas/UserRegistrationDto"
               }
             }
           },
@@ -477,7 +477,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LoginModel"
+                "$ref": "#/components/schemas/LoginDto"
               }
             }
           },
@@ -499,7 +499,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TenantModel"
+                "$ref": "#/components/schemas/TenantDto"
               }
             }
           },
@@ -516,6 +516,15 @@
       "get": {
         "tags": [
           "Products"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -536,17 +545,44 @@
                   "File": {
                     "type": "string",
                     "format": "binary"
+                  },
+                  "IsPrivate": {
+                    "type": "boolean"
                   }
                 }
               },
               "encoding": {
                 "File": {
                   "style": "form"
+                },
+                "IsPrivate": {
+                  "style": "form"
                 }
               }
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Products/by-name": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Success"
@@ -770,7 +806,7 @@
         },
         "additionalProperties": false
       },
-      "LoginModel": {
+      "LoginDto": {
         "type": "object",
         "properties": {
           "email": {
@@ -858,7 +894,7 @@
         },
         "additionalProperties": false
       },
-      "TenantModel": {
+      "TenantDto": {
         "type": "object",
         "properties": {
           "name": {
@@ -937,7 +973,7 @@
         },
         "additionalProperties": false
       },
-      "UserRegistrationModel": {
+      "UserRegistrationDto": {
         "type": "object",
         "properties": {
           "email": {

@@ -10,5 +10,5 @@ import { UserComponent } from "./user/user.component";
   styles: [],
 })
 export class AppComponent {
-  title = 'AuthECClient';
+  title = 'MultiTenant';
 }

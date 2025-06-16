@@ -40,7 +40,27 @@ namespace AuthECAPI.Extensions
       .AddJwtBearer(y =>
         {
           y.SaveToken = false;
-          y.TokenValidationParameters = new TokenValidationParameters
+
+            y.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    var accessToken = context.Request.Query["access_token"];
+                    var path = context.HttpContext.Request.Path;
+
+                    if (!string.IsNullOrEmpty(accessToken) &&
+                        (path.StartsWithSegments("/progressHub") || path.StartsWithSegments("/logHub")))
+                    {
+                        context.Token = accessToken;
+                    }
+
+                    return Task.CompletedTask;
+                }
+            };
+
+
+
+            y.TokenValidationParameters = new TokenValidationParameters
           {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
@@ -75,6 +95,7 @@ namespace AuthECAPI.Extensions
       app.UseAuthentication();
       app.UseMiddleware<TenantResolutionMiddleware>();
       app.UseAuthorization();
+      app.UseMiddleware<SerilogTenantEnricherMiddleware>();
       return app;
     }
 

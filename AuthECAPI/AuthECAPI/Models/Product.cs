@@ -21,4 +21,7 @@ public class Product
 
     [Column(TypeName = "nvarchar(100)")]
     public string TenantId { get; set; }
+
+    [Column(TypeName = "bit")]
+    public bool IsPrivate { get; set; } = false;
 }

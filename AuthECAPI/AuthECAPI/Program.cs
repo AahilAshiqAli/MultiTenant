@@ -6,9 +6,8 @@ using AuthECAPI.Models;
 using AuthECAPI.Services.Converter;
 using AuthECAPI.Services.CurrentTenant;
 using AuthECAPI.Services.Products;
-using AuthECAPI.Services.SignalR;
 using Microsoft.AspNetCore.SignalR;
-
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,30 +33,54 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
     serverOptions.Limits.MaxRequestBodySize = 524288000;
 });
 
+builder.Logging.ClearProviders(); 
+builder.Logging.AddConsole();     
+builder.Logging.AddDebug();
+
+Console.WriteLine("hello there");
+
 builder.Services.AddSignalR();
 builder.Services.AddHttpContextAccessor();
+builder.Host.UseSerilog((context, services, configuration) =>
+{
+    configuration
+        .ReadFrom.Configuration(context.Configuration)
+        .WithSignalRSink(services);
+});
+Console.WriteLine("hello there2");
+try
+{
+    var app = builder.Build();
+    Console.WriteLine("hello there3");
 
-var app = builder.Build();
 
 
-app.MapHub<ProgressHub>("/progressHub");
+    app.ConfigureSwaggerExplorer()
+       .ConfigureCORS(builder.Configuration)
+       .AddIdentityAuthMiddlewares();
 
+    app.MapHub<ProgressHub>("/progressHub").RequireAuthorization();
+    app.MapHub<LogHub>("/logHub").RequireAuthorization();
 
-app.ConfigureSwaggerExplorer()
-   .ConfigureCORS(builder.Configuration)
-   .AddIdentityAuthMiddlewares();
+    app.UseStaticFiles();
+    app.MapControllers();
 
-app.UseStaticFiles();
-app.MapControllers();
+    app.MapGroup("/api")
+       .MapIdentityApi<AppUser>();
+    app.MapGroup("/api")
+       .MapIdentityUserEndpoints()
+       .MapAccountEndpoints()
+       .MapAuthorizationDemoEndpoints();
 
-app.MapGroup("/api")
-   .MapIdentityApi<AppUser>();
-app.MapGroup("/api")
-   .MapIdentityUserEndpoints()
-   .MapAccountEndpoints()
-   .MapAuthorizationDemoEndpoints();
+    app.Run();
+}
+catch (Exception ex)
+{
+    Console.WriteLine("Exception during app build:");
+    Console.WriteLine(ex.ToString());
+    throw; // Optional: rethrow so host shuts down properly
+}
 
-app.Run();
 
 
 

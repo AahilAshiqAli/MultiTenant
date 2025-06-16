@@ -1,4 +1,4 @@
-﻿using AuthECAPI.Services.DTOs;
+﻿using AuthECAPI.DTO;
 using AuthECAPI.Services.Products;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +19,34 @@ namespace AuthECAPI.Controllers
 
         // Get list of products
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] string? name)
         {
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                var filtered = _productService.FilterProductsByName(name);
+                return Ok(filtered);
+            }
+
             var list = _productService.GetAllProducts();
             return Ok(list);
         }
+
+        // Get a single product by name
+        [HttpGet("by-name")]
+        public IActionResult GetByName([FromQuery] string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return BadRequest("Product name must be provided.");
+
+            var results = _productService.GetProductByName(name);
+
+            if (results == null)
+                return NotFound("No products found with the specified name.");
+
+            return Ok(results);
+        }
+
+
 
         // Create a new product
         [HttpPost]
@@ -46,7 +69,6 @@ namespace AuthECAPI.Controllers
             {
                 Console.WriteLine("❌ Exception: " + ex.Message);
                 Console.WriteLine("❌ Stack Trace: " + ex.StackTrace);
-                // Optionally log the exception here
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred: {ex.Message}");
             }
         }

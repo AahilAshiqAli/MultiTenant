@@ -276,7 +276,13 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -290,6 +296,11 @@
       {
         "Name": "File",
         "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsPrivate",
+        "Type": "System.Boolean",
         "IsRequired": false
       }
     ],
@@ -312,6 +323,22 @@
         "Name": "id",
         "Type": "",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthECAPI.Controllers.ProductsController",
+    "Method": "GetByName",
+    "RelativePath": "api/Products/by-name",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -430,7 +457,7 @@
     "Parameters": [
       {
         "Name": "loginModel",
-        "Type": "AuthECAPI.Controllers.LoginModel",
+        "Type": "AuthECAPI.DTO.LoginDto",
         "IsRequired": true
       }
     ],
@@ -452,7 +479,7 @@
     "Parameters": [
       {
         "Name": "userRegistrationModel",
-        "Type": "AuthECAPI.Controllers.UserRegistrationModel",
+        "Type": "AuthECAPI.DTO.UserRegistrationDto",
         "IsRequired": true
       }
     ],
@@ -474,7 +501,7 @@
     "Parameters": [
       {
         "Name": "model",
-        "Type": "AuthECAPI.Controllers.TenantModel",
+        "Type": "AuthECAPI.DTO.TenantDto",
         "IsRequired": true
       }
     ],

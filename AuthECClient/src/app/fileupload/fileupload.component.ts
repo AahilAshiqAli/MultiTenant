@@ -3,14 +3,15 @@ import {HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { ElementRef, ViewChild, Component, OnInit } from '@angular/core';
-import { ProgressService } from '../shared/services/progress-service.service';
+import { ProgressService } from '../shared/services/progress.service';
+import { LogService } from '../shared/services/log.service';
 
 
 
 @Component({
   selector: 'app-fileupload',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './fileupload.component.html',
   styles: ``
 })
@@ -23,10 +24,14 @@ export class FileuploadComponent implements OnInit {
   conversionProgress: number | null = null;
   totalBytes: number = 0;
   validationError: string = '';
-  private readonly MAX_SIZE = 2 * 1024 * 1024 * 1024; // 2 GB
+  tenantLogs: any[] = [];
+  isPublic : boolean = false;
+  private readonly MAX_SIZE = 2 * 1024 * 1024 * 1024; 
+  showLogs: boolean = false;
+
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private progressService: ProgressService) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private progressService: ProgressService, private logService: LogService) {
     this.uploadForm = this.fb.group({});
   }
 
@@ -36,6 +41,24 @@ export class FileuploadComponent implements OnInit {
     this.progressService.onProgress((progress: number) => {
       this.uploadProgress = progress;
     });
+
+    this.logService.startConnection(); 
+
+
+    this.logService.log$.subscribe((log: any) => {
+      this.tenantLogs.push(log);
+      // Optionally auto-scroll to latest
+      setTimeout(() => {
+        const logBox = document.getElementById('logBox');
+        if (logBox) {
+          logBox.scrollTop = logBox.scrollHeight;
+        }
+      }, 100);
+    });
+  }
+
+  toggleLogs() {
+    this.showLogs = !this.showLogs;
   }
 
   openFileBrowser() {
@@ -73,6 +96,7 @@ export class FileuploadComponent implements OnInit {
     const formData = new FormData();
     formData.append('file', this.selectedFile);
     formData.append('name', this.selectedFile.name);
+    formData.append('isPrivate', this.isPublic.toString().toLowerCase());
   
     this.http.post(environment.apiBaseUrl + '/Products', formData, {
       reportProgress: true,

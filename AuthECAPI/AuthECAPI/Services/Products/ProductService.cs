@@ -1,9 +1,9 @@
-﻿using AuthECAPI.Hubs;
+﻿using AuthECAPI.DTO;
+using AuthECAPI.Hubs;
 using AuthECAPI.Models;
 using AuthECAPI.Services.Blob;
 using AuthECAPI.Services.Converter;
 using AuthECAPI.Services.CurrentTenant;
-using AuthECAPI.Services.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -35,12 +35,20 @@ namespace AuthECAPI.Services.Products
         // get a list of all products
         public IEnumerable<Product> GetAllProducts()
         {
-            var products = _context.Products.ToList();
+            var products = _context.Products.Take(50).ToList();
             return products;
         }
 
+        // get a list of products by name filtered by name
+        public IEnumerable<Product> FilterProductsByName(string name)
+        {
+            return _context.Products
+                .Where(p => p.FileName.Contains(name))
+                .ToList();
+        }
+
         // get a single product
-        public async Task<Stream> GetProductById(string name)
+        public async Task<Stream> GetProductByName(string name)
         {
             var product = _context.Products.FirstOrDefault(x => x.FileName == name);
 

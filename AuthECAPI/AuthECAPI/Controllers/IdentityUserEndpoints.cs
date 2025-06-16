@@ -1,4 +1,5 @@
-﻿using AuthECAPI.Models;
+﻿using AuthECAPI.DTO;
+using AuthECAPI.Models;
 using AuthECAPI.Services.Blob;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,41 +13,7 @@ using System.Text;
 
 namespace AuthECAPI.Controllers
 {
-  public class UserRegistrationModel
-  {
-    public string Email { get; set; }
-    public string Password { get; set; }
-    public string FullName { get; set; }
-    public string Role { get; set; }
-    public string Gender { get; set; }
-    public int Age { get; set; }
-    public int? LibraryID { get; set; }
-   
-    public Guid TenantID { get; set; }
-    }
-
-  public class LoginModel
-  {
-    public string Email { get; set; }
-    public string Password { get; set; }
-  }
-
-    public class TenantModel
-      {
-        public string Name { get; set; }
-
-        public string Provider { get; set; }
-
-        public string Container { get; set; }
-
-        public bool EnableVersioning { get; set; }
-
-        public int RetentionDays { get; set; }
-
-        public string DefaultBlobTier { get; set; }
-
-    }
-
+ 
     public static class IdentityUserEndpoints
   {
     public static IEndpointRouteBuilder MapIdentityUserEndpoints(this IEndpointRouteBuilder app)
@@ -60,7 +27,7 @@ namespace AuthECAPI.Controllers
     [AllowAnonymous]
     private static async Task<IResult> CreateUser(
         UserManager<AppUser> userManager,
-        [FromBody] UserRegistrationModel userRegistrationModel,
+        [FromBody] UserRegistrationDto userRegistrationModel,
         AppDbContext dbContext)
     {
 
@@ -93,7 +60,7 @@ namespace AuthECAPI.Controllers
     [AllowAnonymous]
     private static async Task<IResult> SignIn(
         UserManager<AppUser> userManager,
-            [FromBody] LoginModel loginModel,
+            [FromBody] LoginDto loginModel,
             IOptions<AppSettings> appSettings)
     {
       var user = await userManager.FindByEmailAsync(loginModel.Email);
@@ -133,7 +100,7 @@ namespace AuthECAPI.Controllers
 
         [AllowAnonymous]
         private static async Task<IResult> CreateTenant(
-            [FromBody] TenantModel model,
+            [FromBody] TenantDto model,
             AppDbContext dbContext,
             IBlobServiceFactory blobFactory)
         {
