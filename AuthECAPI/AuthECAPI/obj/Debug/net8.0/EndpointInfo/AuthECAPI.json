@@ -446,6 +446,115 @@
         }
       }
     },
+    "/api/Contents": {
+      "get": {
+        "tags": [
+          "Contents"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Contents"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "File": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "IsPrivate": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "encoding": {
+                "File": {
+                  "style": "form"
+                },
+                "IsPrivate": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Contents/stream/{id}": {
+      "get": {
+        "tags": [
+          "Contents"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Contents/{id}": {
+      "delete": {
+        "tags": [
+          "Contents"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/signup": {
       "post": {
         "tags": [
@@ -511,152 +620,6 @@
           }
         }
       }
-    },
-    "/api/Products": {
-      "get": {
-        "tags": [
-          "Products"
-        ],
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Products"
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "File": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "IsPrivate": {
-                    "type": "boolean"
-                  }
-                }
-              },
-              "encoding": {
-                "File": {
-                  "style": "form"
-                },
-                "IsPrivate": {
-                  "style": "form"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Products/by-name": {
-      "get": {
-        "tags": [
-          "Products"
-        ],
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/api/Products/{id}": {
-      "delete": {
-        "tags": [
-          "Products"
-        ],
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/WeatherForecast": {
-      "get": {
-        "tags": [
-          "WeatherForecast"
-        ],
-        "operationId": "GetWeatherForecast",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/WeatherForecast"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -683,50 +646,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "DateOnly": {
-        "type": "object",
-        "properties": {
-          "year": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "month": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "day": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "dayOfWeek": {
-            "$ref": "#/components/schemas/DayOfWeek"
-          },
-          "dayOfYear": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "dayNumber": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "DayOfWeek": {
-        "enum": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5,
-          6
-        ],
-        "type": "integer",
-        "format": "int32"
       },
       "ForgotPasswordRequest": {
         "type": "object",
@@ -919,6 +838,35 @@
           "defaultBlobTier": {
             "type": "string",
             "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "role": {
+            "type": "string",
+            "nullable": true
+          },
+          "gender": {
+            "type": "string",
+            "nullable": true
+          },
+          "age": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "libraryID": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1008,28 +956,6 @@
           "tenantID": {
             "type": "string",
             "format": "uuid"
-          }
-        },
-        "additionalProperties": false
-      },
-      "WeatherForecast": {
-        "type": "object",
-        "properties": {
-          "date": {
-            "$ref": "#/components/schemas/DateOnly"
-          },
-          "temperatureC": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "temperatureF": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "summary": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false

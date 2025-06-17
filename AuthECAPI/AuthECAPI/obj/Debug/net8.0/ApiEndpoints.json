@@ -87,6 +87,80 @@
     "EndpointName": "MapIdentityApi-/api/confirmEmail"
   },
   {
+    "ContainingType": "AuthECAPI.Controllers.ContentsController",
+    "Method": "Get",
+    "RelativePath": "api/Contents",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthECAPI.Controllers.ContentsController",
+    "Method": "PostAsync",
+    "RelativePath": "api/Contents",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "File",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsPrivate",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthECAPI.Controllers.ContentsController",
+    "Method": "Delete",
+    "RelativePath": "api/Contents/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "id",
+        "Type": "",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AuthECAPI.Controllers.ContentsController",
+    "Method": "Stream",
+    "RelativePath": "api/Contents/stream/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__DisplayClass1_0\u00601[[AuthECAPI.Models.AppUser, AuthECAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
     "Method": "\u003CMapIdentityApi\u003Eb__6",
     "RelativePath": "api/forgotPassword",
@@ -268,80 +342,6 @@
         "StatusCode": 404
       }
     ]
-  },
-  {
-    "ContainingType": "AuthECAPI.Controllers.ProductsController",
-    "Method": "Get",
-    "RelativePath": "api/Products",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "name",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AuthECAPI.Controllers.ProductsController",
-    "Method": "PostAsync",
-    "RelativePath": "api/Products",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "File",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
-      },
-      {
-        "Name": "IsPrivate",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AuthECAPI.Controllers.ProductsController",
-    "Method": "Delete",
-    "RelativePath": "api/Products/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "name",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "id",
-        "Type": "",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AuthECAPI.Controllers.ProductsController",
-    "Method": "GetByName",
-    "RelativePath": "api/Products/by-name",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "name",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
   },
   {
     "ContainingType": "Microsoft.AspNetCore.Routing.IdentityApiEndpointRouteBuilderExtensions\u002B\u003C\u003Ec__DisplayClass1_0\u00601[[AuthECAPI.Models.AppUser, AuthECAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
@@ -546,26 +546,5 @@
         "StatusCode": 200
       }
     ]
-  },
-  {
-    "ContainingType": "AuthECAPI.Controllers.WeatherForecastController",
-    "Method": "Get",
-    "RelativePath": "WeatherForecast",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[AuthECAPI.WeatherForecast, AuthECAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ],
-    "EndpointName": "GetWeatherForecast"
   }
 ]

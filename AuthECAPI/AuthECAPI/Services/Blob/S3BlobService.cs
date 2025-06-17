@@ -26,7 +26,7 @@ namespace AuthECAPI.Services.Blob
             return $"https://{BucketName}.s3.amazonaws.com/{fileName}";
         }
 
-        public async Task<Stream> GetBlobAsync(string fileName)
+        public async Task<Stream> GetBlobAsync(string fileName, long? start = null, long? end = null)
         {
             var response = await _s3Client.GetObjectAsync(BucketName, fileName);
             return response.ResponseStream;

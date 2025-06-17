@@ -1,4 +1,4 @@
-<div class="container mt-5">
+<div class="container-fluid mt-5 px-4">
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card shadow-sm">
@@ -34,21 +34,29 @@
   
             <!-- 📦 Card Results -->
             <div *ngIf="showCards && pagedResults.length > 0">
+
               <div class="row">
                 <div class="col-md-6 mb-3" *ngFor="let item of pagedResults">
-                  <div class="card shadow">
+                  <a
+                  [routerLink]="['/video', item.Id]"
+                    class="card shadow text-decoration-none text-dark d-block"
+                  >
                     <img
-                      src="https://via.placeholder.com/400x200?text={{ item }}"
+                      [src]="'http://localhost:5007/uploads/' + item.thumbnail"
                       class="card-img-top"
-                      alt="{{ item }}"
+                      alt="{{ item.fileName }}"
                     />
                     <div class="card-body">
-                      <h5 class="card-title">{{ item }}</h5>
-                      <p class="card-text">This is a detailed view of {{ item }}.</p>
+                      <h5 class="card-title">{{ item.fileName }}</h5>
+                      <p class="card-text text-small">
+                        <strong>Size:</strong> {{ formatBytes(item.size) }} <br />
+                        <strong>Content Type:</strong> {{ item.contentType }} <br />
+                      </p>
                     </div>
-                  </div>
+                  </a>
                 </div>
               </div>
+
   
               <!-- 🔢 Pagination Controls -->
               <nav>

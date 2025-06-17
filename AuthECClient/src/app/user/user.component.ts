@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 import { RegistrationComponent } from './registration/registration.component';
-import { ChildrenOutletContexts, RouterOutlet } from '@angular/router';
+import { ChildrenOutletContexts, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { trigger, style, animate, transition, query } from "@angular/animations";
+import { filter } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [RegistrationComponent, RouterOutlet],
+  imports: [RegistrationComponent, RouterOutlet, CommonModule],
   templateUrl: './user.component.html',
   styles: ``,
   animations: [
@@ -22,7 +25,15 @@ import { trigger, style, animate, transition, query } from "@angular/animations"
 })
 export class UserComponent {
 
-  constructor(private context: ChildrenOutletContexts) { }
+  currentRoute: string = '';
+
+  constructor(private context: ChildrenOutletContexts, private router: Router) {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.currentRoute = event.url;
+      });
+  }
 
   getRouteUrl() {
     return this.context.getContext('primary')?.route?.url;

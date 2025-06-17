@@ -19,14 +19,14 @@ namespace AuthECAPI.Models
 
         public DbSet<Tenant> Tenants { get; set; }
 
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Content> Contents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             if (!string.IsNullOrWhiteSpace(CurrentTenantId))
-                builder.Entity<Product>().HasQueryFilter(a => a.TenantId == CurrentTenantId);
+                builder.Entity<Content>().HasQueryFilter(a => a.TenantId == CurrentTenantId);
         }
 
         public override int SaveChanges()

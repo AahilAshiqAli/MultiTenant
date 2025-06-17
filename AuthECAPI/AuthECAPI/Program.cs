@@ -3,17 +3,16 @@ using AuthECAPI.Controllers;
 using AuthECAPI.Extensions;
 using AuthECAPI.Hubs;
 using AuthECAPI.Models;
+using AuthECAPI.Services.ContentFolder;
 using AuthECAPI.Services.Converter;
 using AuthECAPI.Services.CurrentTenant;
-using AuthECAPI.Services.Products;
 using Microsoft.AspNetCore.SignalR;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllers();
 
+builder.Services.AddControllers();
 
 
 builder.Services.AddSwaggerExplorer()
@@ -24,7 +23,7 @@ builder.Services.AddSwaggerExplorer()
                 .AddIdentityAuth(builder.Configuration)
                 .AddBlobStorage(builder.Configuration);
 
-builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddTransient<IContentService, ContentService>();
 builder.Services.AddScoped<ICurrentTenantService, CurrentTenantService>();
 builder.Services.AddSingleton<IFFmpegService, FFmpegService>();
 
@@ -53,6 +52,7 @@ try
     var app = builder.Build();
     Console.WriteLine("hello there3");
 
+    app.UseStaticFiles();
 
 
     app.ConfigureSwaggerExplorer()
@@ -62,7 +62,6 @@ try
     app.MapHub<ProgressHub>("/progressHub").RequireAuthorization();
     app.MapHub<LogHub>("/logHub").RequireAuthorization();
 
-    app.UseStaticFiles();
     app.MapControllers();
 
     app.MapGroup("/api")

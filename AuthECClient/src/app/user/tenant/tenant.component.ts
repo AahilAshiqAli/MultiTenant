@@ -1,14 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { RegistrationComponent } from "../registration/registration.component";
+import { FirstKeyPipe } from '../../shared/pipes/first-key.pipe';
 
 @Component({
   selector: 'app-tenant',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule,  FirstKeyPipe, RouterLink],
   templateUrl: './tenant.component.html',
   styles: ``
 })
@@ -34,34 +36,98 @@ export class TenantComponent {
       retentionDays: ['', [Validators.required, Validators.min(1)]],
       defaultBlobTier: ['Hot', Validators.required]
     });
-  
+
+    
+    
     hasDisplayableError(controlName: string): Boolean {
       const control = this.tenantForm.get(controlName);
       return Boolean(control?.invalid) &&
-        (this.isSubmitted || Boolean(control?.touched) || Boolean(control?.dirty))
+      (this.isSubmitted || Boolean(control?.touched) || Boolean(control?.dirty))
     }
-  
-    onSubmit() {
-      this.isSubmitted = true;
-      if (this.tenantForm.valid) {
-        this.service.createTenant(this.tenantForm.value).subscribe({
-          next: (res: any) => {
-            this.successMessage = `Tenant created: Name = ${res.name}, ID = ${res.tenantID}`;
+    
+    passwordMatchValidator: ValidatorFn = (control: AbstractControl): null => {
+      const password = control.get('password')
+      const confirmPassword = control.get('confirmPassword')
+      
+      if (password && confirmPassword && password.value != confirmPassword.value)
+      confirmPassword?.setErrors({ passwordMismatch: true })
+      else
+      confirmPassword?.setErrors(null)
+      
+      return null;
+    }
+    
+    form = this.formBuilder.group({
+      fullName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.pattern(/(?=.*[^a-zA-Z0-9 ])/)
+      ]],
+      confirmPassword: [''],
+      gender: ['', Validators.required],
+      dob: ['', Validators.required],
+      role: ['Admin', Validators.required]
+    }, { validators: this.passwordMatchValidator });
 
-            // Optional: delay 2 seconds before navigating
-            setTimeout(() => {
-              this.router.navigate(['/signup'], { queryParams: { tenantId: res.tenantID } });
-            }, 2000);
-          },
-          error: err => {
-            if (err.status == 400)
-              this.toastr.error('Error in Server.', 'Creation failed')
-            else
-              console.log('error during login:\n', err);
+
+onSubmit() {
+  this.isSubmitted = true;
+
+  // Mark both forms as touched to trigger validation messages
+  this.tenantForm.markAllAsTouched();
+  this.form.markAllAsTouched();
+
+  if (this.tenantForm.invalid || this.form.invalid) {
+    this.toastr.error('Please fix form errors before submitting');
+    return;
+  }
+
+  const combinedPayload = {
+    ...this.tenantForm.value,
+    user: this.form.value
+  };
+
+  this.service.createTenant(combinedPayload).subscribe({
+    next: (res: any) => {
+      this.successMessage = `Tenant created: Name = ${res.name}, ID = ${res.tenantID}`;
+
+      // Optionally reset both forms
+      this.tenantForm.reset();
+      this.form.reset();
+      this.isSubmitted = false;
+
+      setTimeout(() => {
+        this.router.navigate(['/signup'], { queryParams: { tenantId: res.tenantID } });
+      }, 2000);
+    },
+    error: err => {
+      if (err.error?.errors) {
+        err.error.errors.forEach((x: any) => {
+          switch (x.code) {
+            case "DuplicateUserName":
+              this.toastr.error('Username is already taken.', 'Registration Failed');
+              break;
+
+            case "DuplicateEmail":
+              this.toastr.error('Email is already taken.', 'Registration Failed');
+              break;
+
+            default:
+              this.toastr.error('Contact the developer.', 'Registration Failed');
+              console.log('Unhandled error:', x);
+              break;
           }
-        })
+        });
+      } else {
+        this.toastr.error('Unknown error occurred.', 'Registration Failed');
+        console.error('Error:', err);
       }
-    } 
+    }
+  });
+}
+
   
 
 }

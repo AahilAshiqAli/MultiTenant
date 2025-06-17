@@ -11,6 +11,7 @@ import { claimReq } from './shared/utils/claimReq-utils';
 import { TenantComponent } from './user/tenant/tenant.component';
 import { FileuploadComponent } from './fileupload/fileupload.component';
 import { SearchComponent } from './search/search.component';
+import { DisplayVideoComponent } from './video/video.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/signin', pathMatch: 'full' },
@@ -41,6 +42,9 @@ export const routes: Routes = [
       },
       {
         path: 'search', component: SearchComponent
+      },
+      {
+        path : 'video/:id', component: DisplayVideoComponent
       }
     ]
   },

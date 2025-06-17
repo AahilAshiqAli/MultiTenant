@@ -98,7 +98,7 @@ export class FileuploadComponent implements OnInit {
     formData.append('name', this.selectedFile.name);
     formData.append('isPrivate', this.isPublic.toString().toLowerCase());
   
-    this.http.post(environment.apiBaseUrl + '/Products', formData, {
+    this.http.post(environment.apiBaseUrl + '/Contents', formData, {
       reportProgress: true,
       observe: 'events'
     }).subscribe((event: HttpEvent<any>) => {
