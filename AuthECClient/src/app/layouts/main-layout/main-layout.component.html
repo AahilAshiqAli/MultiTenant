@@ -8,26 +8,13 @@
     <li class="nav-item" [appHideIfClaimsNotMet]="claimReq.adminOnly">
       <a class="nav-link" routerLink="/admin-only">Admin Only</a>
     </li>
-    <!-- <li class="nav-item" [appHideIfClaimsNotMet]="claimReq.adminOrTeacher">
-      <a class="nav-link" routerLink="/admin-or-teacher">Admin Or Teacher</a>
-    </li>
-    <li class="nav-item" [appHideIfClaimsNotMet]="claimReq.femaleAndTeacher">
-      <a class="nav-link" routerLink="/apply-for-maternity-leave">Maternity Leave</a>
-    </li>
-    <li class="nav-item" [appHideIfClaimsNotMet]="claimReq.hasLibraryId">
-      <a class="nav-link" routerLink="/library-members-only">Library Members</a>
-    </li>
-    <li class="nav-item" [appHideIfClaimsNotMet]="claimReq.femaleAndBelow10">
-      <a class="nav-link" routerLink="/under-10-and-female">Under 10 Girls Only</a>
-    </li> -->
+
   </ul>
 </nav>
 <div id="main">
   <nav class="navbar bg-body-tertiary">
     <div class="container-fluid px-5 py-1">
       <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
       <button class="btn btn-dark" (click)="onLogout()">Logout</button>
     </div>

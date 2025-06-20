@@ -1,29 +1,40 @@
 import { Injectable } from '@angular/core';
-import * as signalR from '@microsoft/signalr';
+import { HttpClient } from '@angular/common/http';
+import { interval, Subscription } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { AuthService } from './auth.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ProgressService {
-  private hubConnection!: signalR.HubConnection;
+  private pollSubscription?: Subscription;
 
-  constructor(private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
-  public startConnection() {
-    this.hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl('http://localhost:5007/progressHub', {
-      accessTokenFactory: () => this.authService.getToken() || ''
-    })
-      .build();
+  startPolling(callback: (progress: number) => void): void {
+    // Poll every 2 seconds
+    this.pollSubscription = interval(2000).subscribe(() => {
+      this.http.get<{ progress: number }>(environment.apiBaseUrl + '/progress')
+        .subscribe({
+          next: (res) => {
+            callback(res.progress);
 
-    this.hubConnection.start().catch(err => console.log('Error: ', err));
+            // Stop polling automatically if 100% is reached
+            if (res.progress >= 100) {
+              this.stopPolling();
+            }
+          },
+          error: (err) => {
+            console.error('❌ Progress API error:', err);
+          }
+        });
+    });
   }
 
-  public onProgress(callback: (progress: number) => void) {
-    this.hubConnection.on('ConversionProgress', progress => {
-      callback(progress);
-    });
+  stopPolling(): void {
+    if (this.pollSubscription) {
+      this.pollSubscription.unsubscribe();
+      this.pollSubscription = undefined;
+    }
   }
 }

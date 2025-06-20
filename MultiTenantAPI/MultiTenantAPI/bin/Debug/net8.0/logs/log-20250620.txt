@@ -1,0 +1,14 @@
+{"Timestamp":"2025-06-20T12:01:14.1505064+05:00","Level":"Information","MessageTemplate":"Mapping account endpoints."}
+{"Timestamp":"2025-06-20T12:01:14.2492080+05:00","Level":"Information","MessageTemplate":"Mapped GET /UserProfile endpoint."}
+{"Timestamp":"2025-06-20T12:01:14.3331447+05:00","Level":"Information","MessageTemplate":"Starting RabbitMqConsumer...","Properties":{"SourceContext":"RabbitMqConsumerService"}}
+{"Timestamp":"2025-06-20T12:01:14.3388003+05:00","Level":"Information","MessageTemplate":"Creating and caching new RabbitMQ channel task."}
+{"Timestamp":"2025-06-20T12:01:14.3438973+05:00","Level":"Information","MessageTemplate":"Initializing RabbitMQ connection factory."}
+{"Timestamp":"2025-06-20T12:01:14.3592338+05:00","Level":"Information","MessageTemplate":"Creating RabbitMQ connection asynchronously."}
+{"Timestamp":"2025-06-20T12:01:14.5274745+05:00","Level":"Information","MessageTemplate":"RabbitMQ connection established."}
+{"Timestamp":"2025-06-20T12:01:14.5309141+05:00","Level":"Information","MessageTemplate":"Creating RabbitMQ channel asynchronously."}
+{"Timestamp":"2025-06-20T12:01:14.5484031+05:00","Level":"Information","MessageTemplate":"RabbitMQ channel created."}
+{"Timestamp":"2025-06-20T12:01:14.5512140+05:00","Level":"Information","MessageTemplate":"Declaring queue: tasks.high"}
+{"Timestamp":"2025-06-20T12:01:14.5621938+05:00","Level":"Information","MessageTemplate":"Declaring queue: tasks.normal"}
+{"Timestamp":"2025-06-20T12:01:14.5667590+05:00","Level":"Information","MessageTemplate":"Declaring queue: tasks.low"}
+{"Timestamp":"2025-06-20T12:01:14.5709773+05:00","Level":"Information","MessageTemplate":"All RabbitMQ queues declared successfully."}
+{"Timestamp":"2025-06-20T12:01:14.6548500+05:00","Level":"Warning","MessageTemplate":"The WebRootPath was not found: {WebRootPath}. Static files may be unavailable.","Properties":{"WebRootPath":"C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\bin\\Debug\\net8.0\\wwwroot","EventId":{"Id":16,"Name":"WebRootPathNotFound"},"SourceContext":"Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware"}}

@@ -3,8 +3,8 @@ import {HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { ElementRef, ViewChild, Component, OnInit } from '@angular/core';
-import { ProgressService } from '../shared/services/progress.service';
 import { LogService } from '../shared/services/log.service';
+import { ProgressService } from '../shared/services/progress.service';
 
 
 
@@ -31,17 +31,13 @@ export class FileuploadComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private progressService: ProgressService, private logService: LogService) {
-    this.uploadForm = this.fb.group({});
+  constructor(private fb: FormBuilder, private http: HttpClient, private logService: LogService, private progressService: ProgressService) {
+    this.uploadForm = this.fb.group({
+      isPublic: [false]
+    });
   }
 
   ngOnInit(): void {
-    this.progressService.startConnection();
-
-    this.progressService.onProgress((progress: number) => {
-      this.uploadProgress = progress;
-    });
-
     this.logService.startConnection(); 
 
 
@@ -90,7 +86,6 @@ export class FileuploadComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log("hello");
     if (!this.selectedFile) return;
   
     const formData = new FormData();
@@ -107,12 +102,9 @@ export class FileuploadComponent implements OnInit {
         this.uploadProgress = Math.round((event.loaded / event.total) * 100);
       } else if (event.type === HttpEventType.Response) {
         this.uploadResponse = event.body;
-
-    
-          // ✅ Start listening to backend conversion progress here
-          this.progressService.onProgress((progress: number) => {
-            this.conversionProgress = progress;
-          });
+        this.progressService.startPolling((progress) => {
+          this.conversionProgress = progress;
+        });
       }
     });
   }

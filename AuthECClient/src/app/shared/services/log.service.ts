@@ -4,6 +4,14 @@ import { Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
 
+export interface SignalRLog {
+  timestamp: string;
+  level: string;
+  message: string;
+  exception: string | null;
+  tenantId: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })

@@ -1,0 +1,291 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\services\\rabbitmq\\tenantpriorityrulesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\services\\rabbitmq\\tenantpriorityrulesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\services\\rabbitmq\\irabbitmqconsumerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\services\\rabbitmq\\irabbitmqconsumerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\services\\rabbitmq\\irabbitmqinitservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\services\\rabbitmq\\irabbitmqinitservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\services\\rabbitmq\\irabbitmqpublisherservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\services\\rabbitmq\\irabbitmqpublisherservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\services\\rabbitmq\\rabbitmqinitservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\services\\rabbitmq\\rabbitmqinitservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\services\\rabbitmq\\rabbitmqpublisherservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\services\\rabbitmq\\rabbitmqpublisherservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\controllers\\identityusercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\controllers\\identityusercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\controllers\\authorizationdemocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\controllers\\authorizationdemocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\controllers\\contentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\controllers\\contentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\services\\contentfolder\\contentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\services\\contentfolder\\contentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\models\\tenant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\models\\tenant.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\services\\blob\\azureblobstorageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\services\\blob\\azureblobstorageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\dto\\tenantdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\dto\\tenantdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\services\\blob\\azureblobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\services\\blob\\azureblobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\angular-and-asp.net.core-api-authorization-with-role-claim-and-policy\\authecapi\\authecapi\\extensions\\appconfigextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{910BF66E-D17F-4DED-84FD-DFCC36858ED8}|AuthECAPI\\AuthECAPI.csproj|solutionrelative:authecapi\\extensions\\appconfigextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "RabbitMqPublisherService.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\RabbitMQ\\RabbitMqPublisherService.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\Services\\RabbitMQ\\RabbitMqPublisherService.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\RabbitMQ\\RabbitMqPublisherService.cs",
+              "RelativeToolTip": "AuthECAPI\\Services\\RabbitMQ\\RabbitMqPublisherService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T06:14:08.795Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "RabbitMqInitService.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\RabbitMQ\\RabbitMqInitService.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\Services\\RabbitMQ\\RabbitMqInitService.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\RabbitMQ\\RabbitMqInitService.cs",
+              "RelativeToolTip": "AuthECAPI\\Services\\RabbitMQ\\RabbitMqInitService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T06:14:00.962Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IRabbitMqPublisherService.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\RabbitMQ\\IRabbitMqPublisherService.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\Services\\RabbitMQ\\IRabbitMqPublisherService.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\RabbitMQ\\IRabbitMqPublisherService.cs",
+              "RelativeToolTip": "AuthECAPI\\Services\\RabbitMQ\\IRabbitMqPublisherService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T06:13:44.211Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IRabbitMqInitService.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\RabbitMQ\\IRabbitMqInitService.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\Services\\RabbitMQ\\IRabbitMqInitService.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\RabbitMQ\\IRabbitMqInitService.cs",
+              "RelativeToolTip": "AuthECAPI\\Services\\RabbitMQ\\IRabbitMqInitService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T06:13:35.345Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IRabbitMqConsumerService.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\RabbitMQ\\IRabbitMqConsumerService.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\Services\\RabbitMQ\\IRabbitMqConsumerService.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\RabbitMQ\\IRabbitMqConsumerService.cs",
+              "RelativeToolTip": "AuthECAPI\\Services\\RabbitMQ\\IRabbitMqConsumerService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-20T06:13:23.275Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "AuthECAPI\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T14:04:11.681Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TenantPriorityRulesService.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\RabbitMQ\\TenantPriorityRulesService.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\Services\\RabbitMQ\\TenantPriorityRulesService.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\RabbitMQ\\TenantPriorityRulesService.cs",
+              "RelativeToolTip": "AuthECAPI\\Services\\RabbitMQ\\TenantPriorityRulesService.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAQwAkAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T13:06:28.53Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AuthorizationDemoController.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Controllers\\AuthorizationDemoController.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\Controllers\\AuthorizationDemoController.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Controllers\\AuthorizationDemoController.cs",
+              "RelativeToolTip": "AuthECAPI\\Controllers\\AuthorizationDemoController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T13:20:16.216Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ContentService.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\ContentFolder\\ContentService.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\Services\\ContentFolder\\ContentService.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\ContentFolder\\ContentService.cs*",
+              "RelativeToolTip": "AuthECAPI\\Services\\ContentFolder\\ContentService.cs*",
+              "ViewState": "AgIAAGQAAAAAAAAAAADwv5EAAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T13:08:01.953Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Tenant.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Models\\Tenant.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\Models\\Tenant.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Models\\Tenant.cs",
+              "RelativeToolTip": "AuthECAPI\\Models\\Tenant.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T12:52:42.717Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "AzureBlobStorageService.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\Blob\\AzureBlobStorageService.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\Services\\Blob\\AzureBlobStorageService.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\Blob\\AzureBlobStorageService.cs",
+              "RelativeToolTip": "AuthECAPI\\Services\\Blob\\AzureBlobStorageService.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAgwCgAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T12:52:05.336Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "TenantDto.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\DTO\\TenantDto.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\DTO\\TenantDto.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\DTO\\TenantDto.cs",
+              "RelativeToolTip": "AuthECAPI\\DTO\\TenantDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T12:50:58.218Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IdentityUserController.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Controllers\\IdentityUserController.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\Controllers\\IdentityUserController.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Controllers\\IdentityUserController.cs",
+              "RelativeToolTip": "AuthECAPI\\Controllers\\IdentityUserController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T12:47:00.897Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ContentsController.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Controllers\\ContentsController.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\Controllers\\ContentsController.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Controllers\\ContentsController.cs",
+              "RelativeToolTip": "AuthECAPI\\Controllers\\ContentsController.cs",
+              "ViewState": "AgIAADcAAAAAAAAAAAArwEkAAABLAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T14:18:17.082Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "AzureBlobService.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\Blob\\AzureBlobService.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\Services\\Blob\\AzureBlobService.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Services\\Blob\\AzureBlobService.cs",
+              "RelativeToolTip": "AuthECAPI\\Services\\Blob\\AzureBlobService.cs",
+              "ViewState": "AgIAAGIAAAAAAAAAAAAIwBgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T12:49:28.744Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "AppConfigExtensions.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Extensions\\AppConfigExtensions.cs",
+              "RelativeDocumentMoniker": "AuthECAPI\\Extensions\\AppConfigExtensions.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\Angular-and-Asp.Net.Core-API-Authorization-with-Role-Claim-and-Policy\\AuthECAPI\\AuthECAPI\\Extensions\\AppConfigExtensions.cs",
+              "RelativeToolTip": "AuthECAPI\\Extensions\\AppConfigExtensions.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T12:40:54.167Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

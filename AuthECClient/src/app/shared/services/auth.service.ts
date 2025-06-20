@@ -28,7 +28,6 @@ export class AuthService {
     }
 
     formData.age = age.toString();
-    console.log(formData)
     return this.http.post(environment.apiBaseUrl + '/signup', formData);
   }
 
@@ -37,7 +36,24 @@ export class AuthService {
   }
 
   createTenant(formData: any) {
-    return this.http.post(environment.apiBaseUrl + '/tenant-create', formData);
+    const flatPayload = {
+      name: formData.name,
+      provider: formData.provider,
+      container: formData.container,
+      enableVersioning: formData.enableVersioning,
+      retentionDays: formData.retentionDays,
+      defaultBlobTier: formData.defaultBlobTier,
+
+      email: formData.user.email,
+      password: formData.user.password,
+      fullName: formData.user.fullName,
+      gender: formData.user.gender,
+      
+      age: this.calculateAge(formData.user.dob),
+
+    };
+    console.log(flatPayload)
+    return this.http.post(environment.apiBaseUrl + '/tenant-create', flatPayload);
   }
 
   isLoggedIn() {
@@ -58,6 +74,19 @@ export class AuthService {
 
   getClaims(){
    return JSON.parse(window.atob(this.getToken()!.split('.')[1]))
+  }
+
+  private calculateAge(dob: string): number {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+  
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+  
+    return age;
   }
 
 }

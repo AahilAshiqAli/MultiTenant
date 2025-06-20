@@ -1,0 +1,13 @@
+{"Timestamp":"2025-06-20T12:07:03.5503048+05:00","Level":"Information","MessageTemplate":"Mapping account endpoints."}
+{"Timestamp":"2025-06-20T12:07:03.6034471+05:00","Level":"Information","MessageTemplate":"Mapped GET /UserProfile endpoint."}
+{"Timestamp":"2025-06-20T12:07:03.6777436+05:00","Level":"Information","MessageTemplate":"Starting RabbitMqConsumer...","Properties":{"SourceContext":"RabbitMqConsumerService"}}
+{"Timestamp":"2025-06-20T12:07:03.6820035+05:00","Level":"Information","MessageTemplate":"Creating and caching new RabbitMQ channel task."}
+{"Timestamp":"2025-06-20T12:07:03.6851314+05:00","Level":"Information","MessageTemplate":"Initializing RabbitMQ connection factory."}
+{"Timestamp":"2025-06-20T12:07:03.6953877+05:00","Level":"Information","MessageTemplate":"Creating RabbitMQ connection asynchronously."}
+{"Timestamp":"2025-06-20T12:07:03.8399330+05:00","Level":"Information","MessageTemplate":"RabbitMQ connection established."}
+{"Timestamp":"2025-06-20T12:07:03.8427288+05:00","Level":"Information","MessageTemplate":"Creating RabbitMQ channel asynchronously."}
+{"Timestamp":"2025-06-20T12:07:03.8556877+05:00","Level":"Information","MessageTemplate":"RabbitMQ channel created."}
+{"Timestamp":"2025-06-20T12:07:03.8583777+05:00","Level":"Information","MessageTemplate":"Declaring queue: tasks.high"}
+{"Timestamp":"2025-06-20T12:07:03.8691712+05:00","Level":"Information","MessageTemplate":"Declaring queue: tasks.normal"}
+{"Timestamp":"2025-06-20T12:07:03.8945798+05:00","Level":"Information","MessageTemplate":"Declaring queue: tasks.low"}
+{"Timestamp":"2025-06-20T12:07:03.8977358+05:00","Level":"Information","MessageTemplate":"All RabbitMQ queues declared successfully."}

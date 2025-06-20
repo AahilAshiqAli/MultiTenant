@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpEventType } from '@angular/common/http';
@@ -21,7 +21,7 @@ interface SearchResult {
   templateUrl: './search.component.html',
   styles: []
 })
-export class SearchComponent {
+export class SearchComponent implements OnInit {
   searchQuery: string = '';
   suggestions: string[] = [];
   results: SearchResult[] = [];
@@ -34,6 +34,35 @@ export class SearchComponent {
   totalPages = 0;
 
   constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.http.get<any[]>(
+      `${environment.apiBaseUrl}/Contents/`,
+      {
+        observe: 'events',
+        reportProgress: true
+      }
+    ).subscribe(event => {
+      if (event.type === HttpEventType.Response) {
+        const data = event.body ?? [];
+        this.results = data.map((p: any) => ({
+          Id: p.id,
+          tenantId: p.tenantId,
+          size: p.size,
+          contentType: p.contentType,
+          fileName: p.fileName,
+          thumbnail: p.thumbnail
+        }));
+
+        
+
+        this.totalPages = Math.ceil(this.results.length / this.pageSize);
+        this.currentPage = 1;
+        this.updatePagedResults();
+        this.showCards = true;
+      }
+    });
+  }
 
   onSearchChange(): void {
     this.showCards = false;
@@ -71,7 +100,6 @@ export class SearchComponent {
     ).subscribe(event => {
       if (event.type === HttpEventType.Response) {
         const data = event.body ?? [];
-        console.log(data);
         this.results = data.map((p: any) => ({
           Id: p.id,
           tenantId: p.tenantId,

@@ -84,7 +84,6 @@ export class RegistrationComponent implements OnInit {
 
                   default:
                     this.toastr.error('Contact the developer', 'Registration Failed')
-                    console.log(x);
                     break;
                 }
               })
