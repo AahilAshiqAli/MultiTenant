@@ -1,8 +1,9 @@
-﻿using MultiTenantAPI.Models;
-using MultiTenantAPI.Services.CurrentTenant;
-using Azure;
+﻿using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Sas;
+using MultiTenantAPI.Models;
+using MultiTenantAPI.Services.CurrentTenant;
 
 namespace MultiTenantAPI.Services.Blob
 {
@@ -53,6 +54,8 @@ namespace MultiTenantAPI.Services.Blob
             }
         }
 
+
+        // Downloads the video in chunks based on provided range or the full blob if no range is specified.
         public async Task<Stream> GetBlobAsync(string fileName, long? start = null, long? end = null)
         {
             _logger.LogInformation("Getting blob. FileName: {FileName}, Start: {Start}, End: {End}", fileName, start, end);
@@ -79,6 +82,30 @@ namespace MultiTenantAPI.Services.Blob
                 _logger.LogError(ex, "Failed to get blob '{FileName}'", fileName);
                 throw new Exception($"Failed to get blob '{fileName}': {ex.Message}", ex);
             }
+        }
+
+        // generates SaS URL for the blob with read permissions, valid for 15 minutes.
+        public string GenerateSasUrl(string fileName)
+        {
+            var blobClient = _containerClient.GetBlobClient(fileName);
+
+            if (!blobClient.CanGenerateSasUri)
+                throw new InvalidOperationException("SAS URI cannot be generated for this blob.");
+
+            var sasBuilder = new BlobSasBuilder
+            {
+                BlobContainerName = _containerClient.Name,
+                BlobName = fileName,
+                Resource = "b",
+                ExpiresOn = DateTimeOffset.UtcNow.AddMinutes(15)
+            };
+
+            sasBuilder.SetPermissions(BlobSasPermissions.Read);
+
+            var sasUri = blobClient.GenerateSasUri(sasBuilder);
+
+            _logger.LogInformation("Generated SAS URI for blob {FileName}", fileName);
+            return sasUri.ToString();
         }
 
         public async Task<IEnumerable<string>> ListBlobsAsync()

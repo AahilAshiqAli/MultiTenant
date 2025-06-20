@@ -9,6 +9,8 @@ namespace MultiTenantAPI.Services.Blob
         Task<Stream> GetBlobAsync(string fileName, long? start = null, long? end = null);
         Task<IEnumerable<string>> ListBlobsAsync();
         Task<bool> DeleteBlobAsync(string fileName);
+
+        string GenerateSasUrl(string filename);
     
     }
 

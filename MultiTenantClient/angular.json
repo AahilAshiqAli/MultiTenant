@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "AuthECClient": {
+    "MultiTenantClient": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -92,10 +92,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "AuthECClient:build:production"
+              "buildTarget": "MultiTenantClient:build:production"
             },
             "development": {
-              "buildTarget": "AuthECClient:build:development"
+              "buildTarget": "MultiTenantClient:build:development"
             }
           },
           "defaultConfiguration": "development"

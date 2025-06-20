@@ -16,19 +16,21 @@
             </div>
             <!-- Video Container -->
             <div class="ratio ratio-16x9">
-                <video #videoPlayer
-                class="w-100 h-100"
-                *ngIf="videoUrl"
-                [src]="videoUrl"
-                controls
-                preload="metadata">
-           Your browser does not support the video tag.
-         </video>
+              <video #videoPlayer
+              class="w-100 h-100"
+              *ngIf="videoUrl"
+              [src]="videoUrl"
+              autoplay
+              muted                
+              playsinline
+              controls>
+         Your browser does not support the video tag.
+       </video>
             </div>
           </div>
           
 
-          <div class="card-footer">
+          <!-- <div class="card-footer">
             <div class="row">
               <div class="col-md-8">
                 <h6 class="mb-1">Sample Video Title</h6>
@@ -40,7 +42,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
   
  
         <!-- Progress Bar -->

@@ -37,15 +37,12 @@ export class DisplayVideoComponent implements OnInit {
 
   loadVideo() {
     const token = localStorage.getItem('access_token');
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-    });
+  
 
     this.http.get(`http://localhost:5007/api/Contents/stream/${this.videoId}`, {
-      headers,
-      responseType: 'blob'
-    }).subscribe(blob => {
-      this.videoUrl = URL.createObjectURL(blob);
+      responseType: 'text' 
+    }).subscribe((url: string) => {
+      this.videoUrl = url; 
     }, err => {
       console.error('Video load failed', err);
     });

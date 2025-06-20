@@ -3,6 +3,7 @@ using MultiTenantAPI.Models;
 using MultiTenantAPI.Services.ContentFolder;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MultiTenantAPI.Controllers
 {   
@@ -47,6 +48,7 @@ namespace MultiTenantAPI.Controllers
             }
         }
 
+        [AllowAnonymous]
         // Get a single product by name
         [HttpGet("stream/{id}")]
         public async Task<IActionResult> Stream(int id)
@@ -54,9 +56,9 @@ namespace MultiTenantAPI.Controllers
             Log.Information("Stream request received for id: {Id}", id);
             try
             {
-                var result = await _contentService.StreamVideoAsync(id, Request, Response);
+                var result = await _contentService.StreamVideoAsync(id);
                 Log.Information("StreamVideoAsync completed for id: {Id}", id);
-                return result;
+                return Ok(result);
             }
             catch (KeyNotFoundException ex)
             {

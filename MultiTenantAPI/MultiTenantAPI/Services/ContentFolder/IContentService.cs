@@ -11,7 +11,7 @@ namespace MultiTenantAPI.Services.ContentFolder
 
         IEnumerable<ContentDto> FilterContentByName(string name);
 
-        Task<IActionResult> StreamVideoAsync(int id, HttpRequest request, HttpResponse response);
+        Task<string> StreamVideoAsync(int id);
 
         public Task ProcessUploadedContentAsync(ContentMessage message);
 

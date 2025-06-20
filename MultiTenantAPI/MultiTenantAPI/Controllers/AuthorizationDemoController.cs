@@ -23,7 +23,7 @@ namespace MultiTenantAPI.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        private static string AdminOnly() => "Admin Only";
+        private static string AdminOnly() => "Look For Logs";
 
         [Authorize(Roles = "Admin")]
         private static async Task<IResult> GetAllLogs(HttpContext httpContext)

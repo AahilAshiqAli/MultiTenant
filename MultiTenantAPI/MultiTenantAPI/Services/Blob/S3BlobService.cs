@@ -53,5 +53,10 @@ namespace MultiTenantAPI.Services.Blob
                 return false;
             }
         }
+
+        string IBlobService.GenerateSasUrl(string filename)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

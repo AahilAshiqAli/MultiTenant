@@ -109,55 +109,34 @@ namespace MultiTenantAPI.Services.ContentFolder
 
 
         // Get a single content stream by Id
-        public async Task<IActionResult> StreamVideoAsync(int id, HttpRequest request, HttpResponse response)
+        public Task<string> StreamVideoAsync(int id)
         {
             _logger.LogInformation("Attempting to stream video with Id: {Id}", id);
+
             var userId = _httpContextAccessor.HttpContext?.User?.FindFirstValue("userID");
+
             var content = _context.Contents.FirstOrDefault(x =>
                 x.Id == id &&
                 x.TenantID == _currentTenantService.TenantId &&
                 (!x.IsPrivate || x.UserId == userId));
+
             if (content == null)
             {
                 _logger.LogWarning("Video with Id {Id} not found.", id);
                 throw new KeyNotFoundException("Video not found.");
             }
-            _logger.LogInformation("Found video: {FileName}, Size: {Size}, ContentType: {ContentType}", content.FileName, content.Size, content.ContentType);
-            var blobClient = _blobClient;
-            long fileLength = content.Size;
 
-            request.Headers.TryGetValue("Range", out var rangeHeader);
-            var contentType = content.ContentType ?? "video/mp4";
+            _logger.LogInformation("Found video: {FileName}, Size: {Size}, ContentType: {ContentType}",
+                content.FileName, content.Size, content.ContentType);
 
-            if (!string.IsNullOrEmpty(rangeHeader))
-            {
-                _logger.LogInformation("Range header detected: {RangeHeader}", rangeHeader);
-                var range = rangeHeader.ToString().Replace("bytes=", "").Split('-');
-                long start = long.Parse(range[0]);
-                long end = (range.Length > 1 && !string.IsNullOrEmpty(range[1]))
-                    ? long.Parse(range[1])
-                    : fileLength - 1;
+            var sasUri = _blobClient.GenerateSasUrl(content.FilePath);
 
-                _logger.LogInformation("Streaming partial content: {Start}-{End} of {FileLength}", start, end, fileLength);
-                var stream = await blobClient.GetBlobAsync(content.FilePath, start, end);
+            _logger.LogInformation("Generated SAS URL for video Id {Id}: {SasUri}", id, sasUri);
 
-                response.StatusCode = 206; // Partial Content
-                response.Headers.Append("Content-Range", $"bytes {start}-{end}/{fileLength}");
-                response.Headers.Append("Accept-Ranges", "bytes");
-                response.ContentLength = end - start + 1;
-
-                _logger.LogInformation("Partial content stream ready for video Id {Id}.", id);
-                return new FileStreamResult(stream, contentType);
-            }
-
-            _logger.LogInformation("No range header, streaming full content for video Id {Id}.", id);
-            var fullStream = await blobClient.GetBlobAsync(content.FilePath);
-            response.Headers.Append("Accept-Ranges", "bytes");
-            response.ContentLength = fileLength;
-
-            _logger.LogInformation("Full content stream ready for video Id {Id}.", id);
-            return new FileStreamResult(fullStream, contentType);
+            return Task.FromResult(sasUri);
         }
+
+
 
         // Create a new content
         public async Task CreateContent(CreateProductRequest request)
