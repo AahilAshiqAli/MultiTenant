@@ -17,5 +17,8 @@
         public string uniqueFileName { get; set; } = string.Empty; // Unique filename to avoid conflicts
 
         public bool isPrivate { get; set; } = false;
+
+        public string RequiredRendition { get; set; }
+
     }
 }

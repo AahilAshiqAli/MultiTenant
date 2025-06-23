@@ -1,16 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using MultiTenantAPI.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace MultiTenantAPI.Controllers
 {
-    using MultiTenantAPI.Models;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Http.HttpResults;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.EntityFrameworkCore;
-    using System.Net.Http;
-    using System.Net.NetworkInformation;
-    using System.Text.Json;
+
 
     public static class AuthorizationDemoController
     {
@@ -19,6 +15,7 @@ namespace MultiTenantAPI.Controllers
             app.MapGet("/AdminOnly", AdminOnly);
             app.MapGet("/admin/logs", (Delegate)GetAllLogs);
             app.MapGet("admin/users", (Delegate)GetAllUsers);
+            app.MapPost("/admin/approve-user/{userId}", ApproveUser);
             return app;
         }
 
@@ -86,7 +83,7 @@ namespace MultiTenantAPI.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         private static async Task<IResult> GetAllUsers(HttpContext httpContext, UserManager<AppUser> userManager)
         {
             try
@@ -99,19 +96,28 @@ namespace MultiTenantAPI.Controllers
                     return Results.BadRequest(new { message = "Tenant ID is missing from claims." });
                 }
 
-                var users = await userManager.Users
-                    .Where(u => u.TenantID == tenantId)
-                    .Select(u => new
-                    {
-                        u.Id,
-                        u.UserName,
-                        u.Email,
-                        u.FullName,
-                        u.Gender
-                    })
-                    .ToListAsync();
+                var pendingUsers = await userManager.Users
+                    .Where(u => u.TenantID == tenantId && u.isApproved == false)
+                     .ToListAsync();
 
-                return Results.Ok(users);
+                var result = new List<object>();
+
+                foreach (var user in pendingUsers)
+                {
+                    var roles = await userManager.GetRolesAsync(user);
+                    result.Add(new
+                    {
+                        user.Id,
+                        user.UserName,
+                        user.Email,
+                        user.FullName,
+                        user.Gender,
+                        user.DOB,
+                        Role = roles.FirstOrDefault() ?? "Unassigned"
+                    });
+                }
+
+                return Results.Ok(result);
             }
             catch (Exception ex)
             {
@@ -119,5 +125,32 @@ namespace MultiTenantAPI.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
+        private static async Task<IResult> ApproveUser(string userId, UserManager<AppUser> userManager)
+        {
+            try
+            {
+                var user = await userManager.FindByIdAsync(userId);
+                if (user == null)
+                    return Results.NotFound("User not found.");
+
+                user.isApproved = true;
+
+                var result = await userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                    return Results.BadRequest(result.Errors);
+
+                return Results.Ok("User approved.");
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem("An error occurred: " + ex.Message);
+            }
+        }
+
+
+
+
     }
+                    
 }

@@ -2,4 +2,33 @@
     <h2>Admin Only Section</h2>
     <button class="btn btn-primary mt-3" (click)="openLogsTab()">Open Logs Viewer</button>
   </div>
-  
+  <div class="container mt-5">
+    <h2 class="mb-4 text-center">Pending User List</h2>
+
+    <table class="table table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Full Name</th>
+          <th>Email</th>
+          <th>Gender</th>
+          <th>Date of Birth</th>
+          <th>Role</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.fullName }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.gender || '—' }}</td>
+          <td>{{ user.dob }}</td>
+          <td>{{ user.role || '—' }}</td>
+          <td>
+            <button class="btn btn-success btn-sm" (click)="approveUser(user.id)">
+              Approve
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

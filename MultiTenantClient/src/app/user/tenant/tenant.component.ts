@@ -99,8 +99,8 @@ onSubmit() {
       this.isSubmitted = false;
 
       setTimeout(() => {
-        this.router.navigate(['/signup'], { queryParams: { tenantId: res.tenantID } });
-      }, 2000);
+        this.router.navigate(['/signin'], { queryParams: { tenantId: res.tenantID } });
+      }, 5000);
     },
     error: err => {
       if (err.error?.errors) {

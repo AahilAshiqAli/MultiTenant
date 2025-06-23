@@ -9,6 +9,9 @@ namespace MultiTenantAPI.DTO
         [FromForm]
         public bool IsPrivate { get; set; }
 
+        [FromForm]
+        public string rendition { get; set; }
+
     }
 
 }

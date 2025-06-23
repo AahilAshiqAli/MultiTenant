@@ -69,38 +69,48 @@ namespace MultiTenantAPI.Services.Blob
                 throw;
             }
 
-            properties.DeleteRetentionPolicy = new BlobRetentionPolicy
+            // Check and update retention only if current is less than desired
+            if (properties.DeleteRetentionPolicy == null ||
+                !properties.DeleteRetentionPolicy.Enabled ||
+                properties.DeleteRetentionPolicy.Days < settings.RetentionDays)
             {
-                Enabled = true,
-                Days = settings.RetentionDays
-            };
+                properties.DeleteRetentionPolicy = new BlobRetentionPolicy
+                {
+                    Enabled = true,
+                    Days = settings.RetentionDays
+                };
 
-            try
-            {
-                await _blobServiceClient.SetPropertiesAsync(properties);
-                _logger.LogInformation("Set delete retention policy to {Days} days.",settings.RetentionDays);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Failed to set Blob service properties");
-                throw;
-            }
-
-            if (settings.EnableVersioning)
-            {
                 try
                 {
-                    var containerProperties = await containerClient.GetPropertiesAsync();
-                    containerProperties.Value.Metadata["versioning"] = "enabled";
-                    await containerClient.SetMetadataAsync(containerProperties.Value.Metadata);
-                    _logger.LogInformation("Enabled versioning for container {ContainerName}", containerName);
+                    await _blobServiceClient.SetPropertiesAsync(properties);
+                    _logger.LogInformation("Retention policy updated to {Days} days", settings.RetentionDays);
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Failed to enable versioning for container {ContainerName}", containerName);
+                    _logger.LogError(ex, "Failed to update Blob service properties");
                     throw;
                 }
             }
+
+
+            try
+            {
+                var containerProperties = await containerClient.GetPropertiesAsync();
+                if (settings.EnableVersioning)
+                    containerProperties.Value.Metadata["versioning"] = "enabled";
+                containerProperties.Value.Metadata["AccessTier"] = settings.DefaultBlobTier;
+                await containerClient.SetMetadataAsync(containerProperties.Value.Metadata);
+                _logger.LogInformation("Enabled versioning for container {ContainerName}", containerName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to enable versioning for container {ContainerName}", containerName);
+                throw;
+            }
+
+            
+
+
 
             _logger.LogInformation("CreateTenantContainerAsync completed");
             return containerName;

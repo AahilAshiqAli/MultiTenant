@@ -12,6 +12,7 @@ namespace MultiTenantAPI.Services.Blob
         private readonly BlobContainerClient _containerClient;
         private readonly ICurrentTenantService _currentTenantService;
         private readonly ILogger<AzureBlobService> _logger;
+        private readonly string _accessTier;
 
         public AzureBlobService(
             BlobServiceClient blobServiceClient,
@@ -31,6 +32,7 @@ namespace MultiTenantAPI.Services.Blob
                 throw new Exception($"Tenant or container not found for TenantId: {tenantId}");
             }
             _containerClient = blobServiceClient.GetBlobContainerClient(tenant.Container);
+            _accessTier = tenant.DefaultBlobTier;
             _logger.LogInformation("Obtained BlobContainerClient for container: {Container}", tenant.Container);
             _containerClient.CreateIfNotExists();
             _logger.LogInformation("Ensured container exists: {Container}", tenant.Container);
@@ -43,7 +45,24 @@ namespace MultiTenantAPI.Services.Blob
             {
                 var blobClient = _containerClient.GetBlobClient(fileName);
                 _logger.LogDebug("Got BlobClient for file: {FileName}", fileName);
-                await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = contentType });
+                var accessTier = _accessTier switch
+                {
+                    "Hot" => AccessTier.Hot,
+                    "Cool" => AccessTier.Cool,
+                    "Archive" => AccessTier.Archive,
+                    _ => AccessTier.Hot // default to Hot if invalid input
+                };
+
+                var uploadOptions = new BlobUploadOptions
+                {
+                    HttpHeaders = new BlobHttpHeaders
+                    {
+                        ContentType = contentType
+                    },
+                    AccessTier = accessTier
+                };
+
+                await blobClient.UploadAsync(stream, uploadOptions);
                 _logger.LogInformation("Successfully uploaded blob: {FileName} to {Uri}", fileName, blobClient.Uri);
                 return blobClient.Uri.ToString();
             }

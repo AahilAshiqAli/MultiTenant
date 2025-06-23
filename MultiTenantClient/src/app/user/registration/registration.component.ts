@@ -72,6 +72,7 @@ export class RegistrationComponent implements OnInit {
             }, 2000);
           },
           error: err => {
+            console.log(err.error.errors);
             if (err.error.errors)
               err.error.errors.forEach((x: any) => {
                 switch (x.code) {
@@ -80,6 +81,10 @@ export class RegistrationComponent implements OnInit {
 
                   case "DuplicateEmail":
                     this.toastr.error('Email is already taken.', 'Registration Failed')
+                    break;
+
+                  case "InvalidTenantID":
+                    this.toastr.error('Invalid Tenant ID', 'Registration Failed')
                     break;
 
                   default:

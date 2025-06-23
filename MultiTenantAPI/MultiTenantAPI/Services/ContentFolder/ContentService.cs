@@ -1,4 +1,10 @@
-﻿using MultiTenantAPI.DTO;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using MultiTenantAPI.DTO;
 using MultiTenantAPI.Hubs;
 using MultiTenantAPI.Models;
 using MultiTenantAPI.Services.Blob;
@@ -6,11 +12,6 @@ using MultiTenantAPI.Services.Converter;
 using MultiTenantAPI.Services.CurrentTenant;
 using MultiTenantAPI.Services.ProgressStore;
 using MultiTenantAPI.Services.RabbitMQ;
-using Azure.Core;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -170,6 +171,8 @@ namespace MultiTenantAPI.Services.ContentFolder
                     throw new Exception("User ID not found in claims.");
                 }
 
+
+
                 var message = new ContentMessage
                 {
                     FilePath = filePath,
@@ -181,7 +184,8 @@ namespace MultiTenantAPI.Services.ContentFolder
                     uploadsFolder = uploadsFolder,
                     dupFilePath = dupFilePath,
                     uniqueFileName = uniqueFileName,
-                    isPrivate = request.IsPrivate
+                    isPrivate = request.IsPrivate,
+                    RequiredRendition = request.rendition
                 };
 
                 await _publisher.PublishMessageAsync (_currentTenantService.TenantId, message);
@@ -206,6 +210,7 @@ namespace MultiTenantAPI.Services.ContentFolder
             string thumbnail = "";
             string dupFilePath = message.dupFilePath;
             string blobClientUri = null;
+            string RequiredRendition = message.RequiredRendition;
 
             try { 
                 // store status as 10% complete
@@ -233,12 +238,25 @@ namespace MultiTenantAPI.Services.ContentFolder
                         throw new Exception("Failed to convert video file.");
 
                     uniqueFileName = Path.ChangeExtension(uniqueFileName, ".mp4");
+
+                    bool rendition = await _ffmpegService.GetRenditionLabelAsync(filePath, RequiredRendition);
+
+                    if (!rendition)
+                    {
+                        return;
+                    }
+                    
+
+                    
                     thumbnail = Path.Combine(uploadsFolder, Path.ChangeExtension(uniqueFileName, ".jpg"));
 
                     _logger.LogInformation("Extracting thumbnail for video.");
                     bool success = await _ffmpegService.ExtractThumbnailAsync(filePath, thumbnail);
                     if (!success || !System.IO.File.Exists(thumbnail))
                         throw new Exception("Failed to generate video thumbnail.");
+
+                    filePath = await _ffmpegService.GenerateVideoRenditionsAsync(filePath, RequiredRendition);
+                    uniqueFileName = AddRenditionToFileName(uniqueFileName, RequiredRendition);
                 }
                 else if (extension == ".mp3")
                 {
@@ -253,13 +271,25 @@ namespace MultiTenantAPI.Services.ContentFolder
                     bool success = await _ffmpegService.ExtractThumbnailAsync(filePath, thumbnail);
                     if (!success)
                         _logger.LogWarning("Failed to extract thumbnail for MP4 file: {FilePath}", filePath);
+
+                    var rendition = await _ffmpegService.GetRenditionLabelAsync(filePath, RequiredRendition);
+
+                    if (!rendition)
+                    {
+                        _logger.LogError("Couldnot figure not Video Rendition");
+                        return;
+                    }
+
+                    filePath = await _ffmpegService.GenerateVideoRenditionsAsync(filePath, RequiredRendition);
+                    uniqueFileName = AddRenditionToFileName(uniqueFileName, RequiredRendition);
+
                 }
                 else
                 {
                     throw new NotSupportedException($"File type '{extension}' is not supported.");
                 }
 
-                // store styus as 50% complete
+                // store styus as 70% complete
                 _progressStore.SetProgress(userId,70);
                 _logger.LogInformation("Sent conversion progress 70% to user {UserId}.", userId);
 
@@ -344,6 +374,13 @@ namespace MultiTenantAPI.Services.ContentFolder
 
                 throw; // Let the caller know an error happened
             }
+        }
+
+        string AddRenditionToFileName(string uniqueFileName, string rendition)
+        {
+            var nameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueFileName); // "aahil"
+            var extension = Path.GetExtension(uniqueFileName);                            // ".jpg"
+            return $"{nameWithoutExtension}{rendition}{extension}";                       // "aahil_480p.jpg"
         }
 
         // Delete content

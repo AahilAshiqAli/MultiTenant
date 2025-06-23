@@ -92,6 +92,7 @@ export class FileuploadComponent implements OnInit {
     formData.append('file', this.selectedFile);
     formData.append('name', this.selectedFile.name);
     formData.append('isPrivate', this.isPublic.toString().toLowerCase());
+    formData.append('rendition', "480p");
   
     this.http.post(environment.apiBaseUrl + '/Contents', formData, {
       reportProgress: true,

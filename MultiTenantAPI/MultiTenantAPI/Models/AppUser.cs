@@ -17,7 +17,7 @@ namespace MultiTenantAPI.Models
         public DateOnly DOB { get; set; }
 
         [PersonalData]
-        public int? LibraryID { get; set; }
+        public bool isApproved { get; set; }
 
         [ForeignKey("Tenant")]
         public string TenantID { get; set; }

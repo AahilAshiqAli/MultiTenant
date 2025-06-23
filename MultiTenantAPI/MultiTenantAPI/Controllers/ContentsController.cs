@@ -4,6 +4,8 @@ using MultiTenantAPI.Services.ContentFolder;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using MultiTenantAPI.Services.Converter;
 
 namespace MultiTenantAPI.Controllers
 {   
@@ -48,8 +50,7 @@ namespace MultiTenantAPI.Controllers
             }
         }
 
-        [AllowAnonymous]
-        // Get a single product by name
+
         [HttpGet("stream/{id}")]
         public async Task<IActionResult> Stream(int id)
         {
@@ -140,5 +141,7 @@ namespace MultiTenantAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred: {ex.Message}");
             }
         }
+
+
     }
 }

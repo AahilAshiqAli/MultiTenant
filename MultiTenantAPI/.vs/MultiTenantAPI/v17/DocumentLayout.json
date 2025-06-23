@@ -3,28 +3,35 @@
   "WorkspaceRootPath": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\controllers\\contentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\controllers\\contentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\dto\\createproductrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\dto\\createproductrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\services\\converter\\iffmpegservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\services\\converter\\iffmpegservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\services\\contentfolder\\contentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\services\\contentfolder\\contentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\services\\blob\\azureblobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\services\\blob\\azureblobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\controllers\\contentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\controllers\\contentscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\services\\blob\\iblobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\services\\blob\\iblobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\dotnet\\sdk\\9.0.300\\Sdks\\Microsoft.NET.Sdk.StaticWebAssets\\targets\\Microsoft.NET.Sdk.StaticWebAssets.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\services\\blob\\s3blobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\services\\blob\\s3blobservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\services\\converter\\ffmpegservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\services\\converter\\ffmpegservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\services\\contentfolder\\icontentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\services\\contentfolder\\icontentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\dto\\contentmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\dto\\contentmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\services\\rabbitmq\\tenantpriorityrulesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\services\\rabbitmq\\tenantpriorityrulesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,7 +41,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,80 +49,106 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "IContentService.cs",
-              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\ContentFolder\\IContentService.cs",
-              "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\ContentFolder\\IContentService.cs",
-              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\ContentFolder\\IContentService.cs",
-              "RelativeToolTip": "MultiTenantAPI\\Services\\ContentFolder\\IContentService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T08:23:44.923Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "S3BlobService.cs",
-              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\Blob\\S3BlobService.cs",
-              "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\Blob\\S3BlobService.cs",
-              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\Blob\\S3BlobService.cs",
-              "RelativeToolTip": "MultiTenantAPI\\Services\\Blob\\S3BlobService.cs",
-              "ViewState": "AgIAAC4AAAAAAAAAAAAcwBEAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T08:23:22.498Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IBlobService.cs",
-              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\Blob\\IBlobService.cs",
-              "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\Blob\\IBlobService.cs",
-              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\Blob\\IBlobService.cs",
-              "RelativeToolTip": "MultiTenantAPI\\Services\\Blob\\IBlobService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T08:11:13.568Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ContentsController.cs",
-              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Controllers\\ContentsController.cs",
-              "RelativeDocumentMoniker": "MultiTenantAPI\\Controllers\\ContentsController.cs",
-              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Controllers\\ContentsController.cs",
-              "RelativeToolTip": "MultiTenantAPI\\Controllers\\ContentsController.cs",
-              "ViewState": "AgIAADEAAAAAAAAAAAAMwDwAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T07:54:18.629Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AzureBlobService.cs",
-              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\Blob\\AzureBlobService.cs",
-              "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\Blob\\AzureBlobService.cs",
-              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\Blob\\AzureBlobService.cs",
-              "RelativeToolTip": "MultiTenantAPI\\Services\\Blob\\AzureBlobService.cs",
-              "ViewState": "AgIAAFIAAAAAAAAAAAAuwGYAAAA/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T07:30:32.854Z",
+              "Title": "Microsoft.NET.Sdk.StaticWebAssets.targets",
+              "DocumentMoniker": "C:\\Program Files\\dotnet\\sdk\\9.0.300\\Sdks\\Microsoft.NET.Sdk.StaticWebAssets\\targets\\Microsoft.NET.Sdk.StaticWebAssets.targets",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Program Files\\dotnet\\sdk\\9.0.300\\Sdks\\Microsoft.NET.Sdk.StaticWebAssets\\targets\\Microsoft.NET.Sdk.StaticWebAssets.targets",
+              "ToolTip": "C:\\Program Files\\dotnet\\sdk\\9.0.300\\Sdks\\Microsoft.NET.Sdk.StaticWebAssets\\targets\\Microsoft.NET.Sdk.StaticWebAssets.targets",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\Program Files\\dotnet\\sdk\\9.0.300\\Sdks\\Microsoft.NET.Sdk.StaticWebAssets\\targets\\Microsoft.NET.Sdk.StaticWebAssets.targets",
+              "ViewState": "AgIAAJECAAAAAAAAAAAiwKUCAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
+              "WhenOpened": "2025-06-23T13:32:38.028Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "IFFmpegService.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\Converter\\IFFmpegService.cs",
+              "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\Converter\\IFFmpegService.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\Converter\\IFFmpegService.cs",
+              "RelativeToolTip": "MultiTenantAPI\\Services\\Converter\\IFFmpegService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-23T13:20:22.862Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CreateProductRequest.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\DTO\\CreateProductRequest.cs",
+              "RelativeDocumentMoniker": "MultiTenantAPI\\DTO\\CreateProductRequest.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\DTO\\CreateProductRequest.cs",
+              "RelativeToolTip": "MultiTenantAPI\\DTO\\CreateProductRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-23T13:16:05.063Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "TenantPriorityRulesService.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\RabbitMQ\\TenantPriorityRulesService.cs",
+              "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\RabbitMQ\\TenantPriorityRulesService.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\RabbitMQ\\TenantPriorityRulesService.cs",
+              "RelativeToolTip": "MultiTenantAPI\\Services\\RabbitMQ\\TenantPriorityRulesService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-23T13:05:52.326Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ContentMessage.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\DTO\\ContentMessage.cs",
+              "RelativeDocumentMoniker": "MultiTenantAPI\\DTO\\ContentMessage.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\DTO\\ContentMessage.cs",
+              "RelativeToolTip": "MultiTenantAPI\\DTO\\ContentMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-23T12:43:02.503Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "ContentService.cs",
               "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\ContentFolder\\ContentService.cs",
               "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\ContentFolder\\ContentService.cs",
               "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\ContentFolder\\ContentService.cs",
               "RelativeToolTip": "MultiTenantAPI\\Services\\ContentFolder\\ContentService.cs",
-              "ViewState": "AgIAAG4AAAAAAAAAAAAmwHwAAABGAAAAAAAAAA==",
+              "ViewState": "AgIAAAQBAAAAAAAAAAAewBYBAABQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-20T07:26:26.267Z",
+              "WhenOpened": "2025-06-23T11:55:19.091Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ContentsController.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Controllers\\ContentsController.cs",
+              "RelativeDocumentMoniker": "MultiTenantAPI\\Controllers\\ContentsController.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Controllers\\ContentsController.cs",
+              "RelativeToolTip": "MultiTenantAPI\\Controllers\\ContentsController.cs",
+              "ViewState": "AgIAAIYAAAAAAAAAAAAewJEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-23T13:32:45.933Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "FFmpegService.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\Converter\\FFmpegService.cs",
+              "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\Converter\\FFmpegService.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\Converter\\FFmpegService.cs",
+              "RelativeToolTip": "MultiTenantAPI\\Services\\Converter\\FFmpegService.cs",
+              "ViewState": "AgIAAAYBAAAAAAAAAAAowB0BAABlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-23T11:35:08.161Z",
               "EditorCaption": ""
             }
           ]

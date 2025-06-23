@@ -1,4 +1,5 @@
 using Amazon.S3;
+using Microsoft.AspNetCore.SignalR;
 using MultiTenantAPI.Controllers;
 using MultiTenantAPI.Extensions;
 using MultiTenantAPI.Hubs;
@@ -6,9 +7,9 @@ using MultiTenantAPI.Models;
 using MultiTenantAPI.Services.ContentFolder;
 using MultiTenantAPI.Services.Converter;
 using MultiTenantAPI.Services.CurrentTenant;
+using MultiTenantAPI.Services.IdentityService;
 using MultiTenantAPI.Services.ProgressStore;
 using MultiTenantAPI.Services.RabbitMQ;
-using Microsoft.AspNetCore.SignalR;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +30,8 @@ builder.Services.AddTransient<IContentService, ContentService>();
 builder.Services.AddScoped<ICurrentTenantService, CurrentTenantService>();
 builder.Services.AddSingleton<IFFmpegService, FFmpegService>();
 builder.Services.AddSingleton<IProgressStore, InMemoryProgressStore>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITenantService, TenantService>();
 
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
@@ -65,12 +68,9 @@ app.ConfigureSwaggerExplorer()
 
 app.MapHub<LogHub>("/logHub").RequireAuthorization();
 
-app.MapControllers();
+app.MapControllers().AllowAnonymousEndpoints();
 
 app.MapGroup("/api")
-    .MapIdentityApi<AppUser>();
-app.MapGroup("/api")
-    .MapIdentityUserEndpoints()
     .MapAccountEndpoints()
     .MapAuthorizationDemoEndpoints();
 

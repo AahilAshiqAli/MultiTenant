@@ -1,17 +1,27 @@
+import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component , OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-only',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './admin-only.component.html',
   styles: ``
 })
-export class AdminOnlyComponent {
-  constructor(private http: HttpClient) {}
+export class AdminOnlyComponent implements OnInit {
+  users: any[] = [];
+  constructor(private http: HttpClient, private toastr: ToastrService) {}
 
+  ngOnInit(): void {
+    this.http.get<any[]>(` ${environment.apiBaseUrl}/admin/users`).subscribe(users => {
+      console.log(users);
+      this.users = users;
+    });
+  }
+  
   openLogsTab() {
     this.http.get<any[]>(` ${environment.apiBaseUrl}/admin/logs`).subscribe(logs => {
       const html = this.buildLogsHtml(logs);
@@ -20,6 +30,20 @@ export class AdminOnlyComponent {
       window.open(url, '_blank');
     });
   }
+  
+  approveUser(id: string) {
+    this.http.post(`${environment.apiBaseUrl}/admin/approve-user/${id}`, {})
+      .subscribe({
+        next: (res: any) => {
+          this.toastr.success('User approved', 'Success');
+        },
+        error: err => {
+          console.error(err);
+          this.toastr.error('Failed to approve user', 'Error');
+        }
+      });
+  }
+
 
   private buildLogsHtml(logs: any[]): string {
     const jsonData = JSON.stringify(logs, null, 2);
@@ -27,16 +51,16 @@ export class AdminOnlyComponent {
       <!DOCTYPE html>
       <html lang="en">
       <head>
-        <meta charset="UTF-8">
-        <title>Admin Logs Viewer</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-        <style>
-          body { padding: 20px; background-color: #f8f9fa; font-family: monospace; }
-          pre { background-color: #fff; padding: 15px; border: 1px solid #ccc; border-radius: 4px; max-height: 80vh; overflow-y: auto; }
-        </style>
+      <meta charset="UTF-8">
+      <title>Admin Logs Viewer</title>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+      <style>
+      body { padding: 20px; background-color: #f8f9fa; font-family: monospace; }
+      pre { background-color: #fff; padding: 15px; border: 1px solid #ccc; border-radius: 4px; max-height: 80vh; overflow-y: auto; }
+      </style>
       </head>
       <body>
-        <h3>Admin Logs Viewer</h3>
+      <h3>Admin Logs Viewer</h3>
         <div class="mb-3">
           <label for="levelFilter" class="form-label">Filter by Level:</label>
           <select class="form-select" id="levelFilter" onchange="filterLogs(this.value)">

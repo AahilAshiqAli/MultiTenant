@@ -28,11 +28,11 @@ export class AuthService {
     }
 
     formData.age = age.toString();
-    return this.http.post(environment.apiBaseUrl + '/signup', formData);
+    return this.http.post(environment.apiBaseUrl + '/Identity/signup', formData);
   }
 
   signin(formData: any) {
-    return this.http.post(environment.apiBaseUrl + '/signin', formData);
+    return this.http.post(environment.apiBaseUrl + '/Identity/signin', formData);
   }
 
   createTenant(formData: any) {
@@ -53,7 +53,7 @@ export class AuthService {
 
     };
     console.log(flatPayload)
-    return this.http.post(environment.apiBaseUrl + '/tenant-create', flatPayload);
+    return this.http.post(environment.apiBaseUrl + '/Identity/tenant-create', flatPayload);
   }
 
   isLoggedIn() {

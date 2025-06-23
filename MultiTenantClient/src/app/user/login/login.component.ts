@@ -46,10 +46,26 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl('/dashboard');
         },
         error: err => {
-          if (err.status == 400)
-            this.toastr.error('Incorrect email or password.', 'Login failed')
+          console.log(err.error.errors);
+          if (err.error.errors)
+            err.error.errors.forEach((x: any) => {
+              switch (x.code) {
+
+                case "UserNotFound":
+                  this.toastr.error('Incorrect Email.', 'Login Failed')
+                  break;
+
+                case "IncorrectPassword":
+                  this.toastr.error('Incorrect password.', 'Login Failed')
+                  break;
+
+                default:
+                  this.toastr.error('Contact the developer', 'Login Failed')
+                  break;
+              }
+            })
           else
-            console.log('error during login:\n', err);
+            console.log('error:', err);
         }
       })
     }
