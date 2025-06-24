@@ -314,6 +314,28 @@
         }
       }
     },
+    "/api/Identity/delete/{userId}": {
+      "delete": {
+        "tags": [
+          "Identity"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/api/progress": {
       "get": {
         "tags": [

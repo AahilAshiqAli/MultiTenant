@@ -12,6 +12,7 @@ using MultiTenantAPI.Services.Converter;
 using MultiTenantAPI.Services.CurrentTenant;
 using MultiTenantAPI.Services.ProgressStore;
 using MultiTenantAPI.Services.RabbitMQ;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -409,5 +410,41 @@ namespace MultiTenantAPI.Services.ContentFolder
             _logger.LogWarning("Content with name '{Name}' not found for deletion.", name);
             return false;
         }
+
+        public async Task<bool> DeleteUserContentAsync(string userId)
+        {
+            var contents = await _context.Contents
+                .Where(c => c.UserId == userId)
+                .ToListAsync();
+
+            if (contents.Count == 0) return true;
+
+            var tenantId = _currentTenantService.TenantId;
+            if (string.IsNullOrEmpty(tenantId))
+                return false;
+
+            foreach (var content in contents)
+            {
+                if (!string.IsNullOrWhiteSpace(content.FilePath))
+                {
+                    var blobName = Path.GetFileName(content.FilePath); 
+                    try
+                    {
+                        await _blobClient.DeleteBlobAsync(blobName);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Failed to delete blob: {BlobName} in container: {Container}", blobName);
+                        return false;
+                    }
+                }
+            }
+
+            // No need to call _context.Contents.RemoveRange because of cascade delete
+            return true;
+        }
+
+
+
     }
 }

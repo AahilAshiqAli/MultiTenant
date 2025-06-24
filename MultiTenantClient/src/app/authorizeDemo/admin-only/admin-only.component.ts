@@ -15,12 +15,17 @@ export class AdminOnlyComponent implements OnInit {
   users: any[] = [];
   constructor(private http: HttpClient, private toastr: ToastrService) {}
 
-  ngOnInit(): void {
+  loadUsers(){
     this.http.get<any[]>(` ${environment.apiBaseUrl}/admin/users`).subscribe(users => {
       console.log(users);
       this.users = users;
     });
   }
+
+  ngOnInit(): void {
+    this.loadUsers();
+  }
+
   
   openLogsTab() {
     this.http.get<any[]>(` ${environment.apiBaseUrl}/admin/logs`).subscribe(logs => {
@@ -36,12 +41,29 @@ export class AdminOnlyComponent implements OnInit {
       .subscribe({
         next: (res: any) => {
           this.toastr.success('User approved', 'Success');
+          this.loadUsers();
         },
         error: err => {
           console.error(err);
           this.toastr.error('Failed to approve user', 'Error');
         }
       });
+      
+  }
+
+  deleteUser(id: string) {
+    this.http.delete(`${environment.apiBaseUrl}/Identity/delete/${id}`)
+      .subscribe({
+        next: (res: any) => {
+          this.toastr.success('User deleted', 'Success');
+          this.loadUsers();
+        },
+        error: err => {
+          console.error(err,"popopo",id);
+          this.toastr.error('Failed to delete user', 'Error');
+        }
+      });
+      this.loadUsers();
   }
 
 

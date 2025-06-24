@@ -13,7 +13,8 @@
           <th>Gender</th>
           <th>Date of Birth</th>
           <th>Role</th>
-          <th>Action</th>
+          <th>Approve</th>
+          <th>Delete</th>
         </tr>
       </thead>
       <tbody>
@@ -26,6 +27,11 @@
           <td>
             <button class="btn btn-success btn-sm" (click)="approveUser(user.id)">
               Approve
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">
+              Delete
             </button>
           </td>
         </tr>

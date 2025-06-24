@@ -59,6 +59,10 @@ export class LoginComponent implements OnInit {
                   this.toastr.error('Incorrect password.', 'Login Failed')
                   break;
 
+                case "PendingUser":
+                  this.toastr.error('User is not approved by administrator.', 'Login Failed')
+                  break;
+
                 default:
                   this.toastr.error('Contact the developer', 'Login Failed')
                   break;

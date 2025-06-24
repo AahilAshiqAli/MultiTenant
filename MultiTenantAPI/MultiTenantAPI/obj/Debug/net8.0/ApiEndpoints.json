@@ -152,6 +152,22 @@
   },
   {
     "ContainingType": "MultiTenantAPI.Controllers.IdentityController",
+    "Method": "DeleteUser",
+    "RelativePath": "api/Identity/delete/{userId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MultiTenantAPI.Controllers.IdentityController",
     "Method": "SignIn",
     "RelativePath": "api/Identity/signin",
     "HttpMethod": "POST",

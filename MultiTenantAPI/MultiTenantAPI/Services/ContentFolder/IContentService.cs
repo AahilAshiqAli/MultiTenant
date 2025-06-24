@@ -18,5 +18,8 @@ namespace MultiTenantAPI.Services.ContentFolder
         public Task CreateContent(CreateProductRequest request);
 
         Task<bool> DeleteContent(string name);
+
+        Task<bool> DeleteUserContentAsync(string userId);
+
     }
 }

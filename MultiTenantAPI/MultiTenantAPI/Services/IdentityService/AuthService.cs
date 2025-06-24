@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using MultiTenantAPI.DTO;
 using MultiTenantAPI.Models;
 using MultiTenantAPI.Services.Blob;
+using MultiTenantAPI.Services.ContentFolder;
 using MultiTenantAPI.Services.Response;
 using Serilog;
 using System.IdentityModel.Tokens.Jwt;
@@ -22,6 +23,7 @@ namespace MultiTenantAPI.Services.IdentityService
         private readonly AppDbContext _context;
         private readonly AppSettings _appSettings;
         private readonly ILogger<AuthService> _logger;
+        private readonly IContentService _contentService;
 
         public AuthService(UserManager<AppUser> userManager, IOptions<AppSettings> settings, AppDbContext context, ILogger<AuthService> logger)
         {
@@ -119,7 +121,7 @@ namespace MultiTenantAPI.Services.IdentityService
                 var passwordValid = await _userManager.CheckPasswordAsync(user, model.Password);
                 Log.Debug("Password check result: {PasswordValid}", passwordValid);
 
-                if (passwordValid)
+                if (passwordValid && user.isApproved)
                 {
                     var roles = await _userManager.GetRolesAsync(user);
                     Log.Debug("User roles: {@Roles}", roles);
@@ -157,6 +159,20 @@ namespace MultiTenantAPI.Services.IdentityService
                 }
                 else
                 {
+                    if (!user.isApproved)
+                    {
+                        var error = new List<IdentityError>
+                        {
+                            new IdentityError
+                            {
+                                Code = "PendingUser",
+                                Description = $"SignIn failed: Approval Remaining: {model.Email}"
+                            }
+                        };
+
+                        return ServiceResult<object>.Fail(error);
+                    }
+
                     var errors = new List<IdentityError>
                         {
                             new IdentityError
@@ -184,5 +200,75 @@ namespace MultiTenantAPI.Services.IdentityService
             }
 
         }
+
+        public async Task<ServiceResult<object>> DeleteUser(string userId)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    return ServiceResult<object>.Fail(new List<IdentityError>
+                    {
+                        new IdentityError
+                        {
+                            Code = "UserNotFound",
+                            Description = "The specified user does not exist."
+                        }
+                        });
+                    }
+
+                bool success = await _contentService.DeleteUserContentAsync(userId);
+
+                if (!success)
+                {
+                    return ServiceResult<object>.Fail(new List<IdentityError>
+                    {
+                        new IdentityError
+                        {
+                            Code = "DeletionFailed",
+                            Description = "Deletiojn from cloud failed."
+                        }
+                        });
+                }
+            
+
+                var roles = await _userManager.GetRolesAsync(user);
+                if (roles.Any())
+                {
+                    var removeRolesResult = await _userManager.RemoveFromRolesAsync(user, roles);
+                    if (!removeRolesResult.Succeeded)
+                    {
+                        await transaction.RollbackAsync();
+                        return ServiceResult<object>.Fail(removeRolesResult.Errors);
+                    }
+                }
+
+                var deleteResult = await _userManager.DeleteAsync(user);
+                if (!deleteResult.Succeeded)
+                {
+                    await transaction.RollbackAsync();
+                    return ServiceResult<object>.Fail(deleteResult.Errors);
+                }
+
+                await transaction.CommitAsync();
+                return ServiceResult<object>.Ok(new { userId });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Unexpected error during user deletion");
+                await transaction.RollbackAsync();
+                return new ServiceResult<object>
+                {
+                    Success = false,
+                    ErrorMessage = "An unexpected error occurred during user deletion.",
+                    Errors = new { ex.Message }
+                };
+            }
+        }
+
+
     }
 }
