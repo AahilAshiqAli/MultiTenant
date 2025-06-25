@@ -12,18 +12,18 @@ export class UserService {
     private authService: AuthService) { }
 
   getUserProfile() {
-    return this.http.get(environment.apiBaseUrl + '/UserProfile')
+    return this.http.get(environment.apiBaseUrl + '/Account/UserProfile')
   }
 
   getTenantUserCount() {
     return this.http.get<{ tenantId: string; userCount: number }>(
-      `${environment.apiBaseUrl}/TenantUserCount`
+      `${environment.apiBaseUrl}/Account/TenantUserCount`
     );
   }
 
   getTenantFileCount() {
     return this.http.get<{ tenantId: string; userCount: number }>(
-      `${environment.apiBaseUrl}/TenantFileCount`
+      `${environment.apiBaseUrl}/Account/TenantFileCount`
     );
   }
 

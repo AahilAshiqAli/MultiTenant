@@ -1,11 +1,11 @@
-﻿using MultiTenantAPI.DTO;
+﻿using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MultiTenantAPI.DTO;
 using MultiTenantAPI.Models;
 using MultiTenantAPI.Services.ContentFolder;
-using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
-using MultiTenantAPI.Services.Converter;
 
 namespace MultiTenantAPI.Controllers
 {   
@@ -83,35 +83,55 @@ namespace MultiTenantAPI.Controllers
             }
         }
 
-        // Create a new product
-        [HttpPost]
-        public async Task<IActionResult> PostAsync(CreateProductRequest request)
+        [HttpGet("upload-url")]
+        public IActionResult GetUploadUrl([FromQuery] string fileName)
         {
-            Log.Information("POST request received. File: {FileName}, ContentType: {ContentType}, Length: {Length}",
-                request?.File?.FileName, request?.File?.ContentType, request?.File?.Length);
             try
             {
-                if (request.File == null || request.File.Length == 0)
-                {
-                    Log.Warning("No file uploaded in POST request.");
-                    return BadRequest("No file uploaded.");
-                }
+                var result = _contentService.GenerateUploadUrlAsync(fileName);
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                Log.Warning(ex, "Invalid argument in upload URL request.");
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Log.Warning(ex, "Unauthorized access when generating upload URL.");
+                return Unauthorized(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Unexpected error occurred while generating upload URL.");
+                return StatusCode(500, new { error = "Internal server error while generating upload URL." });
+            }
+        }
+
+        // Create a new product
+        [HttpPost]
+        public async Task<IActionResult> PostAsync([FromBody] CreateProductRequest request)
+        {
+            Log.Information("POST request received. File: {FileName}, ContentType: {ContentType}, Length: {Size}",
+                request.OriginalFileName,request.ContentType, request.Size);
+            try
+            {
 
                 var allowedTypes = new[] { "audio", "video" };
-                if (!allowedTypes.Any(t => request.File.ContentType.StartsWith(t)))
+                if (!allowedTypes.Any(t => request.ContentType.StartsWith(t)))
                 {
-                    Log.Warning("Invalid file type uploaded: {ContentType}", request.File.ContentType);
+                    Log.Warning("Invalid file type uploaded: {ContentType}", request.ContentType);
                     return BadRequest("Only audio and video files are allowed.");
                 }
 
-                Log.Information("Creating content for file: {FileName}", request.File.FileName);
+                Log.Information("Creating content for file: {FileName}", request.OriginalFileName);
                 await _contentService.CreateContent(request);
-                Log.Information("Content created successfully for file: {FileName}", request.File.FileName);
+                Log.Information("Content created successfully for file: {FileName}", request.OriginalFileName);
                 return Ok(new
                 {
-                    FileName = request.File.FileName,
-                    ContentType = request.File.ContentType,
-                    Size = request.File.Length
+                    FileName = request.OriginalFileName,
+                    ContentType = request.ContentType,
+                    Size = request.Size
                 });
                 
             }

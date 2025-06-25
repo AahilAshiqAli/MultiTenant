@@ -3,9 +3,13 @@ using Microsoft.AspNetCore.SignalR;
 using MultiTenantAPI.Controllers;
 using MultiTenantAPI.Extensions;
 using MultiTenantAPI.Hubs;
-using MultiTenantAPI.Models;
+using MultiTenantAPI.Services.AccountService;
+using MultiTenantAPI.Services.AdminService;
 using MultiTenantAPI.Services.ContentFolder;
-using MultiTenantAPI.Services.Converter;
+using MultiTenantAPI.Services.ContentProcessor;
+using MultiTenantAPI.Services.FFmpeg.Converter;
+using MultiTenantAPI.Services.FFmpeg.Thumbnail;
+using MultiTenantAPI.Services.FFmpeg.VideoRendition;
 using MultiTenantAPI.Services.CurrentTenant;
 using MultiTenantAPI.Services.IdentityService;
 using MultiTenantAPI.Services.ProgressStore;
@@ -28,10 +32,15 @@ builder.Services.AddSwaggerExplorer()
 
 builder.Services.AddTransient<IContentService, ContentService>();
 builder.Services.AddScoped<ICurrentTenantService, CurrentTenantService>();
-builder.Services.AddSingleton<IFFmpegService, FFmpegService>();
+builder.Services.AddSingleton<IConverterService, ConverterService>();
+builder.Services.AddSingleton<IThumbnailService, ThumbnailService>();
+builder.Services.AddSingleton<IVideoRenditionService, VideoRenditionService>();
+builder.Services.AddScoped<IContentProcessorService, ContentProcessorService>();
 builder.Services.AddSingleton<IProgressStore, InMemoryProgressStore>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITenantService, TenantService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
@@ -70,9 +79,6 @@ app.MapHub<LogHub>("/logHub").RequireAuthorization();
 
 app.MapControllers().AllowAnonymousEndpoints();
 
-app.MapGroup("/api")
-    .MapAccountEndpoints()
-    .MapAuthorizationDemoEndpoints();
 
 app.Run();
 

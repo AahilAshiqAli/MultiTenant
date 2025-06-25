@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TOKEN_KEY } from '../constants';
 import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
   
   createUser(formData: any) {
     //WARNING!
@@ -72,18 +73,21 @@ export class AuthService {
     localStorage.removeItem(TOKEN_KEY);
   }
   
-  // deleteAccount() {
-  //   this.http.delete(`${environment.apiBaseUrl}/Identity/delete/`)
-  //   .subscribe({
-  //     next: (res: any) => {
-  //       this.toastr.success('User deleted', 'Success');
-  //     },
-  //     error: err => {
-  //       console.error(err,"popopo",id);
-  //       this.toastr.error('Failed to delete user', 'Error');
-  //     }
-  //   });
-  // }
+  deleteAccount() {
+    this.http.delete(`${environment.apiBaseUrl}/Account`)
+    .subscribe({
+      next: (res: any) => {
+        alert('Account deleted successfully');
+        this.deleteToken();
+        this.router.navigateByUrl('/signin');
+        return true;
+      },
+      error: err => {
+        console.log(err);
+        return false;
+      }
+    });
+  }
   
   getClaims(){
     return JSON.parse(window.atob(this.getToken()!.split('.')[1]))

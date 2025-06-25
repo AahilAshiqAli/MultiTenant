@@ -1,10 +1,56 @@
 [
   {
-    "ContainingType": "MultiTenantAPI.Controllers.AuthorizationDemoController",
+    "ContainingType": "MultiTenantAPI.Controllers.AccountController",
+    "Method": "DeleteUser",
+    "RelativePath": "api/Account",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MultiTenantAPI.Controllers.AccountController",
+    "Method": "GetTenantFileCount",
+    "RelativePath": "api/Account/TenantFileCount",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MultiTenantAPI.Controllers.AccountController",
+    "Method": "GetTenantUserCount",
+    "RelativePath": "api/Account/TenantUserCount",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MultiTenantAPI.Controllers.AccountController",
+    "Method": "GetUserProfile",
+    "RelativePath": "api/Account/UserProfile",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MultiTenantAPI.Controllers.AdminController",
     "Method": "ApproveUser",
-    "RelativePath": "api/admin/approve-user/{userId}",
+    "RelativePath": "api/Admin/approve-user/{userId}",
     "HttpMethod": "POST",
-    "IsController": false,
+    "IsController": true,
     "Order": 0,
     "Parameters": [
       {
@@ -13,63 +59,37 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "MultiTenantAPI.Controllers.AuthorizationDemoController",
+    "ContainingType": "MultiTenantAPI.Controllers.AdminController",
     "Method": "GetAllLogs",
-    "RelativePath": "api/admin/logs",
+    "RelativePath": "api/Admin/logs",
     "HttpMethod": "GET",
-    "IsController": false,
+    "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
   },
   {
-    "ContainingType": "MultiTenantAPI.Controllers.AuthorizationDemoController",
-    "Method": "GetAllUsers",
-    "RelativePath": "api/admin/users",
-    "HttpMethod": "GET",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "MultiTenantAPI.Controllers.AuthorizationDemoController",
+    "ContainingType": "MultiTenantAPI.Controllers.AdminController",
     "Method": "AdminOnly",
-    "RelativePath": "api/AdminOnly",
+    "RelativePath": "api/Admin/only",
     "HttpMethod": "GET",
-    "IsController": false,
+    "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.String",
-        "MediaTypes": [
-          "text/plain"
-        ],
-        "StatusCode": 200
-      }
-    ]
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "MultiTenantAPI.Controllers.AdminController",
+    "Method": "GetAllUsers",
+    "RelativePath": "api/Admin/users",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "MultiTenantAPI.Controllers.ContentsController",
@@ -96,19 +116,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "File",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
-      },
-      {
-        "Name": "IsPrivate",
-        "Type": "System.Boolean",
-        "IsRequired": false
-      },
-      {
-        "Name": "rendition",
-        "Type": "System.String",
-        "IsRequired": false
+        "Name": "request",
+        "Type": "MultiTenantAPI.DTO.CreateProductRequest",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -151,17 +161,17 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "MultiTenantAPI.Controllers.IdentityController",
-    "Method": "DeleteUser",
-    "RelativePath": "api/Identity/delete/{userId}",
-    "HttpMethod": "DELETE",
+    "ContainingType": "MultiTenantAPI.Controllers.ContentsController",
+    "Method": "GetUploadUrl",
+    "RelativePath": "api/Contents/upload-url",
+    "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userId",
+        "Name": "fileName",
         "Type": "System.String",
-        "IsRequired": true
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -223,53 +233,5 @@
     "Order": 0,
     "Parameters": [],
     "ReturnTypes": []
-  },
-  {
-    "ContainingType": "MultiTenantAPI.Controllers.AccountController",
-    "Method": "GetTenantFileCount",
-    "RelativePath": "api/TenantFileCount",
-    "HttpMethod": "GET",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "MultiTenantAPI.Controllers.AccountController",
-    "Method": "GetTenantUserCount",
-    "RelativePath": "api/TenantUserCount",
-    "HttpMethod": "GET",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "MultiTenantAPI.Controllers.AccountController",
-    "Method": "GetUserProfile",
-    "RelativePath": "api/UserProfile",
-    "HttpMethod": "GET",
-    "IsController": false,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Void",
-        "MediaTypes": [],
-        "StatusCode": 200
-      }
-    ]
   }
 ]

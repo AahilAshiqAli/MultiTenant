@@ -58,5 +58,10 @@ namespace MultiTenantAPI.Services.Blob
         {
             throw new NotImplementedException();
         }
+
+        string IBlobService.GetUploadUrl(string fileName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ElementRef, ViewChild, Component, OnInit } from '@angular/core';
 import { LogService } from '../shared/services/log.service';
 import { ProgressService } from '../shared/services/progress.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 
@@ -41,7 +42,7 @@ export class FileuploadComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private logService: LogService, private progressService: ProgressService) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private logService: LogService, private progressService: ProgressService, private toastr: ToastrService) {
     this.uploadForm = this.fb.group({
       isPrivate: [false],
       rendition : [null]
@@ -151,27 +152,64 @@ export class FileuploadComponent implements OnInit {
   onSubmit(): void {
     if (!this.selectedFile) return;
   
-    const formData = new FormData();
-    formData.append('file', this.selectedFile);
-    formData.append('name', this.selectedFile.name);
+    const originalFileName = this.selectedFile.name;
+    const contentType = this.selectedFile.type;
+    const fileSize = this.selectedFile.size;
     const isPrivate = this.uploadForm.get('isPrivate')?.value ?? false;
-    formData.append('isPrivate', isPrivate.toString().toLowerCase());
     const rendition = this.uploadForm.get('rendition')?.value ?? "480p";
-    formData.append('rendition', rendition);
-    console.log(rendition, isPrivate);
-
-    this.http.post(environment.apiBaseUrl + '/Contents', formData, {
-      reportProgress: true,
-      observe: 'events'
-    }).subscribe((event: HttpEvent<any>) => {
-      if (event.type === HttpEventType.UploadProgress && event.total) {
-        this.uploadedSize = event.loaded;
-        this.uploadProgress = Math.round((event.loaded / event.total) * 100);
-      } else if (event.type === HttpEventType.Response) {
-        this.uploadResponse = event.body;
-        this.progressService.startPolling((progress) => {
-          this.conversionProgress = progress;
+  
+    // Step 1: Ask backend for upload URL
+    this.http.get<any>(`${environment.apiBaseUrl}/Contents/upload-url`, {
+      params: { fileName: originalFileName }
+    }).subscribe({
+      next: (res) => {
+        const { uploadUrl, blobFileName } = res;
+  
+        // Step 2: Upload directly to blob
+        this.http.put(uploadUrl, this.selectedFile, {
+          headers: {
+            'x-ms-blob-type': 'BlockBlob',
+            'Content-Type': contentType
+          },
+          reportProgress: true,
+          observe: 'events'
+        }).subscribe({
+          next: (event: HttpEvent<any>) => {
+            if (event.type === HttpEventType.UploadProgress && event.total) {
+              this.uploadedSize = event.loaded;
+              this.uploadProgress = Math.round((event.loaded / event.total) * 100);
+            } else if (event.type === HttpEventType.Response) {
+              console.log('Upload to blob successful');
+  
+              // Step 3: Notify backend upload is complete
+              const notifyPayload = {
+                originalFileName,
+                contentType,
+                size: fileSize,
+                blobFileName,
+                isPrivate,
+                rendition
+              };
+              console.log(notifyPayload);
+              this.http.post(`${environment.apiBaseUrl}/Contents`, notifyPayload)
+                .subscribe(() => {
+                  this.toastr.success('Upload initiated successfully', 'Success');
+                  // Step 4: Start polling progress
+                  this.progressService.startPolling((progress) => {
+                    this.conversionProgress = progress;
+                  });
+                });
+            }
+          },
+          error: (err) => {
+            this.toastr.error('Failed to upload to blob', 'Error');
+            console.error(err);
+          }
         });
+      },
+      error: (err) => {
+        this.toastr.error('Failed to get upload URL', 'Error');
+        console.error(err);
       }
     });
   }

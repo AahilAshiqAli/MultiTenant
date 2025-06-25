@@ -1,116 +1,55 @@
-﻿using MultiTenantAPI.Models;
-using MultiTenantAPI.Services.CurrentTenant;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Serilog;
-using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MultiTenantAPI.Services.AccountService;
 
 namespace MultiTenantAPI.Controllers
 {
-        public static class AccountController
+    [Authorize]
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AccountController : ControllerBase
     {
-        public static IEndpointRouteBuilder MapAccountEndpoints(this IEndpointRouteBuilder app)
-        {
-            Log.Information("Mapping account endpoints.");
-            app.MapGet("/UserProfile", GetUserProfile);
-            app.MapGet("/TenantUserCount", GetTenantUserCount);
-            app.MapGet("/TenantFileCount", GetTenantFileCount);
-            Log.Information("Mapped GET /UserProfile endpoint.");
+        private readonly IAccountService _accountService;
 
-            return app;
+        public AccountController(IAccountService accountService)
+        {
+            _accountService = accountService;
         }
 
-        [Authorize]
-        private static async Task<IResult> GetUserProfile(
-          ClaimsPrincipal user,
-          UserManager<AppUser> userManager)
+        [HttpGet("UserProfile")]
+        public async Task<IActionResult> GetUserProfile()
         {
-            Log.Information("GetUserProfile called.");
-
-            try
-            {
-                if (user == null)
-                {
-                    Log.Warning("ClaimsPrincipal user is null.");
-                    return Results.BadRequest("User context is missing.");
-                }
-
-                var userIdClaim = user.Claims.FirstOrDefault(x => x.Type == "userID");
-                if (userIdClaim == null)
-                {
-                    Log.Warning("userID claim not found in ClaimsPrincipal.");
-                    return Results.BadRequest("User ID claim missing.");
-                }
-
-                string userID = userIdClaim.Value;
-                Log.Information("Extracted userID: {UserID}", userID);
-
-                var userDetails = await userManager.FindByIdAsync(userID);
-                if (userDetails == null)
-                {
-                    Log.Warning("User not found for userID: {UserID}", userID);
-                    return Results.NotFound("User not found.");
-                }
-
-                Log.Information("User found: {Email}, {FullName}", userDetails.Email, userDetails.FullName);
-
-                return Results.Ok(
-                  new
-                  {
-                      Email = userDetails.Email,
-                      FullName = userDetails.FullName,
-                  });
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Exception occurred in GetUserProfile.");
-                return Results.Problem("An error occurred while retrieving the user profile.");
-            }
+            var result = await _accountService.GetUserProfileAsync(User);
+            return result.Success ? Ok(result.Data) : BadRequest(new { result.ErrorMessage, result.Errors });
         }
 
-        [Authorize]
-        private static async Task<IResult> GetTenantUserCount(
-        ICurrentTenantService tenantService,
-        AppDbContext dbContext)
-         {
-                Log.Information("GetTenantUserCount called.");
+        [HttpGet("TenantUserCount")]
+        public async Task<IActionResult> GetTenantUserCount()
+        {
+            var result = await _accountService.GetTenantUserCountAsync();
+            return result.Success ? Ok(result.Data) : BadRequest(new { result.ErrorMessage, result.Errors });
+        }
 
-                var tenantId = tenantService.TenantId;
-                if (string.IsNullOrWhiteSpace(tenantId))
-                {
-                    Log.Warning("TenantId is missing in ICurrentTenantService.");
-                    return Results.BadRequest("TenantId is missing.");
-                }
+        [HttpGet("TenantFileCount")]
+        public async Task<IActionResult> GetTenantFileCount()
+        {
+            var result = await _accountService.GetTenantFileCountAsync();
+            return result.Success ? Ok(result.Data) : BadRequest(new { result.ErrorMessage, result.Errors });
+        }
 
-                var userCount = await dbContext.AppUsers
-                    .CountAsync(u => u.TenantID.ToString() == tenantId);
-
-                Log.Information("Tenant {TenantId} has {UserCount} users.", tenantId, userCount);
-
-                return Results.Ok(new { TenantId = tenantId, UserCount = userCount });
-         }
-
-            [Authorize]
-            private static async Task<IResult> GetTenantFileCount(
-            ICurrentTenantService tenantService,
-            AppDbContext dbContext)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser([FromQuery] string? userId)
+        {
+            var result = await _accountService.DeleteUser(userId);
+            if (!result.Success)
             {
-                Log.Information("GetTenantUserCount called.");
+                if (result.Errors != null)
+                    return BadRequest(new { result.ErrorMessage, result.Errors });
 
-                var tenantId = tenantService.TenantId;
-                if (string.IsNullOrWhiteSpace(tenantId))
-                {
-                    Log.Warning("TenantId is missing in ICurrentTenantService.");
-                    return Results.BadRequest("TenantId is missing.");
-                }
-
-                var fileCount = await dbContext.Contents
-                    .CountAsync(u => u.TenantID == tenantId);
-
-                Log.Information("Tenant {TenantId} has {UserCount} users.", tenantId, fileCount);
-
-                return Results.Ok(new { TenantId = tenantId, FileCount = fileCount });
+                return BadRequest(result.ErrorMessage);
             }
+
+            return Ok(result.Data);
+        }
     }
 }

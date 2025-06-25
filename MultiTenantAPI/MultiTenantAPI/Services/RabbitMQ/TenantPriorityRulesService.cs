@@ -8,7 +8,7 @@
             Console.WriteLine(tenantId);
             return tenantId switch
             {
-                "30c98ac5-aa99-4cde-a178-71e3dd2cbdd7" => 10,
+                "bf843d10-90a3-48eb-b287-ff2dcdc8d2e3" => 10,
                 "F21EA9BB-FD2E-495B-8FA8-117174294B43" => 5,
                 _ => 1
             };

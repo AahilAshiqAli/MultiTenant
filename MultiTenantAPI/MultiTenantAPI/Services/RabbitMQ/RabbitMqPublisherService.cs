@@ -1,4 +1,4 @@
-﻿using MultiTenantAPI.Services.Converter;
+﻿using MultiTenantAPI.Services.FFmpeg;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Text;

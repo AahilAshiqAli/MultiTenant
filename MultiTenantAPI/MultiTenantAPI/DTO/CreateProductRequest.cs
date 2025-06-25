@@ -4,13 +4,16 @@ namespace MultiTenantAPI.DTO
 {
     public class CreateProductRequest
     {
-        public IFormFile File { get; set; }
+        public string OriginalFileName { get; set; }
+        public string ContentType { get; set; }
+        public long Size { get; set; }
+        public string BlobFileName { get; set; }
 
         [FromForm]
         public bool IsPrivate { get; set; }
 
         [FromForm]
-        public string rendition { get; set; }
+        public string Rendition { get; set; }
 
     }
 

@@ -127,6 +127,30 @@ namespace MultiTenantAPI.Services.Blob
             return sasUri.ToString();
         }
 
+        public string GetUploadUrl(string fileName)
+        {
+            var blobClient = _containerClient.GetBlobClient(fileName);
+            if (!blobClient.CanGenerateSasUri)
+                throw new InvalidOperationException("SAS URI cannot be generated for this blob.");
+
+            var sasBuilder = new BlobSasBuilder
+            {
+                BlobContainerName = _containerClient.Name,
+                BlobName = fileName,
+                Resource = "b",
+                ExpiresOn = DateTimeOffset.UtcNow.AddMinutes(15)
+            };
+
+            sasBuilder.SetPermissions(BlobSasPermissions.Write | BlobSasPermissions.Create);
+
+            var sasUri = blobClient.GenerateSasUri(sasBuilder);
+
+            _logger.LogInformation("Generated SAS URI for blob {FileName}", fileName);
+
+            return sasUri.ToString();
+        }
+
+
         public async Task<IEnumerable<string>> ListBlobsAsync()
         {
             _logger.LogInformation("Listing blobs in container: {Container}", _containerClient.Name);

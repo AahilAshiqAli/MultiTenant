@@ -31,6 +31,7 @@ namespace MultiTenantAPI.Services.IdentityService
             _appSettings = settings.Value;
             _context = context;
             _logger = logger;
+            //_contentService = contentService;
         }
 
         public async Task<ServiceResult<object>> CreateUser(UserRegistrationDto model)
@@ -201,73 +202,6 @@ namespace MultiTenantAPI.Services.IdentityService
 
         }
 
-        public async Task<ServiceResult<object>> DeleteUser(string userId)
-        {
-            using var transaction = await _context.Database.BeginTransactionAsync();
-
-            try
-            {
-                var user = await _userManager.FindByIdAsync(userId);
-                if (user == null)
-                {
-                    return ServiceResult<object>.Fail(new List<IdentityError>
-                    {
-                        new IdentityError
-                        {
-                            Code = "UserNotFound",
-                            Description = "The specified user does not exist."
-                        }
-                        });
-                    }
-
-                bool success = await _contentService.DeleteUserContentAsync(userId);
-
-                if (!success)
-                {
-                    return ServiceResult<object>.Fail(new List<IdentityError>
-                    {
-                        new IdentityError
-                        {
-                            Code = "DeletionFailed",
-                            Description = "Deletiojn from cloud failed."
-                        }
-                        });
-                }
-            
-
-                var roles = await _userManager.GetRolesAsync(user);
-                if (roles.Any())
-                {
-                    var removeRolesResult = await _userManager.RemoveFromRolesAsync(user, roles);
-                    if (!removeRolesResult.Succeeded)
-                    {
-                        await transaction.RollbackAsync();
-                        return ServiceResult<object>.Fail(removeRolesResult.Errors);
-                    }
-                }
-
-                var deleteResult = await _userManager.DeleteAsync(user);
-                if (!deleteResult.Succeeded)
-                {
-                    await transaction.RollbackAsync();
-                    return ServiceResult<object>.Fail(deleteResult.Errors);
-                }
-
-                await transaction.CommitAsync();
-                return ServiceResult<object>.Ok(new { userId });
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Unexpected error during user deletion");
-                await transaction.RollbackAsync();
-                return new ServiceResult<object>
-                {
-                    Success = false,
-                    ErrorMessage = "An unexpected error occurred during user deletion.",
-                    Errors = new { ex.Message }
-                };
-            }
-        }
 
 
     }

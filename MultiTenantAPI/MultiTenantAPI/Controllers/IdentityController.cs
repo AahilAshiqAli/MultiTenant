@@ -14,7 +14,6 @@ namespace MultiTenantAPI.Controllers
     {
         private readonly IAuthService _authService;
         private readonly ITenantService _tenantService;
-        private readonly IContentService _contentService;
 
         public IdentityController(IAuthService authService, ITenantService tenantService)
         {
@@ -73,20 +72,7 @@ namespace MultiTenantAPI.Controllers
             return Ok(result.Data);
         }
 
-        [HttpDelete("delete/{userId}")]
-        public async Task<IActionResult> DeleteUser([FromRoute]  string userId)
-        {
-            var result = await _authService.DeleteUser(userId);
-            if (!result.Success)
-            {
-                if (result.Errors != null)
-                    return BadRequest(new { result.ErrorMessage, result.Errors });
 
-                return BadRequest(result.ErrorMessage);
-            }
-
-            return Ok(result.Data);
-        }
 
 
     } 

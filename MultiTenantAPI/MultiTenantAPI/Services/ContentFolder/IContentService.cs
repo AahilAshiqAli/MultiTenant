@@ -13,7 +13,7 @@ namespace MultiTenantAPI.Services.ContentFolder
 
         Task<string> StreamVideoAsync(int id);
 
-        public Task ProcessUploadedContentAsync(ContentMessage message);
+        object GenerateUploadUrlAsync(string filename);
 
         public Task CreateContent(CreateProductRequest request);
 

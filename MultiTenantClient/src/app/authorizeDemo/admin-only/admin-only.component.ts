@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component , OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
@@ -16,7 +16,7 @@ export class AdminOnlyComponent implements OnInit {
   constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   loadUsers(){
-    this.http.get<any[]>(` ${environment.apiBaseUrl}/admin/users`).subscribe(users => {
+    this.http.get<any[]>(` ${environment.apiBaseUrl}/Admin/users`).subscribe(users => {
       console.log(users);
       this.users = users;
     });
@@ -28,7 +28,7 @@ export class AdminOnlyComponent implements OnInit {
 
   
   openLogsTab() {
-    this.http.get<any[]>(` ${environment.apiBaseUrl}/admin/logs`).subscribe(logs => {
+    this.http.get<any[]>(` ${environment.apiBaseUrl}/Admin/logs`).subscribe(logs => {
       const html = this.buildLogsHtml(logs);
       const blob = new Blob([html], { type: 'text/html' });
       const url = URL.createObjectURL(blob);
@@ -37,14 +37,14 @@ export class AdminOnlyComponent implements OnInit {
   }
   
   approveUser(id: string) {
-    this.http.post(`${environment.apiBaseUrl}/admin/approve-user/${id}`, {})
+    this.http.post(`${environment.apiBaseUrl}/Admin/approve-user/${id}`, {})
       .subscribe({
         next: (res: any) => {
           this.toastr.success('User approved', 'Success');
           this.loadUsers();
         },
         error: err => {
-          console.error(err);
+          console.log(err);
           this.toastr.error('Failed to approve user', 'Error');
         }
       });
@@ -52,7 +52,8 @@ export class AdminOnlyComponent implements OnInit {
   }
 
   deleteUser(id: string) {
-    this.http.delete(`${environment.apiBaseUrl}/Identity/delete/${id}`)
+    const params = new HttpParams().set('userId', id);
+    this.http.delete(`${environment.apiBaseUrl}/Account`, {params})
       .subscribe({
         next: (res: any) => {
           this.toastr.success('User deleted', 'Success');

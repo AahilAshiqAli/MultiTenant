@@ -23,7 +23,11 @@ export class MainLayoutComponent {
     }
 
     onDelete() {
-      this.authService.deleteToken();
-      this.router.navigateByUrl('/signin');
+      if (confirm('Are you sure you want to delete this item?')) {
+        const result = this.authService.deleteAccount();
+        this.router.navigateByUrl('/signin');
+      } else {
+        // Cancelled
+      }
     }
   }

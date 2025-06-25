@@ -5,10 +5,10 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/UserProfile": {
+    "/api/Account/UserProfile": {
       "get": {
         "tags": [
-          "AccountController"
+          "Account"
         ],
         "responses": {
           "200": {
@@ -17,10 +17,10 @@
         }
       }
     },
-    "/api/TenantUserCount": {
+    "/api/Account/TenantUserCount": {
       "get": {
         "tags": [
-          "AccountController"
+          "Account"
         ],
         "responses": {
           "200": {
@@ -29,10 +29,10 @@
         }
       }
     },
-    "/api/TenantFileCount": {
+    "/api/Account/TenantFileCount": {
       "get": {
         "tags": [
-          "AccountController"
+          "Account"
         ],
         "responses": {
           "200": {
@@ -41,29 +41,19 @@
         }
       }
     },
-    "/api/AdminOnly": {
-      "get": {
+    "/api/Account": {
+      "delete": {
         "tags": [
-          "AuthorizationDemoController"
+          "Account"
         ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "string"
-                }
-              }
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
-        }
-      }
-    },
-    "/api/admin/logs": {
-      "get": {
-        "tags": [
-          "AuthorizationDemoController"
         ],
         "responses": {
           "200": {
@@ -72,10 +62,10 @@
         }
       }
     },
-    "/api/admin/users": {
+    "/api/Admin/logs": {
       "get": {
         "tags": [
-          "AuthorizationDemoController"
+          "Admin"
         ],
         "responses": {
           "200": {
@@ -84,10 +74,22 @@
         }
       }
     },
-    "/api/admin/approve-user/{userId}": {
+    "/api/Admin/users": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Admin/approve-user/{userId}": {
       "post": {
         "tags": [
-          "AuthorizationDemoController"
+          "Admin"
         ],
         "parameters": [
           {
@@ -98,6 +100,18 @@
               "type": "string"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Admin/only": {
+      "get": {
+        "tags": [
+          "Admin"
         ],
         "responses": {
           "200": {
@@ -132,32 +146,19 @@
         ],
         "requestBody": {
           "content": {
-            "multipart/form-data": {
+            "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "File": {
-                    "type": "string",
-                    "format": "binary"
-                  },
-                  "IsPrivate": {
-                    "type": "boolean"
-                  },
-                  "rendition": {
-                    "type": "string"
-                  }
-                }
-              },
-              "encoding": {
-                "File": {
-                  "style": "form"
-                },
-                "IsPrivate": {
-                  "style": "form"
-                },
-                "rendition": {
-                  "style": "form"
-                }
+                "$ref": "#/components/schemas/CreateProductRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductRequest"
               }
             }
           }
@@ -182,6 +183,27 @@
             "schema": {
               "type": "integer",
               "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/Contents/upload-url": {
+      "get": {
+        "tags": [
+          "Contents"
+        ],
+        "parameters": [
+          {
+            "name": "fileName",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -314,28 +336,6 @@
         }
       }
     },
-    "/api/Identity/delete/{userId}": {
-      "delete": {
-        "tags": [
-          "Identity"
-        ],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
     "/api/progress": {
       "get": {
         "tags": [
@@ -351,6 +351,35 @@
   },
   "components": {
     "schemas": {
+      "CreateProductRequest": {
+        "type": "object",
+        "properties": {
+          "originalFileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "contentType": {
+            "type": "string",
+            "nullable": true
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "blobFileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "isPrivate": {
+            "type": "boolean"
+          },
+          "rendition": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "LoginDto": {
         "type": "object",
         "properties": {

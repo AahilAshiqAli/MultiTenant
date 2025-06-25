@@ -1,20 +1,13 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using MultiTenantAPI.DTO;
-using MultiTenantAPI.Hubs;
 using MultiTenantAPI.Models;
 using MultiTenantAPI.Services.Blob;
-using MultiTenantAPI.Services.Converter;
 using MultiTenantAPI.Services.CurrentTenant;
 using MultiTenantAPI.Services.ProgressStore;
 using MultiTenantAPI.Services.RabbitMQ;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
+
 
 namespace MultiTenantAPI.Services.ContentFolder
 {       
@@ -24,11 +17,10 @@ namespace MultiTenantAPI.Services.ContentFolder
         private readonly AppDbContext _context;
         private readonly ICurrentTenantService _currentTenantService;
         private readonly IBlobService _blobClient;
-        private readonly IFFmpegService _ffmpegService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<ContentService> _logger;
         private readonly IRabbitMqPublisherService _publisher;
-        private readonly IProgressStore _progressStore;
+
 
 
 
@@ -36,20 +28,16 @@ namespace MultiTenantAPI.Services.ContentFolder
             AppDbContext context,
             ICurrentTenantService currentTenantService,
             IBlobServiceFactory factory,
-            IFFmpegService fFmpegService,
             IHttpContextAccessor httpContextAccessor,
             ILogger<ContentService> logger,
-            IRabbitMqPublisherService publisher,
-            IProgressStore progressStore)
+            IRabbitMqPublisherService publisher)
         {
             _context = context;
             _currentTenantService = currentTenantService;
             _blobClient = factory.GetClient();
-            _ffmpegService = fFmpegService;
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
             _publisher = publisher;
-            _progressStore = progressStore;
         }
 
         // Get a list of all contents
@@ -138,6 +126,22 @@ namespace MultiTenantAPI.Services.ContentFolder
             return Task.FromResult(sasUri);
         }
 
+        public object GenerateUploadUrlAsync(string fileName)
+        {
+            if (string.IsNullOrWhiteSpace(fileName))
+                throw new ArgumentException("File name cannot be empty.");
+
+            var blobFileName = $"pending-{Guid.NewGuid()}{Path.GetExtension(fileName)}";
+            var uploadUrl = _blobClient.GetUploadUrl(blobFileName);
+
+
+            return new
+            {
+                uploadUrl,
+                blobFileName,
+            };
+        }
+
 
 
         // Create a new content
@@ -145,24 +149,17 @@ namespace MultiTenantAPI.Services.ContentFolder
         {
             try
             {
-                _logger.LogInformation("Starting content creation for file: {FileName}, ContentType: {ContentType}, Size: {Size}", request.File.FileName, request.File.ContentType, request.File.Length);
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
-                if (!Directory.Exists(uploadsFolder))
-                {
-                    _logger.LogInformation("Uploads folder does not exist. Creating: {UploadsFolder}", uploadsFolder);
-                    Directory.CreateDirectory(uploadsFolder);
-                }
+                //var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                //if (!Directory.Exists(uploadsFolder))
+                //{
+                //    _logger.LogInformation("Uploads folder does not exist. Creating: {UploadsFolder}", uploadsFolder);
+                //    Directory.CreateDirectory(uploadsFolder);
+                //}
 
-                var uniqueFileName = Guid.NewGuid() + Path.GetExtension(request.File.FileName);
-                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                var dupFilePath = filePath;
+                //var uniqueFileName = Guid.NewGuid() + Path.GetExtension(request.OriginalFileName);
+                //var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                //var dupFilePath = filePath;
 
-
-                _logger.LogInformation("Saving uploaded file to: {FilePath}", filePath);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await request.File.CopyToAsync(fileStream);
-                }
 
                 var user = _httpContextAccessor.HttpContext?.User;
                 var userId = user?.Claims.FirstOrDefault(x => x.Type == "userID")?.Value;
@@ -176,17 +173,14 @@ namespace MultiTenantAPI.Services.ContentFolder
 
                 var message = new ContentMessage
                 {
-                    FilePath = filePath,
-                    FileName = request.File.FileName,
-                    ContentType = request.File.ContentType,
-                    Size = request.File.Length,
+                    FileName = request.OriginalFileName,
+                    ContentType = request.ContentType,
+                    Size = request.Size,
                     UserId = userId,
                     TenantId = _currentTenantService.TenantId,
-                    uploadsFolder = uploadsFolder,
-                    dupFilePath = dupFilePath,
-                    uniqueFileName = uniqueFileName,
+                    uniqueFileName = request.BlobFileName,
                     isPrivate = request.IsPrivate,
-                    RequiredRendition = request.rendition
+                    RequiredRendition = request.Rendition
                 };
 
                 await _publisher.PublishMessageAsync (_currentTenantService.TenantId, message);
@@ -199,190 +193,190 @@ namespace MultiTenantAPI.Services.ContentFolder
         }
 
 
-        public async Task ProcessUploadedContentAsync(ContentMessage message)
-        {
+        //public async Task ProcessUploadedContentAsync(ContentMessage message)
+        //{
             
-            string userId = message.UserId;
-            string filePath = message.FilePath;
-            string originalFileName = message.FileName;
-            string uploadsFolder = message.uploadsFolder;
-            string extension = Path.GetExtension(originalFileName).ToLowerInvariant();
-            string uniqueFileName = message.uniqueFileName;
-            string thumbnail = "";
-            string dupFilePath = message.dupFilePath;
-            string blobClientUri = null;
-            string RequiredRendition = message.RequiredRendition;
+        //    string userId = message.UserId;
+        //    string filePath = message.FilePath;
+        //    string originalFileName = message.FileName;
+        //    string uploadsFolder = message.uploadsFolder;
+        //    string extension = Path.GetExtension(originalFileName).ToLowerInvariant();
+        //    string uniqueFileName = message.uniqueFileName;
+        //    string thumbnail = "";
+        //    string dupFilePath = message.dupFilePath;
+        //    string blobClientUri = null;
+        //    string RequiredRendition = message.RequiredRendition;
 
-            try { 
-                // store status as 10% complete
-                _progressStore.SetProgress(userId, 10);
-                _logger.LogInformation("Sent conversion progress 10% to user {UserId}.", userId);
+        //    try { 
+        //        // store status as 10% complete
+        //        _progressStore.SetProgress(userId, 10);
+        //        _logger.LogInformation("Sent conversion progress 10% to user {UserId}.", userId);
 
-                var audioExtensions = new[] { ".wav", ".aac", ".flac", ".ogg", ".m4a", ".wma" };
-                var videoExtensions = new[] { ".avi", ".mov", ".wmv", ".flv", ".mkv", ".webm" };
+        //        var audioExtensions = new[] { ".wav", ".aac", ".flac", ".ogg", ".m4a", ".wma" };
+        //        var videoExtensions = new[] { ".avi", ".mov", ".wmv", ".flv", ".mkv", ".webm" };
 
-                if (audioExtensions.Contains(extension))
-                {
-                    _logger.LogInformation("Audio file detected. Converting to mp3.");
-                    filePath = await _ffmpegService.ConvertToMp3Async(filePath);
-                    if (string.IsNullOrEmpty(filePath))
-                        throw new Exception("Failed to convert audio file.");
+        //        if (audioExtensions.Contains(extension))
+        //        {
+        //            _logger.LogInformation("Audio file detected. Converting to mp3.");
+        //            filePath = await _ffmpegService.ConvertToMp3Async(filePath);
+        //            if (string.IsNullOrEmpty(filePath))
+        //                throw new Exception("Failed to convert audio file.");
 
-                    uniqueFileName = Path.ChangeExtension(uniqueFileName, ".mp3");
-                    thumbnail = Path.Combine(uploadsFolder, "music.jpg");
-                }
-                else if (videoExtensions.Contains(extension))
-                {
-                    _logger.LogInformation("Video file detected. Converting to mp4.");
-                    filePath = await _ffmpegService.ConvertToMp4Async(filePath);
-                    if (string.IsNullOrEmpty(filePath))
-                        throw new Exception("Failed to convert video file.");
+        //            uniqueFileName = Path.ChangeExtension(uniqueFileName, ".mp3");
+        //            thumbnail = Path.Combine(uploadsFolder, "music.jpg");
+        //        }
+        //        else if (videoExtensions.Contains(extension))
+        //        {
+        //            _logger.LogInformation("Video file detected. Converting to mp4.");
+        //            filePath = await _ffmpegService.ConvertToMp4Async(filePath);
+        //            if (string.IsNullOrEmpty(filePath))
+        //                throw new Exception("Failed to convert video file.");
 
-                    uniqueFileName = Path.ChangeExtension(uniqueFileName, ".mp4");
+        //            uniqueFileName = Path.ChangeExtension(uniqueFileName, ".mp4");
 
-                    bool rendition = await _ffmpegService.GetRenditionLabelAsync(filePath, RequiredRendition);
+        //            bool rendition = await _ffmpegService.GetRenditionLabelAsync(filePath, RequiredRendition);
 
-                    if (!rendition)
-                    {
-                        return;
-                    }
+        //            if (!rendition)
+        //            {
+        //                return;
+        //            }
                     
 
                     
-                    thumbnail = Path.Combine(uploadsFolder, Path.ChangeExtension(uniqueFileName, ".jpg"));
+        //            thumbnail = Path.Combine(uploadsFolder, Path.ChangeExtension(uniqueFileName, ".jpg"));
 
-                    _logger.LogInformation("Extracting thumbnail for video.");
-                    bool success = await _ffmpegService.ExtractThumbnailAsync(filePath, thumbnail);
-                    if (!success || !System.IO.File.Exists(thumbnail))
-                        throw new Exception("Failed to generate video thumbnail.");
+        //            _logger.LogInformation("Extracting thumbnail for video.");
+        //            bool success = await _ffmpegService.ExtractThumbnailAsync(filePath, thumbnail);
+        //            if (!success || !System.IO.File.Exists(thumbnail))
+        //                throw new Exception("Failed to generate video thumbnail.");
 
-                    filePath = await _ffmpegService.GenerateVideoRenditionsAsync(filePath, RequiredRendition);
-                    uniqueFileName = AddRenditionToFileName(uniqueFileName, RequiredRendition);
-                }
-                else if (extension == ".mp3")
-                {
-                    uniqueFileName = Path.ChangeExtension(uniqueFileName, extension);
-                    thumbnail = Path.Combine(uploadsFolder, "music.jpg");
-                }
-                else if (extension == ".mp4")
-                {
-                    uniqueFileName = Path.ChangeExtension(uniqueFileName, extension);
-                    thumbnail = Path.Combine(uploadsFolder, Path.ChangeExtension(uniqueFileName, ".jpg"));
+        //            filePath = await _ffmpegService.GenerateVideoRenditionsAsync(filePath, RequiredRendition);
+        //            uniqueFileName = AddRenditionToFileName(uniqueFileName, RequiredRendition);
+        //        }
+        //        else if (extension == ".mp3")
+        //        {
+        //            uniqueFileName = Path.ChangeExtension(uniqueFileName, extension);
+        //            thumbnail = Path.Combine(uploadsFolder, "music.jpg");
+        //        }
+        //        else if (extension == ".mp4")
+        //        {
+        //            uniqueFileName = Path.ChangeExtension(uniqueFileName, extension);
+        //            thumbnail = Path.Combine(uploadsFolder, Path.ChangeExtension(uniqueFileName, ".jpg"));
 
-                    bool success = await _ffmpegService.ExtractThumbnailAsync(filePath, thumbnail);
-                    if (!success)
-                        _logger.LogWarning("Failed to extract thumbnail for MP4 file: {FilePath}", filePath);
+        //            bool success = await _ffmpegService.ExtractThumbnailAsync(filePath, thumbnail);
+        //            if (!success)
+        //                _logger.LogWarning("Failed to extract thumbnail for MP4 file: {FilePath}", filePath);
 
-                    var rendition = await _ffmpegService.GetRenditionLabelAsync(filePath, RequiredRendition);
+        //            var rendition = await _ffmpegService.GetRenditionLabelAsync(filePath, RequiredRendition);
 
-                    if (!rendition)
-                    {
-                        _logger.LogError("Couldnot figure not Video Rendition");
-                        return;
-                    }
+        //            if (!rendition)
+        //            {
+        //                _logger.LogError("Couldnot figure not Video Rendition");
+        //                return;
+        //            }
 
-                    filePath = await _ffmpegService.GenerateVideoRenditionsAsync(filePath, RequiredRendition);
-                    uniqueFileName = AddRenditionToFileName(uniqueFileName, RequiredRendition);
+        //            filePath = await _ffmpegService.GenerateVideoRenditionsAsync(filePath, RequiredRendition);
+        //            uniqueFileName = AddRenditionToFileName(uniqueFileName, RequiredRendition);
 
-                }
-                else
-                {
-                    throw new NotSupportedException($"File type '{extension}' is not supported.");
-                }
+        //        }
+        //        else
+        //        {
+        //            throw new NotSupportedException($"File type '{extension}' is not supported.");
+        //        }
 
-                // store styus as 70% complete
-                _progressStore.SetProgress(userId,70);
-                _logger.LogInformation("Sent conversion progress 70% to user {UserId}.", userId);
+        //        // store styus as 70% complete
+        //        _progressStore.SetProgress(userId,70);
+        //        _logger.LogInformation("Sent conversion progress 70% to user {UserId}.", userId);
 
-                using (var stream = File.OpenRead(filePath))
-                {
-                    blobClientUri = await _blobClient.UploadAsync(
-                        stream,
-                        uniqueFileName,
-                        message.ContentType
-                    );
-                }
+        //        using (var stream = File.OpenRead(filePath))
+        //        {
+        //            blobClientUri = await _blobClient.UploadAsync(
+        //                stream,
+        //                uniqueFileName,
+        //                message.ContentType
+        //            );
+        //        }
 
-                if (string.IsNullOrEmpty(blobClientUri))
-                    throw new Exception("Failed to upload file to blob storage.");
-                await Task.Delay(1000);
-
-
-                // implementing Transaction For RollBack
-                // Before it, we should make sure that everything is good else we should perform rollback of previous things and end.
-
-                using var transaction = await _context.Database.BeginTransactionAsync();
+        //        if (string.IsNullOrEmpty(blobClientUri))
+        //            throw new Exception("Failed to upload file to blob storage.");
+        //        await Task.Delay(1000);
 
 
-                var content = new Content
-                {
-                    TenantID = message.TenantId,
-                    FileName = originalFileName,
-                    ContentType = message.ContentType,
-                    Size = message.Size,
-                    FilePath = uniqueFileName,
-                    thumbnail = Path.GetFileName(thumbnail),
-                    UserId = userId,
-                    IsPrivate = message.isPrivate
-                };
+        //        // implementing Transaction For RollBack
+        //        // Before it, we should make sure that everything is good else we should perform rollback of previous things and end.
 
-                _context.Contents.Add(content);
-                await _context.SaveChangesAsync();
-                await transaction.CommitAsync();
-                _logger.LogInformation("Content created successfully: Id={Id}, FileName={FileName}, ContentType={ContentType}, Size={Size}, FilePath={FilePath}, TenantId={TenantId}, UserId={UserId}, IsPrivate={IsPrivate}, Thumbnail={Thumbnail}",
-                    content.Id,
-                    content.FileName,
-                    content.ContentType,
-                    content.Size,
-                    content.FilePath,
-                    content.TenantID,
-                    content.UserId,
-                    content.IsPrivate,  
-                    content.thumbnail
-                );
+        //        using var transaction = await _context.Database.BeginTransactionAsync();
 
 
-                if (File.Exists(filePath))
-                {
-                    _logger.LogInformation("Deleting local file: {FilePath}", filePath);
-                    File.Delete(filePath);
-                    if (File.Exists(dupFilePath)) File.Delete(dupFilePath);
-                }
-                    // store status as 100% complete
-                    _progressStore.SetProgress(userId, 100);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error occurred during content processing for user {UserId}", userId);
+        //        var content = new Content
+        //        {
+        //            TenantID = message.TenantId,
+        //            FileName = originalFileName,
+        //            ContentType = message.ContentType,
+        //            Size = message.Size,
+        //            FilePath = uniqueFileName,
+        //            thumbnail = Path.GetFileName(thumbnail),
+        //            UserId = userId,
+        //            IsPrivate = message.isPrivate
+        //        };
 
-                // Rollback manually uploaded blob if needed
-                if (!string.IsNullOrEmpty(blobClientUri))
-                {
-                    try
-                    {
-                        await _blobClient.DeleteBlobAsync(uniqueFileName);
-                        _logger.LogInformation("Rolled back uploaded blob: {FileName}", uniqueFileName);
-                    }
-                    catch (Exception deleteEx)
-                    {
-                        _logger.LogWarning(deleteEx, "Failed to rollback uploaded blob for file: {FileName}", uniqueFileName);
-                    }
-                }
+        //        _context.Contents.Add(content);
+        //        await _context.SaveChangesAsync();
+        //        await transaction.CommitAsync();
+        //        _logger.LogInformation("Content created successfully: Id={Id}, FileName={FileName}, ContentType={ContentType}, Size={Size}, FilePath={FilePath}, TenantId={TenantId}, UserId={UserId}, IsPrivate={IsPrivate}, Thumbnail={Thumbnail}",
+        //            content.Id,
+        //            content.FileName,
+        //            content.ContentType,
+        //            content.Size,
+        //            content.FilePath,
+        //            content.TenantID,
+        //            content.UserId,
+        //            content.IsPrivate,  
+        //            content.thumbnail
+        //        );
 
-                // Clean up local files
-                if (File.Exists(filePath)) File.Delete(filePath);
-                if (File.Exists(dupFilePath)) File.Delete(dupFilePath);
 
-                throw; // Let the caller know an error happened
-            }
-        }
+        //        if (File.Exists(filePath))
+        //        {
+        //            _logger.LogInformation("Deleting local file: {FilePath}", filePath);
+        //            File.Delete(filePath);
+        //            if (File.Exists(dupFilePath)) File.Delete(dupFilePath);
+        //        }
+        //            // store status as 100% complete
+        //            _progressStore.SetProgress(userId, 100);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Error occurred during content processing for user {UserId}", userId);
 
-        string AddRenditionToFileName(string uniqueFileName, string rendition)
-        {
-            var nameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueFileName); // "aahil"
-            var extension = Path.GetExtension(uniqueFileName);                            // ".jpg"
-            return $"{nameWithoutExtension}{rendition}{extension}";                       // "aahil_480p.jpg"
-        }
+        //        // Rollback manually uploaded blob if needed
+        //        if (!string.IsNullOrEmpty(blobClientUri))
+        //        {
+        //            try
+        //            {
+        //                await _blobClient.DeleteBlobAsync(uniqueFileName);
+        //                _logger.LogInformation("Rolled back uploaded blob: {FileName}", uniqueFileName);
+        //            }
+        //            catch (Exception deleteEx)
+        //            {
+        //                _logger.LogWarning(deleteEx, "Failed to rollback uploaded blob for file: {FileName}", uniqueFileName);
+        //            }
+        //        }
+
+        //        // Clean up local files
+        //        if (File.Exists(filePath)) File.Delete(filePath);
+        //        if (File.Exists(dupFilePath)) File.Delete(dupFilePath);
+
+        //        throw; // Let the caller know an error happened
+        //    }
+        //}
+
+        //string AddRenditionToFileName(string uniqueFileName, string rendition)
+        //{
+        //    var nameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueFileName); // "aahil"
+        //    var extension = Path.GetExtension(uniqueFileName);                            // ".jpg"
+        //    return $"{nameWithoutExtension}{rendition}{extension}";                       // "aahil_480p.jpg"
+        //}
 
         // Delete content
         public async Task<bool> DeleteContent(string name)

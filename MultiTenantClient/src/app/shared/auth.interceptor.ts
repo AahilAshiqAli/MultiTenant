@@ -10,6 +10,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router)
   const toastr = inject(ToastrService)
 
+  if (req.url.startsWith('https://aahilashiq.blob.core.windows.net')) {
+  return next(req); // Don't attach token for Azure Blob requests
+}
+
   if (authService.isLoggedIn()) {
     const clonedReq = req.clone({
       headers: req.headers.set('Authorization', 'Bearer ' + authService.getToken())

@@ -16,7 +16,7 @@ namespace MultiTenantAPI.Controllers
             app.MapGet("/AdminOnly", AdminOnly);
             app.MapGet("/admin/logs", (Delegate)GetAllLogs);
             app.MapGet("admin/users", (Delegate)GetAllUsers);
-            app.MapPost("/admin/approve-user/{userId}", ApproveUser);
+            app.MapPost("/admi/approve-user/{userId}", ApproveUser);
             return app;
         }
 

@@ -69,6 +69,30 @@ namespace MultiTenantAPI.Models
             }
         }
 
+        private async Task DeleteOrphanedTenantsAsync()
+        {
+            var deletedUsers = ChangeTracker.Entries<AppUser>()
+                .Where(e => e.State == EntityState.Deleted)
+                .Select(e => e.Entity.TenantID)
+                .Distinct()
+                .ToList();
+
+            foreach (var tenantId in deletedUsers)
+            {
+                // Check if there are any users for this tenant that are NOT being deleted
+                bool anyUsersLeft = ChangeTracker.Entries<AppUser>()
+                    .Any(e => e.Entity.TenantID == tenantId && e.State != EntityState.Deleted);
+
+                if (!anyUsersLeft)
+                {
+                    var tenant = await Tenants.FindAsync(tenantId);
+                    if (tenant != null)
+                    {
+                        Tenants.Remove(tenant);
+                    }
+                }
+            }
+        }
 
         public override int SaveChanges()
         {
@@ -79,6 +103,7 @@ namespace MultiTenantAPI.Models
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             ApplyAudit();
+            await DeleteOrphanedTenantsAsync();
             return await base.SaveChangesAsync(cancellationToken);
         }
 

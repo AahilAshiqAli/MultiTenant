@@ -1,5 +1,6 @@
 ﻿using MultiTenantAPI.DTO;
 using MultiTenantAPI.Services.ContentFolder;
+using MultiTenantAPI.Services.ContentProcessor;
 using MultiTenantAPI.Services.CurrentTenant;
 using MultiTenantAPI.Services.RabbitMQ;
 using Newtonsoft.Json;
@@ -51,9 +52,9 @@ public class RabbitMqConsumerService : BackgroundService
                 await currentTenantService.SetTenant(message.TenantId);
                 _logger.LogInformation("Set tenant: {TenantId}", message.TenantId);
 
-                var contentService = scope.ServiceProvider.GetRequiredService<IContentService>();
+                var contentProcessingService = scope.ServiceProvider.GetRequiredService<IContentProcessorService>();
                 _logger.LogInformation("Processing uploaded content");
-                await contentService.ProcessUploadedContentAsync(message);
+                await contentProcessingService.ProcessUploadedContentAsync(message);
                 _logger.LogInformation("Completed content processing");
 
                 await _channel.BasicAckAsync(ea.DeliveryTag, false);
