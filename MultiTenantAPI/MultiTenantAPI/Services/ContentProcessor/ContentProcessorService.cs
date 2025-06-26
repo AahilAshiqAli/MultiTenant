@@ -1,13 +1,14 @@
 ﻿using Azure.Storage.Blobs;
+using Microsoft.EntityFrameworkCore;
 using MultiTenantAPI.DTO;
 using MultiTenantAPI.Models;
 using MultiTenantAPI.Services.Blob;
 using MultiTenantAPI.Services.ContentFolder;
 using MultiTenantAPI.Services.CurrentTenant;
-using MultiTenantAPI.Services.ProgressStore;
 using MultiTenantAPI.Services.FFmpeg.Converter;
-using MultiTenantAPI.Services.FFmpeg.VideoRendition;
 using MultiTenantAPI.Services.FFmpeg.Thumbnail;
+using MultiTenantAPI.Services.FFmpeg.VideoRendition;
+using MultiTenantAPI.Services.ProgressStore;
 
 namespace MultiTenantAPI.Services.ContentProcessor
 {
@@ -15,9 +16,7 @@ namespace MultiTenantAPI.Services.ContentProcessor
     {
         private readonly ILogger<ContentProcessorService> _logger;
         private readonly AppDbContext _context;
-        private readonly ICurrentTenantService _currentTenantService;
         private readonly IBlobService _blobClient;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IProgressStore _progressStore;
         private readonly IConverterService _converterService;
         private readonly IVideoRenditionService _videoRenditionService;
@@ -25,7 +24,6 @@ namespace MultiTenantAPI.Services.ContentProcessor
 
         public ContentProcessorService(
         AppDbContext context,
-        ICurrentTenantService currentTenantService,
         IBlobServiceFactory factory,
         IHttpContextAccessor httpContextAccessor,
         ILogger<ContentProcessorService> logger,
@@ -35,9 +33,7 @@ namespace MultiTenantAPI.Services.ContentProcessor
         IThumbnailService thumbnailService)
         {
             _context = context;
-            _currentTenantService = currentTenantService;
             _blobClient = factory.GetClient();
-            _httpContextAccessor = httpContextAccessor;
             _logger = logger;
             _progressStore = progressStore;
             _converterService = converterService;
@@ -57,6 +53,15 @@ namespace MultiTenantAPI.Services.ContentProcessor
             string thumbnail = "";
             string blobClientUri = null;
             string RequiredRendition = message.RequiredRendition;
+
+            var content = await _context.Contents
+                .FirstOrDefaultAsync(c => c.FilePath == uniqueFileName);
+
+            if (content == null)
+            {
+                _logger.LogWarning("Content not found: FileName={FileName}, TenantId={TenantId}", originalFileName, message.TenantId);
+                return;
+            }
 
 
             var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
@@ -94,7 +99,7 @@ namespace MultiTenantAPI.Services.ContentProcessor
                     uniqueFileName = Path.ChangeExtension(uniqueFileName, ".mp3");
                     thumbnail = Path.Combine(uploadsFolder, "music.jpg");
                 }
-                else if (videoExtensions.Contains(extension) || extension == ".mp4")
+                else if (videoExtensions.Contains(extension))
                 {
                     processedFilePath = await _converterService.ConvertToMp4Async(tempFilePath);
                     if (string.IsNullOrEmpty(processedFilePath))
@@ -121,6 +126,27 @@ namespace MultiTenantAPI.Services.ContentProcessor
                 {
                     thumbnail = Path.Combine(uploadsFolder, "music.jpg");
                 }
+                else if (extension == ".mp4")
+                {
+                    uniqueFileName = Path.ChangeExtension(uniqueFileName, extension);
+                    thumbnail = Path.Combine(uploadsFolder, Path.ChangeExtension(uniqueFileName, ".jpg"));
+
+                    bool success = await _thumbnailService.ExtractThumbnailAsync(tempFilePath, thumbnail);
+                    if (!success)
+                        _logger.LogWarning("Failed to extract thumbnail for MP4 file: {FilePath}", tempFilePath);
+
+                    var rendition = await _videoRenditionService.GetRenditionLabelAsync(tempFilePath, RequiredRendition);
+
+                    if (!rendition)
+                    {
+                        _logger.LogError("Couldnot figure not Video Rendition");
+                        return;
+                    }
+
+                    processedFilePath = await _videoRenditionService.GenerateVideoRenditionsAsync(tempFilePath, RequiredRendition);
+                    uniqueFileName = AddRenditionToFileName(uniqueFileName, RequiredRendition);
+
+                }
                 else
                 {
                     throw new NotSupportedException($"File type '{extension}' is not supported.");
@@ -128,6 +154,10 @@ namespace MultiTenantAPI.Services.ContentProcessor
 
                 _progressStore.SetProgress(userId, 70);
                 _logger.LogInformation("Sent conversion progress 70% to user {UserId}.", userId);
+
+                uniqueFileName = uniqueFileName.StartsWith("pending-")
+                    ? uniqueFileName.Substring("pending-".Length)
+                    : uniqueFileName;
 
                 await using var uploadStream = File.OpenRead(processedFilePath);
                 blobClientUri = await _blobClient.UploadAsync(uploadStream, uniqueFileName, message.ContentType);
@@ -137,23 +167,13 @@ namespace MultiTenantAPI.Services.ContentProcessor
 
                 using var transaction = await _context.Database.BeginTransactionAsync();
 
-                var content = new Content
-                {
-                    TenantID = message.TenantId,
-                    FileName = originalFileName,
-                    ContentType = message.ContentType,
-                    Size = message.Size,
-                    FilePath = uniqueFileName,
-                    thumbnail = Path.GetFileName(thumbnail),
-                    UserId = userId,
-                    IsPrivate = message.isPrivate
-                };
-
-                _context.Contents.Add(content);
+                content.thumbnail = Path.GetFileName(thumbnail);
+                content.Status = true;
+                content.FilePath = uniqueFileName;
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
 
-                _logger.LogInformation("Content created successfully: Id={Id}, FileName={FileName}, ContentType={ContentType}, Size={Size}, FilePath={FilePath}, TenantId={TenantId}, UserId={UserId}, IsPrivate={IsPrivate}, Thumbnail={Thumbnail}",
+                _logger.LogInformation("Content updated successfully: Id={Id}, FileName={FileName}, ContentType={ContentType}, Size={Size}, FilePath={FilePath}, TenantId={TenantId}, UserId={UserId}, IsPrivate={IsPrivate}, Thumbnail={Thumbnail}",
                     content.Id,
                     content.FileName,
                     content.ContentType,
@@ -164,6 +184,16 @@ namespace MultiTenantAPI.Services.ContentProcessor
                     content.IsPrivate,
                     content.thumbnail
                 );
+
+                var result = await _blobClient.DeleteBlobAsync(message.uniqueFileName);
+                if (!result)
+                    throw new Exception("Failed to delete pending file");
+
+                //if (File.Exists(processedFilePath))
+                //{
+                //    File.Delete(processedFilePath);
+                //    _logger.LogInformation("Deleted processed local file: {FilePath}", processedFilePath);
+                //}
 
                 _progressStore.SetProgress(userId, 100);
             }

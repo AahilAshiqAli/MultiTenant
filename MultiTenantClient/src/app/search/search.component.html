@@ -49,7 +49,9 @@
                   />
                   <div class="card-body">
                     <h5 class="card-title">{{ item.fileName }}</h5>
+                    
                     <p class="card-text small mb-0">
+                      <strong *ngIf="item.status == false" class="bi bi-cloud-upload-fill text-primary">Unprocessed</strong><br />
                       <strong>Size:</strong> {{ formatBytes(item.size) }}<br />
                       <strong>Content Type:</strong> {{ item.contentType }}
                     </p>

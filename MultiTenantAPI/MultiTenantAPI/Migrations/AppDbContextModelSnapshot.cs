@@ -269,6 +269,9 @@ namespace MultiTenantAPI.Migrations
                     b.Property<long>("Size")
                         .HasColumnType("bigint");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.Property<string>("TenantID")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");

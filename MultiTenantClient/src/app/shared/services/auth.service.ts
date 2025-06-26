@@ -11,10 +11,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) { }
   
   createUser(formData: any) {
-    //WARNING!
-    //default value for Role, Gender, Age, LibraryID?
-    //instead of registration form, there should some other
-    //form to update these details of the user
+
     formData.gender = formData.gender.toLowerCase()
     const dob = new Date(formData.dob);
     const today = new Date();

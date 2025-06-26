@@ -27,5 +27,10 @@ namespace MultiTenantAPI.Models
 
         [Column(TypeName = "nvarchar(500)")]
         public string? thumbnail { get; set; }
+
+        [Column(TypeName = "bit")]
+        public bool Status { get; set; } = false;
+
+
     }
 }

@@ -125,14 +125,9 @@ namespace MultiTenantAPI.Controllers
                 }
 
                 Log.Information("Creating content for file: {FileName}", request.OriginalFileName);
-                await _contentService.CreateContent(request);
+                var contentDto = await _contentService.CreateContent(request);
                 Log.Information("Content created successfully for file: {FileName}", request.OriginalFileName);
-                return Ok(new
-                {
-                    FileName = request.OriginalFileName,
-                    ContentType = request.ContentType,
-                    Size = request.Size
-                });
+                return Ok(contentDto);
                 
             }
             catch (Exception ex)

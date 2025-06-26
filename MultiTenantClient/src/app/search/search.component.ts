@@ -12,6 +12,7 @@ interface SearchResult {
   contentType: string;
   fileName: string;
   thumbnail: string;
+  status: boolean;
 }
 
 @Component({
@@ -51,7 +52,8 @@ export class SearchComponent implements OnInit {
           size: p.size,
           contentType: p.contentType,
           fileName: p.fileName,
-          thumbnail: p.thumbnail
+          thumbnail: p.thumbnail,
+          status: p.status
         }));
 
         
@@ -106,7 +108,8 @@ export class SearchComponent implements OnInit {
           size: p.size,
           contentType: p.contentType,
           fileName: p.fileName,
-          thumbnail: p.thumbnail
+          thumbnail: p.thumbnail,
+          status: p.status
         }));
 
         

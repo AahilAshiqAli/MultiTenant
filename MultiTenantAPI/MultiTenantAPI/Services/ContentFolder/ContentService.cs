@@ -60,7 +60,8 @@ namespace MultiTenantAPI.Services.ContentFolder
                     Size = c.Size,
                     TenantId = c.TenantID,
                     thumbnail = c.thumbnail,
-                    UserId = c.UserId
+                    UserId = c.UserId,
+                    Status = c.Status
                 })
                 .ToList();
 
@@ -89,7 +90,8 @@ namespace MultiTenantAPI.Services.ContentFolder
                     Size = c.Size,
                     TenantId = c.TenantID,
                     thumbnail = c.thumbnail,
-                    UserId = c.UserId
+                    UserId = c.UserId,
+                    Status = c.Status
                 })
                 .ToList();
 
@@ -145,22 +147,10 @@ namespace MultiTenantAPI.Services.ContentFolder
 
 
         // Create a new content
-        public async Task CreateContent(CreateProductRequest request)
+        public async Task<ContentDto> CreateContent(CreateProductRequest request)
         {
             try
             {
-                //var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
-                //if (!Directory.Exists(uploadsFolder))
-                //{
-                //    _logger.LogInformation("Uploads folder does not exist. Creating: {UploadsFolder}", uploadsFolder);
-                //    Directory.CreateDirectory(uploadsFolder);
-                //}
-
-                //var uniqueFileName = Guid.NewGuid() + Path.GetExtension(request.OriginalFileName);
-                //var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                //var dupFilePath = filePath;
-
-
                 var user = _httpContextAccessor.HttpContext?.User;
                 var userId = user?.Claims.FirstOrDefault(x => x.Type == "userID")?.Value;
                 if (string.IsNullOrEmpty(userId))
@@ -184,6 +174,58 @@ namespace MultiTenantAPI.Services.ContentFolder
                 };
 
                 await _publisher.PublishMessageAsync (_currentTenantService.TenantId, message);
+
+                using var transaction = await _context.Database.BeginTransactionAsync();
+
+                var content = new Content
+                {
+                    TenantID = message.TenantId,
+                    FileName = message.FileName,
+                    ContentType = message.ContentType,
+                    Size = message.Size,
+                    FilePath = message.uniqueFileName,
+                    thumbnail = null,
+                    UserId = userId,
+                    IsPrivate = message.isPrivate,
+                    Status = false // Will turn to true once processing is complete
+                };
+
+                _context.Contents.Add(content);
+                int affectedRows = await _context.SaveChangesAsync();
+                if (affectedRows == 0)
+                {
+                    await transaction.RollbackAsync();
+                    _logger.LogWarning("SaveChangesAsync returned 0. No rows affected.");
+                    throw new Exception("No rows were affected while saving content.");
+                }
+                await transaction.CommitAsync();
+
+                _logger.LogInformation("Content created successfully: Id={Id}, FileName={FileName}, ContentType={ContentType}, Size={Size}, FilePath={FilePath}, TenantId={TenantId}, UserId={UserId}, IsPrivate={IsPrivate}, Status={Status}",
+                    content.Id,
+                    content.FileName,
+                    content.ContentType,
+                    content.Size,
+                    content.FilePath,
+                    content.TenantID,
+                    content.UserId,
+                    content.IsPrivate,
+                    content.Status
+                );
+
+                // Map the Content object to a ContentDto object before returning
+                var contentDto = new ContentDto
+                {
+                    Id = content.Id,
+                    FileName = content.FileName,
+                    ContentType = content.ContentType,
+                    Size = content.Size,
+                    TenantId = content.TenantID,
+                    thumbnail = "",
+                    UserId = content.UserId,
+                    Status = content.Status
+                };
+
+                return contentDto;
             }
             catch (Exception ex)
             {

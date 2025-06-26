@@ -15,7 +15,7 @@ namespace MultiTenantAPI.Services.ContentFolder
 
         object GenerateUploadUrlAsync(string filename);
 
-        public Task CreateContent(CreateProductRequest request);
+        public Task<ContentDto> CreateContent(CreateProductRequest request);
 
         Task<bool> DeleteContent(string name);
 

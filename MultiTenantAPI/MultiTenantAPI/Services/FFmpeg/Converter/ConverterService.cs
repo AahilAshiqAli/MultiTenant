@@ -57,7 +57,7 @@ namespace MultiTenantAPI.Services.FFmpeg.Converter
 
             process.Start();
 
-            _logger.LogInformation("FFmpeg process started. PID: {ProcessId}", process.Id);
+            _logger.LogInformation("FFmpeg process started. PID: {ProcessId} for conversion to mp4", process.Id);
 
             // Begin reading both output streams
             process.BeginOutputReadLine();

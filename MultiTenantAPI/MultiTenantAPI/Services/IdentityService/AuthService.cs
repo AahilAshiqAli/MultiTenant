@@ -79,7 +79,7 @@ namespace MultiTenantAPI.Services.IdentityService
                     }
                     else
                     {
-                        return ServiceResult<object>.Fail("what the fuck");
+                        return ServiceResult<object>.Fail("somError");
                     }
                 }
 

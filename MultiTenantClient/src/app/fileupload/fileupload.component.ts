@@ -20,7 +20,7 @@ export class FileuploadComponent implements OnInit {
   uploadForm: FormGroup;
   selectedFile: File | null = null;
   uploadProgress: number | null = null;
-  uploadResponse: string | null = null;
+  uploadResponse: any = null;
   uploadedSize: number = 0;
   conversionProgress: number | null = null;
   totalBytes: number = 0;
@@ -192,12 +192,26 @@ export class FileuploadComponent implements OnInit {
               };
               console.log(notifyPayload);
               this.http.post(`${environment.apiBaseUrl}/Contents`, notifyPayload)
-                .subscribe(() => {
-                  this.toastr.success('Upload initiated successfully', 'Success');
-                  // Step 4: Start polling progress
-                  this.progressService.startPolling((progress) => {
-                    this.conversionProgress = progress;
-                  });
+                // .subscribe(() => {
+                //   this.uploadResponse = res;
+                //   this.toastr.success('Upload initiated successfully', 'Success');
+                //   // Step 4: Start polling progress
+                //   this.progressService.startPolling((progress) => {
+                //     this.conversionProgress = progress;
+                //   });
+                // });
+                .subscribe({
+                  next: (res) => {
+                    this.uploadResponse = res; // ✅ Capture the response
+                    this.toastr.success('Upload initiated successfully', 'Success');
+                    this.progressService.startPolling((progress) => {
+                      this.conversionProgress = progress;
+                    });
+                  },
+                  error: (err) => {
+                    this.toastr.error('Upload notification failed', 'Error');
+                    console.error(err);
+                  }
                 });
             }
           },
