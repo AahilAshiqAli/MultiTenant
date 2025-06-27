@@ -75,6 +75,7 @@ namespace MultiTenantAPI.Services.ContentProcessor
 
             try
             {
+                _logger.LogInformation("not failed");
                 _progressStore.SetProgress(userId, 10);
                 _logger.LogInformation("Sent conversion progress 10% to user {UserId}.", userId);
 
@@ -84,7 +85,7 @@ namespace MultiTenantAPI.Services.ContentProcessor
                 {
                     await blobStream.CopyToAsync(fileStream);
                 }
-
+                _logger.LogInformation("not failed");
                 string processedFilePath = tempFilePath;
 
                 var audioExtensions = new[] { ".wav", ".aac", ".flac", ".ogg", ".m4a", ".wma" };

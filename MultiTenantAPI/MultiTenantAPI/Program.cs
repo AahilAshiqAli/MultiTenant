@@ -65,6 +65,12 @@ builder.Host.UseSerilog((context, services, configuration) =>
 builder.Services.AddScoped<IRabbitMqPublisherService, RabbitMqPublisherService>();
 builder.Services.AddHostedService<RabbitMqConsumerService>();
 
+builder.Services.AddLogging(logging =>
+{
+    logging.AddConsole();
+    logging.SetMinimumLevel(LogLevel.Debug);
+});
+
 var app = builder.Build();
 
 

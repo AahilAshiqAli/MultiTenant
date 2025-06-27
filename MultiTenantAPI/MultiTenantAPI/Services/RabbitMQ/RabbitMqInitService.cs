@@ -1,27 +1,27 @@
 ﻿using RabbitMQ.Client;
 using Serilog;
+using System.Threading.Channels;
 
 namespace MultiTenantAPI.Services.RabbitMQ
 {   
     public static class RabbitMqInitService
     {
-        private static Task<IChannel>? _channelTask;
+        private static Task<IChannel>? _channelTaskHigh;
+        private static Task<IChannel>? _channelTaskNormal;
+        private static Task<IChannel>? _channelTaskLow;
 
- 
-        public static Task<IChannel> GetChannelAsync()
+        public static Task<IChannel> GetChannelAsync(string queue)
         {
-            if (_channelTask != null)
+            return queue switch
             {
-                Log.Information("Returning cached RabbitMQ channel task.");
-                return _channelTask;
-            }
-
-            Log.Information("Creating and caching new RabbitMQ channel task.");
-            _channelTask = CreateAndCacheChannelAsync();
-            return _channelTask;
+                "tasks.high" => _channelTaskHigh ??= CreateAndCacheChannelAsync("tasks.high"),
+                "tasks.normal" => _channelTaskNormal ??= CreateAndCacheChannelAsync("tasks.normal"),
+                "tasks.low" => _channelTaskLow ??= CreateAndCacheChannelAsync("tasks.low"),
+                _ => throw new ArgumentException($"Unsupported queue: {queue}")
+            };
         }
 
-        private static async Task<IChannel> CreateAndCacheChannelAsync()
+        private static async Task<IChannel> CreateAndCacheChannelAsync(string queue)
         {
             try
             {
@@ -38,20 +38,47 @@ namespace MultiTenantAPI.Services.RabbitMQ
                 Log.Information("RabbitMQ connection established.");
 
                 Log.Information("Creating RabbitMQ channel asynchronously.");
-                var channel = await connection.CreateChannelAsync();
+                IChannel channel;
+
+                switch (queue)
+                {
+                    case "tasks.high":
+                        channel = await connection.CreateChannelAsync();
+                        break;
+
+                    case "tasks.normal":
+                        channel = await connection.CreateChannelAsync();
+                        break;
+
+                    case "tasks.low":
+                        channel = await connection.CreateChannelAsync();
+                        break;
+
+                    default:
+                        throw new ArgumentException($"Unsupported queue: {queue}");
+                }
                 Log.Information("RabbitMQ channel created.");
 
-                // Declare queues once
-                Log.Information("Declaring queue: tasks.high");
-                await channel.QueueDeclareAsync("tasks.high", durable: true, exclusive: false, autoDelete: false);
+                switch (queue)
+                {
+                    case "tasks.high":
+                        Log.Information("Declaring queue: tasks.high");
+                        await channel.QueueDeclareAsync("tasks.high", durable: true, exclusive: false, autoDelete: false);
+                        break;
 
-                Log.Information("Declaring queue: tasks.normal");
-                await channel.QueueDeclareAsync("tasks.normal", durable: true, exclusive: false, autoDelete: false);
+                    case "tasks.normal":
+                        Log.Information("Declaring queue: tasks.normal");
+                        await channel.QueueDeclareAsync("tasks.normal", durable: true, exclusive: false, autoDelete: false);
+                        break;
 
-                Log.Information("Declaring queue: tasks.low");
-                await channel.QueueDeclareAsync("tasks.low", durable: true, exclusive: false, autoDelete: false);
+                    case "tasks.low":
+                        Log.Information("Declaring queue: tasks.low");
+                        await channel.QueueDeclareAsync("tasks.low", durable: true, exclusive: false, autoDelete: false);
+                        break;
 
-                Log.Information("All RabbitMQ queues declared successfully.");
+                    default:
+                        throw new ArgumentException($"Unsupported queue name: {queue}");
+                }
 
                 return channel;
             }

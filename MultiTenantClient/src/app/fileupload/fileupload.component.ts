@@ -166,6 +166,12 @@ export class FileuploadComponent implements OnInit {
         const { uploadUrl, blobFileName } = res;
   
         // Step 2: Upload directly to blob
+//         const blobClient = new BlockBlobClient(sasUrl)
+// await blobClient.uploadBrowserData(file, {
+//   blockSize: 4 * 1024 * 1024,
+//   concurrency: 5,
+//   onProgress: (e) => console.log(e.loadedBytes),
+// })
         this.http.put(uploadUrl, this.selectedFile, {
           headers: {
             'x-ms-blob-type': 'BlockBlob',
@@ -192,14 +198,6 @@ export class FileuploadComponent implements OnInit {
               };
               console.log(notifyPayload);
               this.http.post(`${environment.apiBaseUrl}/Contents`, notifyPayload)
-                // .subscribe(() => {
-                //   this.uploadResponse = res;
-                //   this.toastr.success('Upload initiated successfully', 'Success');
-                //   // Step 4: Start polling progress
-                //   this.progressService.startPolling((progress) => {
-                //     this.conversionProgress = progress;
-                //   });
-                // });
                 .subscribe({
                   next: (res) => {
                     this.uploadResponse = res; // ✅ Capture the response

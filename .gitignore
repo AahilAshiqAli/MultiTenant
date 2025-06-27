@@ -1,0 +1,37 @@
+# Ignore log files and logs folder
+*.log
+*.txt
+logs/
+**/logs/
+
+# Ignore wwwroot folder (usually contains built/static files)
+wwwroot/
+**/wwwroot/
+
+# Ignore uploads
+uploads/
+**/uploads/
+
+# Ignore environment/config secrets
+.env
+*.env
+
+# Ignore build artifacts (C#)
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+
+# Ignore Node/Angular client junk
+node_modules/
+dist/
+build/
+
+# IDE/project settings
+.vscode/
+.idea/
+
+# OS/system junk
+.DS_Store
+Thumbs.db

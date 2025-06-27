@@ -21,8 +21,8 @@ namespace MultiTenantAPI.Extensions
                 options.AddPolicy("AllowAngularClient", builder =>
                 {
                     builder.WithOrigins("http://localhost:4200")
-                           .AllowAnyHeader()
-                           .AllowAnyMethod()
+                           .AllowAnyHeader() // allow any  headers
+                           .AllowAnyMethod() // allow any HTTP method (GET, POST, PUT, DELETE, etc.)
                            .AllowCredentials(); // Needed for SignalR
                 });
             });

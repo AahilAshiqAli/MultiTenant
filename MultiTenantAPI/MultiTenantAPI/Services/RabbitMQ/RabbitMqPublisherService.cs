@@ -23,7 +23,6 @@ namespace MultiTenantAPI.Services.RabbitMQ
             try
             {
                 _logger.LogInformation("Publishing message for tenantId: {TenantId}", tenantId);
-                var channel = await RabbitMqInitService.GetChannelAsync();
 
                 var serializedMessage = JsonConvert.SerializeObject(message);
                 _logger.LogDebug("Serialized message: {SerializedMessage}", serializedMessage);
@@ -37,6 +36,8 @@ namespace MultiTenantAPI.Services.RabbitMQ
 
                 var routingKey = TenantPriorityRulesService.GetRoutingKey(properties.Priority);
                 _logger.LogInformation("RoutingKey: {RoutingKey}, Priority: {Priority}", routingKey, priority);
+
+                var channel = await RabbitMqInitService.GetChannelAsync(routingKey);
 
                 await channel.BasicPublishAsync(
                     exchange: "",

@@ -13,7 +13,7 @@ namespace MultiTenantAPI.Extensions
     public static IServiceCollection AddIdentityHandlersAndStores(this IServiceCollection services)
     {
       services.AddIdentityApiEndpoints<AppUser>()
-              .AddRoles<IdentityRole>()
+                .AddRoles<IdentityRole>()
               .AddEntityFrameworkStores<AppDbContext>();
       return services;
     }
@@ -22,9 +22,9 @@ namespace MultiTenantAPI.Extensions
     {
       services.Configure<IdentityOptions>(options =>
       {
-        options.Password.RequireDigit = false;
-        options.Password.RequireUppercase = false;
-        options.Password.RequireLowercase = false;
+        options.Password.RequireDigit = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireLowercase = true;
         options.User.RequireUniqueEmail = true;
       });
       return services;
@@ -39,9 +39,9 @@ namespace MultiTenantAPI.Extensions
       .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       .AddJwtBearer(y =>
         {
-          y.SaveToken = false;
+          y.SaveToken = false; // dont save token to httpContext bcz it is saved on client side and rest is stateless
 
-            y.Events = new JwtBearerEvents
+            y.Events = new JwtBearerEvents // hoooks into token pipeline and tweak how tokens are handled
             {
                 OnMessageReceived = context =>
                 {
@@ -54,7 +54,7 @@ namespace MultiTenantAPI.Extensions
                         context.Token = accessToken;
                     }
 
-                    return Task.CompletedTask;
+                    return Task.CompletedTask; // only doing this bcz onMessageRecieved is asynchoronous delegate
                 }
             };
 
@@ -66,8 +66,8 @@ namespace MultiTenantAPI.Extensions
             IssuerSigningKey = new SymmetricSecurityKey(
                             Encoding.UTF8.GetBytes(
                                 config["AppSettings:JWTSecret"]!)),
-            ValidateIssuer = false,
-            ValidateAudience = false,
+            ValidateIssuer = false, // who has issued this token
+            ValidateAudience = false, // who is the intended audience of this token. LIke if I am using google OAuth then is the recipent me?
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
           };
@@ -76,13 +76,10 @@ namespace MultiTenantAPI.Extensions
       {
         options.FallbackPolicy = new AuthorizationPolicyBuilder()
           .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-          .RequireAuthenticatedUser()
+          .RequireAuthenticatedUser() // only authenticated users can access this endpoint. Default authorize
           .Build();
 
-        options.AddPolicy("HasLibraryID", policy => policy.RequireClaim("libraryID"));
-        options.AddPolicy("FemalesOnly", policy => policy.RequireClaim("gender", "Female"));
-        options.AddPolicy("Under10", policy => policy.RequireAssertion(context =>
-        Int32.Parse(context.User.Claims.First(x => x.Type== "age").Value)<10));
+
 
       });
 

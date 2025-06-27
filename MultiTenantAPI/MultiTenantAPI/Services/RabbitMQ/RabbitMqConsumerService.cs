@@ -6,13 +6,13 @@ using MultiTenantAPI.Services.RabbitMQ;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using Serilog;
 using System.Text;
 
 public class RabbitMqConsumerService : BackgroundService
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<RabbitMqConsumerService> _logger;
-    private IChannel _channel;
 
     public RabbitMqConsumerService(IServiceProvider serviceProvider, ILogger<RabbitMqConsumerService> logger)
     {
@@ -22,18 +22,33 @@ public class RabbitMqConsumerService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("Starting RabbitMqConsumer...");
+        var allTasks = new List<Task>();
 
-        _channel = await RabbitMqInitService.GetChannelAsync();
+        allTasks.Add(StartConsumersAsync("tasks.high", 4, stoppingToken));
+        allTasks.Add(StartConsumersAsync("tasks.normal", 2, stoppingToken));
+        allTasks.Add(StartConsumersAsync("tasks.low", 1, stoppingToken));
 
-        await ConsumeQueueAsync("tasks.high", stoppingToken);
-        await ConsumeQueueAsync("tasks.normal", stoppingToken);
-        await ConsumeQueueAsync("tasks.low", stoppingToken);
+        await Task.WhenAll(allTasks);
     }
 
-    private async Task ConsumeQueueAsync(string queueName, CancellationToken stoppingToken)
+    private async Task StartConsumersAsync(string queueName, int consumerCount, CancellationToken stoppingToken)
     {
-        var consumer = new AsyncEventingBasicConsumer(_channel);
+        var consumerTasks = new List<Task>();
+
+        for (int i = 0; i < consumerCount; i++)
+        {
+            var channel = await RabbitMqInitService.GetChannelAsync(queueName);
+            consumerTasks.Add(ConsumeQueueAsync(channel, queueName, stoppingToken));
+        }
+
+        // Await all consumers for this queue
+        await Task.WhenAll(consumerTasks);
+    }
+
+
+    private async Task ConsumeQueueAsync(IChannel channel, string queueName, CancellationToken stoppingToken)
+    {
+        var consumer = new AsyncEventingBasicConsumer(channel);
 
         consumer.ReceivedAsync += async (model, ea) =>
         {
@@ -57,20 +72,19 @@ public class RabbitMqConsumerService : BackgroundService
                 await contentProcessingService.ProcessUploadedContentAsync(message);
                 _logger.LogInformation("Completed content processing");
 
-                await _channel.BasicAckAsync(ea.DeliveryTag, false);
+                await channel.BasicAckAsync(ea.DeliveryTag, false);
                 _logger.LogInformation("Message acked");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error processing message from {QueueName}: {Error}", queueName, ex.Message);
-                await _channel.BasicNackAsync(ea.DeliveryTag, false, requeue: false); // don't leave it unacked
+                await channel.BasicNackAsync(ea.DeliveryTag, false, requeue: false);
             }
         };
 
+        await channel.BasicConsumeAsync(queue: queueName, autoAck: false, consumer: consumer);
 
-        await _channel.BasicConsumeAsync(queue: queueName, autoAck: false, consumer: consumer);
-
-        // Keep method alive as long as host is running
+        // Keep alive while cancellation is not requested
         while (!stoppingToken.IsCancellationRequested)
         {
             await Task.Delay(Timeout.Infinite, stoppingToken);

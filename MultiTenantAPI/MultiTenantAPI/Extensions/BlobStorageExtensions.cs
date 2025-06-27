@@ -27,7 +27,7 @@ namespace MultiTenantAPI.Extensions
                 return new AmazonS3Client("AWS_ACCESS_KEY", "AWS_SECRET_KEY", config);
             });
 
-            // Register concrete types, not as IBlobService
+
             services.AddScoped<AzureBlobService>();
             services.AddScoped<S3BlobService>();
             services.AddScoped<AzureBlobStorageService>();
