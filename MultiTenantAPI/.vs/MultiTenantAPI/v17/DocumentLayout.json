@@ -3,14 +3,6 @@
   "WorkspaceRootPath": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\services\\currenttenant\\currenttenantservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\services\\currenttenant\\currenttenantservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\services\\accountservice\\iaccountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\services\\accountservice\\iaccountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\services\\contentfolder\\contentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\services\\contentfolder\\contentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -19,32 +11,12 @@
       "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\services\\identityservice\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\middlewares\\tenantresolutionmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\middlewares\\tenantresolutionmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\dto\\contentmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\dto\\contentmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\extensions\\identityextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\extensions\\identityextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\models\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\models\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\models\\changelog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\models\\changelog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\services\\rabbitmq\\tenantpriorityrulesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\services\\rabbitmq\\tenantpriorityrulesservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\services\\rabbitmq\\rabbitmqpublisherservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\services\\rabbitmq\\rabbitmqpublisherservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\services\\rabbitmq\\rabbitmqconsumerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\services\\rabbitmq\\rabbitmqconsumerservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|c:\\users\\aahil.ashiq\\multitenant\\multitenantsaasapplication\\multitenantapi\\multitenantapi\\dto\\contentdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5020CE77-A66D-4B8C-8969-7B047CBFBADE}|MultiTenantAPI\\MultiTenantAPI.csproj|solutionrelative:multitenantapi\\dto\\contentdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -54,8 +26,47 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\IdentityService\\AuthService.cs",
+              "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\IdentityService\\AuthService.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\IdentityService\\AuthService.cs",
+              "RelativeToolTip": "MultiTenantAPI\\Services\\IdentityService\\AuthService.cs",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAtwEQAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-30T13:47:00.263Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ContentMessage.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\DTO\\ContentMessage.cs",
+              "RelativeDocumentMoniker": "MultiTenantAPI\\DTO\\ContentMessage.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\DTO\\ContentMessage.cs",
+              "RelativeToolTip": "MultiTenantAPI\\DTO\\ContentMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-30T13:38:13.228Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ContentDto.cs",
+              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\DTO\\ContentDto.cs",
+              "RelativeDocumentMoniker": "MultiTenantAPI\\DTO\\ContentDto.cs",
+              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\DTO\\ContentDto.cs",
+              "RelativeToolTip": "MultiTenantAPI\\DTO\\ContentDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-30T13:35:39.746Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
@@ -63,144 +74,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "CurrentTenantService.cs",
-              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\CurrentTenant\\CurrentTenantService.cs",
-              "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\CurrentTenant\\CurrentTenantService.cs",
-              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\CurrentTenant\\CurrentTenantService.cs",
-              "RelativeToolTip": "MultiTenantAPI\\Services\\CurrentTenant\\CurrentTenantService.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAAwwCwAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T11:16:31.633Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "IAccountService.cs",
-              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\AccountService\\IAccountService.cs",
-              "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\AccountService\\IAccountService.cs",
-              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\AccountService\\IAccountService.cs",
-              "RelativeToolTip": "MultiTenantAPI\\Services\\AccountService\\IAccountService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T11:15:47.54Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "ContentService.cs",
               "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\ContentFolder\\ContentService.cs",
               "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\ContentFolder\\ContentService.cs",
               "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\ContentFolder\\ContentService.cs",
               "RelativeToolTip": "MultiTenantAPI\\Services\\ContentFolder\\ContentService.cs",
-              "ViewState": "AgIAACsAAAAAAAAAAAAgwEsAAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAAEABAAAAAAAAAAAtwFMBAABQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T11:14:22.348Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AuthService.cs",
-              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\IdentityService\\AuthService.cs",
-              "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\IdentityService\\AuthService.cs",
-              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\IdentityService\\AuthService.cs",
-              "RelativeToolTip": "MultiTenantAPI\\Services\\IdentityService\\AuthService.cs",
-              "ViewState": "AgIAAHkAAAAAAAAAAAAAwIoAAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T11:05:22.049Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "IdentityExtensions.cs",
-              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Extensions\\IdentityExtensions.cs",
-              "RelativeDocumentMoniker": "MultiTenantAPI\\Extensions\\IdentityExtensions.cs",
-              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Extensions\\IdentityExtensions.cs",
-              "RelativeToolTip": "MultiTenantAPI\\Extensions\\IdentityExtensions.cs",
-              "ViewState": "AgIAAE8AAAAAAAAAAAAuwFwAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T11:04:03.151Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ChangeLog.cs",
-              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Models\\ChangeLog.cs",
-              "RelativeDocumentMoniker": "MultiTenantAPI\\Models\\ChangeLog.cs",
-              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Models\\ChangeLog.cs",
-              "RelativeToolTip": "MultiTenantAPI\\Models\\ChangeLog.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T10:52:34.867Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "AppDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Models\\AppDbContext.cs",
-              "RelativeDocumentMoniker": "MultiTenantAPI\\Models\\AppDbContext.cs",
-              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Models\\AppDbContext.cs",
-              "RelativeToolTip": "MultiTenantAPI\\Models\\AppDbContext.cs",
-              "ViewState": "AgIAACcAAAAAAAAAAAAuwC8AAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T10:51:42.285Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "TenantResolutionMiddleware.cs",
-              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Middlewares\\TenantResolutionMiddleware.cs",
-              "RelativeDocumentMoniker": "MultiTenantAPI\\Middlewares\\TenantResolutionMiddleware.cs",
-              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Middlewares\\TenantResolutionMiddleware.cs",
-              "RelativeToolTip": "MultiTenantAPI\\Middlewares\\TenantResolutionMiddleware.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAmwBcAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T10:50:48.721Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "RabbitMqConsumerService.cs",
-              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\RabbitMQ\\RabbitMqConsumerService.cs",
-              "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\RabbitMQ\\RabbitMqConsumerService.cs",
-              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\RabbitMQ\\RabbitMqConsumerService.cs",
-              "RelativeToolTip": "MultiTenantAPI\\Services\\RabbitMQ\\RabbitMqConsumerService.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T07:52:04.219Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "RabbitMqPublisherService.cs",
-              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\RabbitMQ\\RabbitMqPublisherService.cs",
-              "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\RabbitMQ\\RabbitMqPublisherService.cs",
-              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\RabbitMQ\\RabbitMqPublisherService.cs",
-              "RelativeToolTip": "MultiTenantAPI\\Services\\RabbitMQ\\RabbitMqPublisherService.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAgwCsAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T07:52:00.656Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "TenantPriorityRulesService.cs",
-              "DocumentMoniker": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\RabbitMQ\\TenantPriorityRulesService.cs",
-              "RelativeDocumentMoniker": "MultiTenantAPI\\Services\\RabbitMQ\\TenantPriorityRulesService.cs",
-              "ToolTip": "C:\\Users\\Aahil.ashiq\\MultiTenant\\MultiTenantSAASApplication\\MultiTenantAPI\\MultiTenantAPI\\Services\\RabbitMQ\\TenantPriorityRulesService.cs",
-              "RelativeToolTip": "MultiTenantAPI\\Services\\RabbitMQ\\TenantPriorityRulesService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-27T07:51:15.07Z",
+              "WhenOpened": "2025-06-30T13:33:28.281Z",
               "EditorCaption": ""
             }
           ]

@@ -20,7 +20,7 @@ namespace MultiTenantAPI.Models
         public bool isApproved { get; set; }
 
         [ForeignKey("Tenant")]
-        public string TenantID { get; set; }
+        public Guid TenantID { get; set; }
 
         public Tenant Tenant { get; set; }
 

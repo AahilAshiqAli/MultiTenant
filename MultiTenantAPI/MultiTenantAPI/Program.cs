@@ -3,15 +3,6 @@ using Microsoft.AspNetCore.SignalR;
 using MultiTenantAPI.Controllers;
 using MultiTenantAPI.Extensions;
 using MultiTenantAPI.Hubs;
-using MultiTenantAPI.Services.AccountService;
-using MultiTenantAPI.Services.AdminService;
-using MultiTenantAPI.Services.ContentFolder;
-using MultiTenantAPI.Services.ContentProcessor;
-using MultiTenantAPI.Services.FFmpeg.Converter;
-using MultiTenantAPI.Services.FFmpeg.Thumbnail;
-using MultiTenantAPI.Services.FFmpeg.VideoRendition;
-using MultiTenantAPI.Services.CurrentTenant;
-using MultiTenantAPI.Services.IdentityService;
 using MultiTenantAPI.Services.ProgressStore;
 using MultiTenantAPI.Services.RabbitMQ;
 using Serilog;
@@ -30,17 +21,11 @@ builder.Services.AddSwaggerExplorer()
                 .AddIdentityAuth(builder.Configuration)
                 .AddBlobStorage(builder.Configuration);
 
-builder.Services.AddTransient<IContentService, ContentService>();
-builder.Services.AddScoped<ICurrentTenantService, CurrentTenantService>();
-builder.Services.AddSingleton<IConverterService, ConverterService>();
-builder.Services.AddSingleton<IThumbnailService, ThumbnailService>();
-builder.Services.AddSingleton<IVideoRenditionService, VideoRenditionService>();
-builder.Services.AddScoped<IContentProcessorService, ContentProcessorService>();
+
+builder.Services.AddAppServices();
 builder.Services.AddSingleton<IProgressStore, InMemoryProgressStore>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ITenantService, TenantService>();
-builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<IAdminService, AdminService>();
+
+
 
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
@@ -62,8 +47,6 @@ builder.Host.UseSerilog((context, services, configuration) =>
         .WithSignalRSink(services);
 });
 
-builder.Services.AddScoped<IRabbitMqPublisherService, RabbitMqPublisherService>();
-builder.Services.AddHostedService<RabbitMqConsumerService>();
 
 builder.Services.AddLogging(logging =>
 {

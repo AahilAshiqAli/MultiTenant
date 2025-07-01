@@ -66,7 +66,7 @@ namespace MultiTenantAPI.Services.AccountService
         public async Task<ServiceResult<object>> GetTenantUserCountAsync()
         {
             var tenantId = _tenantService.TenantId;
-            if (string.IsNullOrWhiteSpace(tenantId))
+            if (tenantId == null)
             {
                 return ServiceResult<object>.Fail("TenantId is missing.");
             }
@@ -74,7 +74,7 @@ namespace MultiTenantAPI.Services.AccountService
             try
             {
                 var userCount = await _dbContext.AppUsers
-                    .CountAsync(u => u.TenantID.ToString() == tenantId);
+                    .CountAsync(u => u.TenantID == tenantId);
 
                 return ServiceResult<object>.Ok(new
                 {
@@ -92,7 +92,7 @@ namespace MultiTenantAPI.Services.AccountService
         public async Task<ServiceResult<object>> GetTenantFileCountAsync()
         {
             var tenantId = _tenantService.TenantId;
-            if (string.IsNullOrWhiteSpace(tenantId))
+            if (tenantId == null)
             {
                 return ServiceResult<object>.Fail("TenantId is missing.");
             }

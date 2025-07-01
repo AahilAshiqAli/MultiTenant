@@ -1,14 +1,15 @@
-﻿using MultiTenantAPI.Services.CurrentTenant;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using MultiTenantAPI.Services.CurrentTenant;
+using System.Reflection.Emit;
 
 namespace MultiTenantAPI.Models
 {
     public class AppDbContext:IdentityDbContext<AppUser>
     {
         private readonly ICurrentTenantService _currentTenantService;
-        public string CurrentTenantId { get; set; }
+        public Guid? CurrentTenantId { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options, ICurrentTenantService currentTenantService):base(options)
         {
             _currentTenantService = currentTenantService;
@@ -25,14 +26,21 @@ namespace MultiTenantAPI.Models
         {
             base.OnModelCreating(builder);
 
-            if (!string.IsNullOrWhiteSpace(CurrentTenantId))
-                builder.Entity<Content>().HasQueryFilter(a => a.TenantID == CurrentTenantId);
+            builder.Entity<Content>()
+                .HasIndex(c => c.TenantID)
+                .HasDatabaseName("IX_Content_TenantId");
+
+            if (CurrentTenantId.HasValue)
+            {
+                Guid tenantGuid = CurrentTenantId.Value;
+                builder.Entity<Content>().HasQueryFilter(a => a.TenantID == tenantGuid);
+            }
 
             builder.Entity<Content>()
-             .HasOne(c => c.Tenant)
-             .WithMany() // or .WithMany(t => t.Contents) if you have a collection
-             .HasForeignKey(c => c.TenantID)
-             .OnDelete(DeleteBehavior.Restrict); // 👈 prevents cascade delete
+                .HasOne(c => c.Tenant)
+                .WithMany() // or .WithMany(t => t.Contents) if you have a collection
+                .HasForeignKey(c => c.TenantID)
+                .OnDelete(DeleteBehavior.Restrict); // prevents cascade delete
 
             // configure UserId if needed
             builder.Entity<Content>()
@@ -53,9 +61,9 @@ namespace MultiTenantAPI.Models
                 var entity = (ChangeLog)entry.Entity;
 
                 // Set tenant ID
-                if (!string.IsNullOrEmpty(CurrentTenantId))
+                if (CurrentTenantId.HasValue)
                 {
-                    entity.TenantID = CurrentTenantId;
+                    entity.TenantID = CurrentTenantId.Value; // Fix: Use .Value to extract Guid from nullable Guid
                 }
 
                 var now = DateTime.UtcNow;

@@ -23,7 +23,6 @@ namespace MultiTenantAPI.Services.IdentityService
         private readonly AppDbContext _context;
         private readonly AppSettings _appSettings;
         private readonly ILogger<AuthService> _logger;
-        private readonly IContentService _contentService;
 
         public AuthService(UserManager<AppUser> userManager, IOptions<AppSettings> settings, AppDbContext context, ILogger<AuthService> logger)
         {
@@ -31,12 +30,15 @@ namespace MultiTenantAPI.Services.IdentityService
             _appSettings = settings.Value;
             _context = context;
             _logger = logger;
-            //_contentService = contentService;
         }
 
         public async Task<ServiceResult<object>> CreateUser(UserRegistrationDto model)
         {
-            var tenant = await _context.Tenants.FindAsync(model.TenantID);
+            if (!Guid.TryParse(model.TenantID, out var tenantGuid))
+                throw new ArgumentException("Invalid Tenant ID format");
+
+            var tenant = await _context.Tenants.FindAsync(tenantGuid);
+
             if (tenant == null)
             {
                 var errors = new List<IdentityError>
@@ -64,7 +66,7 @@ namespace MultiTenantAPI.Services.IdentityService
                     Gender = string.IsNullOrWhiteSpace(model.Gender) ? null
                     : char.ToUpper(model.Gender[0]) + model.Gender.Substring(1).ToLower(),
                     DOB = DateOnly.FromDateTime(DateTime.Now.AddYears(-model.Age)),
-                    TenantID = model.TenantID.ToString(),
+                    TenantID = tenantGuid,
                     isApproved = false // Assuming new users are pending by default
                 };
 #pragma warning restore CS8601 // Possible null reference assignment.

@@ -14,26 +14,29 @@ namespace MultiTenantAPI.Services.CurrentTenant
             _logger = logger;
         }
 
-        public string? TenantId { get; private set; }
+        public Guid? TenantId { get; private set; }
 
         public async Task<bool> SetTenant(string tenant)
         {
             //_logger.LogInformation("SetTenant called with tenant: {Tenant}", tenant);
 
+            // Parse the string into a Guid
             if (!Guid.TryParse(tenant, out var tenantGuid))
             {
                 _logger.LogError("Invalid Tenant ID format: {TenantId}", tenant);
                 throw new InvalidOperationException("Invalid Tenant ID format.");
             }
 
+
+
             //_logger.LogDebug("Looking up tenant with ID: {TenantGuid}", tenantGuid);
 
             var tenantInfo = await _dbContext.Tenants
-                .FirstOrDefaultAsync(t => t.TenantID == tenant);
+                .FirstOrDefaultAsync(t => t.TenantID == tenantGuid);
 
             if (tenantInfo != null)
             {
-                TenantId = tenantInfo.TenantID.ToString();
+                TenantId = tenantInfo.TenantID;
                 //_logger.LogInformation("Tenant found and set: {TenantId}", TenantId);
                 return true;
             }

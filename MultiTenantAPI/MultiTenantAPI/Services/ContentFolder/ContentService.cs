@@ -5,6 +5,7 @@ using MultiTenantAPI.Services.Blob;
 using MultiTenantAPI.Services.CurrentTenant;
 using MultiTenantAPI.Services.ProgressStore;
 using MultiTenantAPI.Services.RabbitMQ;
+using System.ComponentModel;
 using System.Linq;
 using System.Security.Claims;
 
@@ -48,9 +49,21 @@ namespace MultiTenantAPI.Services.ContentFolder
 
             _logger.LogInformation("Fetching up to 50 content items for tenant {TenantId} and user {UserId}.", tenantId, userId);
 
+            if (tenantId.HasValue == false)
+            {
+                throw new Exception("Tenant ID is not set. Please ensure the tenant is initialized.");
+            }
+
+            // Parse userId as Guid
+            if (!Guid.TryParse(userId, out Guid userGuid))
+            {
+                _logger.LogError("Invalid userID format: {UserId}", userId);
+                throw new Exception("Invalid userID format.");
+            }
+
             var result = _context.Contents
                 .Where(c => c.TenantID == tenantId &&
-                            (!c.IsPrivate || c.UserId == userId))
+                            (!c.IsPrivate || c.UserId == userGuid))
                 .Take(50)
                 .Select(c => new ContentDto
                 {
@@ -78,9 +91,15 @@ namespace MultiTenantAPI.Services.ContentFolder
 
             _logger.LogInformation("Filtering content by name: {Name} for tenant {TenantId} and user {UserId}", name, tenantId, userId);
 
+            if (!Guid.TryParse(userId, out Guid userGuid))
+            {
+                _logger.LogError("Invalid userID format: {UserId}", userId);
+                throw new Exception("Invalid userID format.");
+            }
+
             var result = _context.Contents
                 .Where(c => c.TenantID == tenantId &&
-                            (!c.IsPrivate || c.UserId == userId) &&
+                            (!c.IsPrivate || c.UserId == userGuid) &&
                             c.FileName.ToLower().Contains(name.ToLower()))
                 .Select(c => new ContentDto
                 {
@@ -105,12 +124,18 @@ namespace MultiTenantAPI.Services.ContentFolder
         {
             _logger.LogInformation("Attempting to stream video with Id: {Id}", id);
 
+
             var userId = _httpContextAccessor.HttpContext?.User?.FindFirstValue("userID");
 
+            if (!Guid.TryParse(userId, out Guid userGuid))
+            {
+                _logger.LogError("Invalid userID format: {UserId}", userId);
+                throw new Exception("Invalid userID format.");
+            }
             var content = _context.Contents.FirstOrDefault(x =>
                 x.Id == id &&
                 x.TenantID == _currentTenantService.TenantId &&
-                (!x.IsPrivate || x.UserId == userId));
+                (!x.IsPrivate || x.UserId == userGuid));
 
             if (content == null)
             {
@@ -153,11 +178,24 @@ namespace MultiTenantAPI.Services.ContentFolder
             {
                 var user = _httpContextAccessor.HttpContext?.User;
                 var userId = user?.Claims.FirstOrDefault(x => x.Type == "userID")?.Value;
+                var tenantId = _currentTenantService.TenantId;
+                if (tenantId == null)
+                {
+                    _logger.LogError("Tenant ID is not set. Please ensure the tenant is initialized.");
+                    throw new Exception("Tenant ID is not set. Please ensure the tenant is initialized.");
+                }
                 if (string.IsNullOrEmpty(userId))
                 {
                     _logger.LogError("User ID not found in claims.");
                     throw new Exception("User ID not found in claims.");
                 }
+                // Convert userId string to Guid
+                if (!Guid.TryParse(userId, out Guid userGuid))
+                {
+                    _logger.LogError("Invalid userID format: {UserId}", userId);
+                    throw new Exception("Invalid userID format.");
+                }
+                
 
 
 
@@ -167,13 +205,15 @@ namespace MultiTenantAPI.Services.ContentFolder
                     ContentType = request.ContentType,
                     Size = request.Size,
                     UserId = userId,
-                    TenantId = _currentTenantService.TenantId,
+                    TenantId = (Guid)tenantId,
                     uniqueFileName = request.BlobFileName,
                     isPrivate = request.IsPrivate,
                     RequiredRendition = request.Rendition
                 };
 
-                await _publisher.PublishMessageAsync (_currentTenantService.TenantId, message);
+                
+
+                await _publisher.PublishMessageAsync (tenantId.Value.ToString(), message);
 
                 using var transaction = await _context.Database.BeginTransactionAsync();
 
@@ -185,7 +225,7 @@ namespace MultiTenantAPI.Services.ContentFolder
                     Size = message.Size,
                     FilePath = message.uniqueFileName,
                     thumbnail = null,
-                    UserId = userId,
+                    UserId = userGuid,
                     IsPrivate = message.isPrivate,
                     Status = false // Will turn to true once processing is complete
                 };
@@ -235,197 +275,18 @@ namespace MultiTenantAPI.Services.ContentFolder
         }
 
 
-        //public async Task ProcessUploadedContentAsync(ContentMessage message)
-        //{
-            
-        //    string userId = message.UserId;
-        //    string filePath = message.FilePath;
-        //    string originalFileName = message.FileName;
-        //    string uploadsFolder = message.uploadsFolder;
-        //    string extension = Path.GetExtension(originalFileName).ToLowerInvariant();
-        //    string uniqueFileName = message.uniqueFileName;
-        //    string thumbnail = "";
-        //    string dupFilePath = message.dupFilePath;
-        //    string blobClientUri = null;
-        //    string RequiredRendition = message.RequiredRendition;
-
-        //    try { 
-        //        // store status as 10% complete
-        //        _progressStore.SetProgress(userId, 10);
-        //        _logger.LogInformation("Sent conversion progress 10% to user {UserId}.", userId);
-
-        //        var audioExtensions = new[] { ".wav", ".aac", ".flac", ".ogg", ".m4a", ".wma" };
-        //        var videoExtensions = new[] { ".avi", ".mov", ".wmv", ".flv", ".mkv", ".webm" };
-
-        //        if (audioExtensions.Contains(extension))
-        //        {
-        //            _logger.LogInformation("Audio file detected. Converting to mp3.");
-        //            filePath = await _ffmpegService.ConvertToMp3Async(filePath);
-        //            if (string.IsNullOrEmpty(filePath))
-        //                throw new Exception("Failed to convert audio file.");
-
-        //            uniqueFileName = Path.ChangeExtension(uniqueFileName, ".mp3");
-        //            thumbnail = Path.Combine(uploadsFolder, "music.jpg");
-        //        }
-        //        else if (videoExtensions.Contains(extension))
-        //        {
-        //            _logger.LogInformation("Video file detected. Converting to mp4.");
-        //            filePath = await _ffmpegService.ConvertToMp4Async(filePath);
-        //            if (string.IsNullOrEmpty(filePath))
-        //                throw new Exception("Failed to convert video file.");
-
-        //            uniqueFileName = Path.ChangeExtension(uniqueFileName, ".mp4");
-
-        //            bool rendition = await _ffmpegService.GetRenditionLabelAsync(filePath, RequiredRendition);
-
-        //            if (!rendition)
-        //            {
-        //                return;
-        //            }
-                    
-
-                    
-        //            thumbnail = Path.Combine(uploadsFolder, Path.ChangeExtension(uniqueFileName, ".jpg"));
-
-        //            _logger.LogInformation("Extracting thumbnail for video.");
-        //            bool success = await _ffmpegService.ExtractThumbnailAsync(filePath, thumbnail);
-        //            if (!success || !System.IO.File.Exists(thumbnail))
-        //                throw new Exception("Failed to generate video thumbnail.");
-
-        //            filePath = await _ffmpegService.GenerateVideoRenditionsAsync(filePath, RequiredRendition);
-        //            uniqueFileName = AddRenditionToFileName(uniqueFileName, RequiredRendition);
-        //        }
-        //        else if (extension == ".mp3")
-        //        {
-        //            uniqueFileName = Path.ChangeExtension(uniqueFileName, extension);
-        //            thumbnail = Path.Combine(uploadsFolder, "music.jpg");
-        //        }
-        //        else if (extension == ".mp4")
-        //        {
-        //            uniqueFileName = Path.ChangeExtension(uniqueFileName, extension);
-        //            thumbnail = Path.Combine(uploadsFolder, Path.ChangeExtension(uniqueFileName, ".jpg"));
-
-        //            bool success = await _ffmpegService.ExtractThumbnailAsync(filePath, thumbnail);
-        //            if (!success)
-        //                _logger.LogWarning("Failed to extract thumbnail for MP4 file: {FilePath}", filePath);
-
-        //            var rendition = await _ffmpegService.GetRenditionLabelAsync(filePath, RequiredRendition);
-
-        //            if (!rendition)
-        //            {
-        //                _logger.LogError("Couldnot figure not Video Rendition");
-        //                return;
-        //            }
-
-        //            filePath = await _ffmpegService.GenerateVideoRenditionsAsync(filePath, RequiredRendition);
-        //            uniqueFileName = AddRenditionToFileName(uniqueFileName, RequiredRendition);
-
-        //        }
-        //        else
-        //        {
-        //            throw new NotSupportedException($"File type '{extension}' is not supported.");
-        //        }
-
-        //        // store styus as 70% complete
-        //        _progressStore.SetProgress(userId,70);
-        //        _logger.LogInformation("Sent conversion progress 70% to user {UserId}.", userId);
-
-        //        using (var stream = File.OpenRead(filePath))
-        //        {
-        //            blobClientUri = await _blobClient.UploadAsync(
-        //                stream,
-        //                uniqueFileName,
-        //                message.ContentType
-        //            );
-        //        }
-
-        //        if (string.IsNullOrEmpty(blobClientUri))
-        //            throw new Exception("Failed to upload file to blob storage.");
-        //        await Task.Delay(1000);
-
-
-        //        // implementing Transaction For RollBack
-        //        // Before it, we should make sure that everything is good else we should perform rollback of previous things and end.
-
-        //        using var transaction = await _context.Database.BeginTransactionAsync();
-
-
-        //        var content = new Content
-        //        {
-        //            TenantID = message.TenantId,
-        //            FileName = originalFileName,
-        //            ContentType = message.ContentType,
-        //            Size = message.Size,
-        //            FilePath = uniqueFileName,
-        //            thumbnail = Path.GetFileName(thumbnail),
-        //            UserId = userId,
-        //            IsPrivate = message.isPrivate
-        //        };
-
-        //        _context.Contents.Add(content);
-        //        await _context.SaveChangesAsync();
-        //        await transaction.CommitAsync();
-        //        _logger.LogInformation("Content created successfully: Id={Id}, FileName={FileName}, ContentType={ContentType}, Size={Size}, FilePath={FilePath}, TenantId={TenantId}, UserId={UserId}, IsPrivate={IsPrivate}, Thumbnail={Thumbnail}",
-        //            content.Id,
-        //            content.FileName,
-        //            content.ContentType,
-        //            content.Size,
-        //            content.FilePath,
-        //            content.TenantID,
-        //            content.UserId,
-        //            content.IsPrivate,  
-        //            content.thumbnail
-        //        );
-
-
-        //        if (File.Exists(filePath))
-        //        {
-        //            _logger.LogInformation("Deleting local file: {FilePath}", filePath);
-        //            File.Delete(filePath);
-        //            if (File.Exists(dupFilePath)) File.Delete(dupFilePath);
-        //        }
-        //            // store status as 100% complete
-        //            _progressStore.SetProgress(userId, 100);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Error occurred during content processing for user {UserId}", userId);
-
-        //        // Rollback manually uploaded blob if needed
-        //        if (!string.IsNullOrEmpty(blobClientUri))
-        //        {
-        //            try
-        //            {
-        //                await _blobClient.DeleteBlobAsync(uniqueFileName);
-        //                _logger.LogInformation("Rolled back uploaded blob: {FileName}", uniqueFileName);
-        //            }
-        //            catch (Exception deleteEx)
-        //            {
-        //                _logger.LogWarning(deleteEx, "Failed to rollback uploaded blob for file: {FileName}", uniqueFileName);
-        //            }
-        //        }
-
-        //        // Clean up local files
-        //        if (File.Exists(filePath)) File.Delete(filePath);
-        //        if (File.Exists(dupFilePath)) File.Delete(dupFilePath);
-
-        //        throw; // Let the caller know an error happened
-        //    }
-        //}
-
-        //string AddRenditionToFileName(string uniqueFileName, string rendition)
-        //{
-        //    var nameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueFileName); // "aahil"
-        //    var extension = Path.GetExtension(uniqueFileName);                            // ".jpg"
-        //    return $"{nameWithoutExtension}{rendition}{extension}";                       // "aahil_480p.jpg"
-        //}
-
-        // Delete content
         public async Task<bool> DeleteContent(string name)
         {
             _logger.LogInformation("Attempting to delete content with name: {Name}", name);
             var userId = _httpContextAccessor.HttpContext?.User?.FindFirstValue("userID");
-            var content = _context.Contents.FirstOrDefault(x => x.FileName == name && x.UserId == userId);
+
+            if (!Guid.TryParse(userId, out Guid userGuid))
+            {
+                _logger.LogError("Invalid userID format: {UserId}", userId);
+                throw new Exception("Invalid userID format.");
+            }
+
+            var content = _context.Contents.FirstOrDefault(x => x.FileName == name && x.UserId == userGuid);
 
             if (content != null)
             {
@@ -449,14 +310,20 @@ namespace MultiTenantAPI.Services.ContentFolder
 
         public async Task<bool> DeleteUserContentAsync(string userId)
         {
+            if (!Guid.TryParse(userId, out Guid userGuid))
+            {
+                _logger.LogError("Invalid userID format: {UserId}", userId);
+                throw new Exception("Invalid userID format.");
+            }
+
             var contents = await _context.Contents
-                .Where(c => c.UserId == userId)
+                .Where(c => c.UserId == userGuid)
                 .ToListAsync();
 
             if (contents.Count == 0) return true;
 
             var tenantId = _currentTenantService.TenantId;
-            if (string.IsNullOrEmpty(tenantId))
+            if (tenantId == null)
                 return false;
 
             foreach (var content in contents)
@@ -470,7 +337,8 @@ namespace MultiTenantAPI.Services.ContentFolder
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex, "Failed to delete blob: {BlobName} in container: {Container}", blobName);
+                        _logger.LogError(ex, "Failed to delete blob: {BlobName} ", blobName);
+
                         return false;
                     }
                 }

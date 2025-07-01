@@ -28,7 +28,7 @@ namespace MultiTenantAPI.Services.Blob
             var tenantId = _currentTenantService.TenantId;
             _logger.LogInformation("Attempting to get blob client for tenantId: {TenantId}", tenantId);
 
-            if (string.IsNullOrEmpty(tenantId))
+            if (tenantId.HasValue)
             {
                 _logger.LogError("Tenant ID is missing.");
                 throw new InvalidOperationException("Tenant ID is missing.");

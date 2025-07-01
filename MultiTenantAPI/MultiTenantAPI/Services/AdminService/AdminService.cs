@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MultiTenantAPI.Models;
+using MultiTenantAPI.Services.CurrentTenant;
 using MultiTenantAPI.Services.Response;
 using System.Security.Claims;
 using System.Text.Json;
@@ -10,10 +11,12 @@ namespace MultiTenantAPI.Services.AdminService
     public class AdminService : IAdminService
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly ICurrentTenantService _tenantService;
 
-        public AdminService(UserManager<AppUser> userManager)
+        public AdminService(UserManager<AppUser> userManager, ICurrentTenantService tenantService)
         {
             _userManager = userManager;
+            _tenantService = tenantService;
         }
 
         public async Task<ServiceResult<List<JsonElement>>> GetAllLogsAsync(ClaimsPrincipal user)
@@ -70,9 +73,9 @@ namespace MultiTenantAPI.Services.AdminService
 
         public async Task<ServiceResult<List<object>>> GetAllUsersAsync(ClaimsPrincipal user)
         {
-            var tenantId = user.Claims.FirstOrDefault(c => c.Type == "tenantID")?.Value;
+            var tenantId = _tenantService.TenantId;
 
-            if (string.IsNullOrEmpty(tenantId))
+            if (tenantId.HasValue)
                 return ServiceResult<List<object>>.Fail("Tenant ID is missing from claims.");
 
             try

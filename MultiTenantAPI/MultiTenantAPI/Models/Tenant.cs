@@ -6,7 +6,7 @@ namespace MultiTenantAPI.Models
     public class Tenant
     {
         [Key]
-        public string TenantID { get; set; } = Guid.NewGuid().ToString();
+        public Guid TenantID { get; set; } = Guid.NewGuid();
 
         [Required]
         [Column(TypeName = "nvarchar(100)")]
@@ -23,7 +23,7 @@ namespace MultiTenantAPI.Models
 
         public bool EnableVersioning { get; set; }
         public int RetentionDays { get; set; } = 30;
-        public string DefaultBlobTier { get; set; } = "Hot"; // Hot/Cool/Archive
+        public string DefaultBlobTier { get; set; } = "Hot";
 
     }
 }

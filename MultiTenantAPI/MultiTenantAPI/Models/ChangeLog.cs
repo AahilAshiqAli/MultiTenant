@@ -9,14 +9,14 @@ namespace MultiTenantAPI.Models
     {
         [Required]
         [ForeignKey("Tenant")]
-        public string TenantID { get; set; }
+        public Guid TenantID { get; set; }
 
         // Navigation property to the Tenant entity
         public Tenant Tenant { get; set; }
 
         [Required]
         [ForeignKey("AppUser")]
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
 
         public AppUser AppUser { get; set; }
 

@@ -2,7 +2,7 @@
 {
     public interface ICurrentTenantService
     {  
-        string? TenantId { get; }
+        Guid? TenantId { get; }
 
         public Task<bool> SetTenant(string tenant);
 
